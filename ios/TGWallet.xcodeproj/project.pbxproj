@@ -15,6 +15,14 @@
 		7699B88040F8A987B510C191 /* libPods-TGWallet-TGWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-TGWallet-TGWalletTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		B5527DCB53509C3DE29611EF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		2FFE3ACB81F84E48BCD83B0C /* InterBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 79CA350972BF4044BBB2EB54 /* InterBold.ttf */; };
+		D7E73ADABD0948A9B62D4027 /* InterExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7343DEEE07D644EF8A791CF9 /* InterExtraBold.ttf */; };
+		DFCD9EBD625D4C97908FCB0F /* InterExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D838B9F7A0646AFBB435F19 /* InterExtraLight.ttf */; };
+		796707673F20422EB1580FE6 /* InterLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 81DF4191B6ED466782C6FF30 /* InterLight.ttf */; };
+		344550C43A0F4C07AE61BACA /* InterMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 43816315EA2A4445AE569553 /* InterMedium.ttf */; };
+		CD10D218C36B432AA4C09F86 /* InterRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 967BC6551B244928A898356D /* InterRegular.ttf */; };
+		9242473B47EE433584594E50 /* InterSemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AEF4B71D57A94E25971E4B15 /* InterSemiBold.ttf */; };
+		552B695C9CFB4832A7F47DB5 /* InterThin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A215D2B4C1FE4F10977D8B2A /* InterThin.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +54,14 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = TGWallet/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-TGWallet-TGWalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TGWallet-TGWalletTests.release.xcconfig"; path = "Target Support Files/Pods-TGWallet-TGWalletTests/Pods-TGWallet-TGWalletTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		79CA350972BF4044BBB2EB54 /* InterBold.ttf */ = {isa = PBXFileReference; name = "InterBold.ttf"; path = "../assets/fonts/InterBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		7343DEEE07D644EF8A791CF9 /* InterExtraBold.ttf */ = {isa = PBXFileReference; name = "InterExtraBold.ttf"; path = "../assets/fonts/InterExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8D838B9F7A0646AFBB435F19 /* InterExtraLight.ttf */ = {isa = PBXFileReference; name = "InterExtraLight.ttf"; path = "../assets/fonts/InterExtraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		81DF4191B6ED466782C6FF30 /* InterLight.ttf */ = {isa = PBXFileReference; name = "InterLight.ttf"; path = "../assets/fonts/InterLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		43816315EA2A4445AE569553 /* InterMedium.ttf */ = {isa = PBXFileReference; name = "InterMedium.ttf"; path = "../assets/fonts/InterMedium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		967BC6551B244928A898356D /* InterRegular.ttf */ = {isa = PBXFileReference; name = "InterRegular.ttf"; path = "../assets/fonts/InterRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		AEF4B71D57A94E25971E4B15 /* InterSemiBold.ttf */ = {isa = PBXFileReference; name = "InterSemiBold.ttf"; path = "../assets/fonts/InterSemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A215D2B4C1FE4F10977D8B2A /* InterThin.ttf */ = {isa = PBXFileReference; name = "InterThin.ttf"; path = "../assets/fonts/InterThin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +141,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				64AAECF2A034441F92982ECA /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -150,6 +167,22 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		64AAECF2A034441F92982ECA /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				79CA350972BF4044BBB2EB54 /* InterBold.ttf */,
+				7343DEEE07D644EF8A791CF9 /* InterExtraBold.ttf */,
+				8D838B9F7A0646AFBB435F19 /* InterExtraLight.ttf */,
+				81DF4191B6ED466782C6FF30 /* InterLight.ttf */,
+				43816315EA2A4445AE569553 /* InterMedium.ttf */,
+				967BC6551B244928A898356D /* InterRegular.ttf */,
+				AEF4B71D57A94E25971E4B15 /* InterSemiBold.ttf */,
+				A215D2B4C1FE4F10977D8B2A /* InterThin.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -247,6 +280,14 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				B5527DCB53509C3DE29611EF /* PrivacyInfo.xcprivacy in Resources */,
+				2FFE3ACB81F84E48BCD83B0C /* InterBold.ttf in Resources */,
+				D7E73ADABD0948A9B62D4027 /* InterExtraBold.ttf in Resources */,
+				DFCD9EBD625D4C97908FCB0F /* InterExtraLight.ttf in Resources */,
+				796707673F20422EB1580FE6 /* InterLight.ttf in Resources */,
+				344550C43A0F4C07AE61BACA /* InterMedium.ttf in Resources */,
+				CD10D218C36B432AA4C09F86 /* InterRegular.ttf in Resources */,
+				9242473B47EE433584594E50 /* InterSemiBold.ttf in Resources */,
+				552B695C9CFB4832A7F47DB5 /* InterThin.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,7 +510,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TGWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -483,8 +526,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.TGWallet;
 				PRODUCT_NAME = TGWallet;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -497,7 +541,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = TGWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -510,8 +556,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.TGWallet;
 				PRODUCT_NAME = TGWallet;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
