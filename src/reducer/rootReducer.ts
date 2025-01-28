@@ -5,6 +5,7 @@ import { persistReducer } from 'redux-persist';
 
 import authReducer from './auth/authSlice';
 import { authAPI } from '../api/auth/authAPI';
+import { walletAPI } from '../api/walletAPI';
 
 export const rootPersistConfig = {
   key: 'root',
@@ -22,6 +23,7 @@ const authReducerPersistConfig = {
 export const combinedReducer = combineReducers({
   authReducer: persistReducer(authReducerPersistConfig, authReducer),
   [authAPI.reducerPath]: authAPI.reducer,
+  [walletAPI.reducerPath]: walletAPI.reducer,
 });
 
 export const rootReducer: Reducer<RootState> = (state, action) => {

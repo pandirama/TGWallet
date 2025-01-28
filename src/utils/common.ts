@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const localStorageKey = {
   userInfo: 'userInfo',
+  walletInfo: 'walletinfo',
 };
 
 export async function setStorage(key: string, value: any) {
@@ -9,9 +10,9 @@ export async function setStorage(key: string, value: any) {
 }
 
 export async function getStorage(key: string) {
-  if (key === localStorageKey.userInfo) {
-    const userInfo = await AsyncStorage.getItem(key);
-    return userInfo != null ? JSON.parse(userInfo) : null;
+  if (key === localStorageKey.walletInfo) {
+    const walletInfo = await AsyncStorage.getItem(key);
+    return walletInfo != null ? JSON.parse(walletInfo) : null;
   }
   return await AsyncStorage.getItem(key);
 }

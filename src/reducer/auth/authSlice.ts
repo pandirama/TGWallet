@@ -5,6 +5,7 @@ const initialState = {
   isInitialized: false,
   isFinishStarted: false,
   userInfo: null,
+  walletInfo: null,
 };
 
 const slice = createSlice({
@@ -12,22 +13,27 @@ const slice = createSlice({
   initialState,
   reducers: {
     setInitialize: (state, action) => {
-      const {isAuthenticated, user} = action.payload;
+      const {isAuthenticated, walletInfo} = action.payload;
       state.isAuthenticated = isAuthenticated;
-      state.userInfo = user;
+      state.walletInfo = walletInfo;
       state.isInitialized = true;
     },
     setFinishStarted: (state, action) => {
       state.isFinishStarted = action.payload;
     },
+    setAuthenticated: (state, action) => {
+      state.isAuthenticated = action.payload;
+    },
     setLogin: (state, action) => {
-      state.isAuthenticated = true;
       state.userInfo = action.payload;
     },
     logout: state => {
       state.isInitialized = true;
       state.isAuthenticated = false;
       state.userInfo = null;
+    },
+    setWalletInfo: (state, action) => {
+      state.walletInfo = action.payload;
     },
   },
 });

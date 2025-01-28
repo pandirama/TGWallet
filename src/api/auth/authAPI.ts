@@ -1,6 +1,6 @@
 import {createApi} from '@reduxjs/toolkit/query/react';
 import {axiosBaseQuery} from '../../axios/axiosBaseQuery';
-import {WALLET_URLS} from '../URLConstants';
+import {NEW_WALLET_URLS} from '../URLConstants';
 
 export const AUTH_API_REDUCER_KEY = 'authAPI';
 
@@ -10,7 +10,7 @@ export const authAPI = createApi({
   endpoints: builder => ({
     register: builder.mutation({
       query: registerParams => ({
-        url: WALLET_URLS.REGISTER,
+        url: NEW_WALLET_URLS.REGISTER,
         method: 'POST',
         body: registerParams,
       }),
@@ -18,14 +18,14 @@ export const authAPI = createApi({
     }),
     getNetworks: builder.query<any, void>({
       query: () => ({
-        url: WALLET_URLS.NETWORKS,
+        url: NEW_WALLET_URLS.NETWORKS,
         method: 'GET',
       }),
-      transformResponse: (response: { data: any }) => response,
+      transformResponse: (response: {data: any}) => response,
     }),
     walletCreate: builder.mutation({
       query: registerParams => ({
-        url: WALLET_URLS.WALLET_CREATION,
+        url: NEW_WALLET_URLS.WALLET_CREATION,
         method: 'POST',
         body: registerParams,
       }),
@@ -33,7 +33,7 @@ export const authAPI = createApi({
     }),
     walletApprove: builder.mutation({
       query: registerParams => ({
-        url: WALLET_URLS.WALLET_APPROVE,
+        url: NEW_WALLET_URLS.WALLET_APPROVE,
         method: 'POST',
         body: registerParams,
       }),
@@ -41,7 +41,7 @@ export const authAPI = createApi({
     }),
     generateMnemonic: builder.mutation({
       query: registerParams => ({
-        url: WALLET_URLS.GENERATE_MNEMONIC,
+        url: NEW_WALLET_URLS.GENERATE_MNEMONIC,
         method: 'POST',
         body: registerParams,
       }),
@@ -49,7 +49,7 @@ export const authAPI = createApi({
     }),
     verifyMnemonic: builder.mutation({
       query: registerParams => ({
-        url: WALLET_URLS.VERIFY_MNEMONIC,
+        url: NEW_WALLET_URLS.VERIFY_MNEMONIC,
         method: 'POST',
         body: registerParams,
       }),

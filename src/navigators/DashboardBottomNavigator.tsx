@@ -36,6 +36,11 @@ import AddNewNFTComponent from '../ScreenComponents/DashBoardScreens/Asset/AddNe
 import AddNFTComponent from '../ScreenComponents/DashBoardScreens/Asset/AddNFTComponent';
 import NFTsComponent from '../ScreenComponents/DashBoardScreens/Asset/NFTsComponent';
 import NFTDetailsComponent from '../ScreenComponents/DashBoardScreens/Asset/NFTDetailsComponent';
+import WalletDetailsComponent from '../ScreenComponents/DashBoardScreens/Asset/Wallet/WalletDetailsComponent';
+import ModifyPasswordComponent from '../ScreenComponents/DashBoardScreens/Asset/Wallet/ModifyPasswordComponent';
+import ExportPrivateKeyComponent from '../ScreenComponents/DashBoardScreens/Asset/Wallet/ExportPrivateKeyComponent';
+import ResetPasswordComponent from '../ScreenComponents/DashBoardScreens/Asset/Wallet/ResetPasswordComponent';
+import { NewWalletStackNavigator } from './ApplicationNavigator';
 
 const ProductsStack = createNativeStackNavigator<any>();
 
@@ -47,6 +52,27 @@ const AssetStackNavigator = () => {
       screenOptions={{headerShown: false}}
       initialRouteName="ASSET">
       <AssetStack.Screen name="ASSET" component={AssetComponent} />
+      <AssetStack.Screen
+        name="WALLET_DETAILS"
+        component={WalletDetailsComponent}
+      />
+      <AssetStack.Screen
+        name="MODIFY_PASSWORD"
+        component={ModifyPasswordComponent}
+      />
+      <AssetStack.Screen
+        name="RESET_PASSWORD"
+        component={ResetPasswordComponent}
+      />
+      <AssetStack.Screen
+        name="EXPORT_PRIVATEKEY"
+        component={ExportPrivateKeyComponent}
+      />
+
+      <AssetStack.Screen
+        name="NEW_WALLET"
+        component={NewWalletStackNavigator}
+      />
       <AssetStack.Screen name="ADDNFT" component={AddNFTComponent} />
       <AssetStack.Screen name="ADDNEWNFT" component={AddNewNFTComponent} />
       <AssetStack.Screen name="NFTs" component={NFTsComponent} />

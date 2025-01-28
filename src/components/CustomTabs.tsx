@@ -66,9 +66,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 3,
     backgroundColor: '#EFF2F5',
-    borderRadius: 25,
-    marginLeft: 20,
-    width: '90%',
+    borderRadius: 42,
+    marginLeft: 10,
+    width: '93%',
     ...Platform.select({
       ios: {
         shadowColor: 'rgba(0, 0, 0, 0.29)',
@@ -83,13 +83,13 @@ const styles = StyleSheet.create({
   },
   pillContainer: {
     alignItems: 'center',
-    borderRadius: 25,
+    borderRadius: 42,
     paddingVertical: 9,
     paddingHorizontal: 8,
     flex: 1,
   },
   title: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 500,
     color: '#7C8FAC',
     letterSpacing: 0.5,

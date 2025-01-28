@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
-  Dimensions,
   FlatList,
   ScrollView,
   StatusBar,
@@ -23,34 +22,8 @@ import {Ionicons} from '../../../utils/IconUtils';
 
 type Props = NativeStackScreenProps<any, 'COMPLETED_BACKUP'>;
 
-const windowHeight = Dimensions.get('window').height;
-
-// const walletInfo = {
-//   network: '1',
-//   wallet_id: '196338795536',
-//   userid: '1374367752518861',
-//   secret_phase: [
-//     'endorse',
-//     'bag',
-//     'debate',
-//     'right',
-//     'minimum',
-//     'bird',
-//     'gain',
-//     'short',
-//     'hire',
-//     'sting',
-//     'repair',
-//     'luggage',
-//     'divorce',
-//     'abandon',
-//   ],
-//   phase_count: 12,
-// };
-
 const CompletedBackupComponent = ({route, navigation}: Props) => {
   const {walletInfo} = route?.params ?? {};
-  console.log(route);
 
   const [activeTab, setActiveTab] = useState(RecoveryTabs.HandwrittenBackup);
   const [showCode, setShowCode] = useState(false);
@@ -166,17 +139,17 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
           <View style={styles.importantView}>
             <Text style={styles.impTitleTxt}>Remember:</Text>
             <Text style={styles.impSubTitleTxt}>
-              {'\u2B24'} Don’t disclose recovery phase to anyone
+              {'\u25CF'} Don’t disclose recovery phase to anyone
             </Text>
             <Text style={styles.impSubTitleTxt}>
-              {'\u2B24'} Once the recovery phase is lost, asset cannot be
+              {'\u25CF'} Once the recovery phase is lost, asset cannot be
               recovery
             </Text>
             <Text style={styles.impSubTitleTxt}>
-              {'\u2B24'} Don’t disclose recovery phase to anyone
+              {'\u25CF'} Don’t disclose recovery phase to anyone
             </Text>
             <Text style={styles.impSubTitleTxt}>
-              {'\u2B24'} Once the secret recovery phase is lost, asset cannot be
+              {'\u25CF'} Once the secret recovery phase is lost, asset cannot be
               recovery
             </Text>
           </View>
@@ -228,13 +201,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   containerView: {
-    marginLeft: 20,
-    marginRight: 20,
+    marginLeft: 16,
+    marginRight: 16,
   },
   tabsView: {
     marginTop: 20,
-    marginLeft: 25,
-    marginRight: 25,
+    marginLeft: 10,
+    marginRight: 10,
   },
   titleTxt: {
     color: '#7C8FAC',

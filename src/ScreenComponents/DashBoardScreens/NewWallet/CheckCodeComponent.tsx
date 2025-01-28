@@ -14,44 +14,25 @@ import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
 import DashBoardHeaderComponent from '../../../components/DashBoardHeaderComponent';
 import LinearGradient from 'react-native-linear-gradient';
-import {getErrorMessage} from '../../../utils/common';
+import {getErrorMessage, localStorageKey, setStorage} from '../../../utils/common';
 import useCommon from '../../../hooks/useCommon';
 import {useSelector} from 'react-redux';
 import {useVerifyMnemonicMutation} from '../../../api/auth/authAPI';
 import {Ionicons} from '../../../utils/IconUtils';
+import {useAppDispatch} from '../../../store';
+import {authAction} from '../../../reducer/auth/authSlice';
 
 type Props = NativeStackScreenProps<any, 'CHECK_CODE'>;
 
-// const walletInfo = {
-//   network: '1',
-//   wallet_id: '196338795536',
-//   userid: '1374367752518861',
-//   secret_phase: [
-//     'endorse',
-//     'bag',
-//     'debate',
-//     'right',
-//     'minimum',
-//     'bird',
-//     'gain',
-//     'short',
-//     'hire',
-//     'sting',
-//     'repair',
-//     'luggage',
-//     'divorce',
-//     'abandon',
-//   ],
-//   phase_count: 12,
-// };
+const CheckCodeComponent = ({route}: Props) => {
+  let {walletInfo} = route?.params ?? {};
+  const dispatch = useAppDispatch();
 
-const CheckCodeComponent = ({route, navigation}: Props) => {
-  const {walletInfo} = route?.params ?? {};
   const {showToast, toggleBackdrop} = useCommon();
 
-  console.log('walletInfo', walletInfo);
-
   const [updateCodes, setUpdateCodes] = useState<string[]>([]);
+
+  const [shuffledCodes, setShuffledCodes] = useState<string[]>([]);
 
   const {userInfo = {}} = useSelector(({authReducer}: any) => authReducer);
 
@@ -60,6 +41,18 @@ const CheckCodeComponent = ({route, navigation}: Props) => {
   useEffect(() => {
     toggleBackdrop(isLoading);
   }, [isLoading]);
+
+  function randomSort(arr: any) {
+    return arr
+      .map((val: any) => ({val, sort: Math.random()}))
+      .sort((a: any, b: any) => a.sort - b.sort)
+      .map(({val}: any) => val);
+  }
+
+  useEffect(() => {
+    const shuffledArr = randomSort([...walletInfo?.secret_phase]);
+    setShuffledCodes(shuffledArr);
+  }, []);
 
   const completedBackup = async () => {
     try {
@@ -71,9 +64,13 @@ const CheckCodeComponent = ({route, navigation}: Props) => {
       };
 
       const response: any = await verifyMnemonic(payload).unwrap();
-      console.log(response);
       if (response?.success) {
-        navigation.navigate('DASH_BOARD');
+        dispatch(authAction.setWalletInfo(response?.walletinfo));
+        await setStorage(
+          localStorageKey.walletInfo,
+          JSON.stringify(response?.walletinfo),
+        );
+        dispatch(authAction.setAuthenticated(true));
       } else {
         showToast({
           type: 'error',
@@ -203,7 +200,8 @@ const CheckCodeComponent = ({route, navigation}: Props) => {
         <DashBoardHeaderComponent title={'Check Secret Recovery Phrase'} />
         <View style={styles.tabsView}>
           <Text style={styles.titleTxt}>
-            Please write down the mnemonic in correct order on a piece of paper.
+            Tap the phrases and put them together in the correct order to check
+            that your backup phrases are correct
           </Text>
           <FlatList
             data={walletInfo?.secret_phase}
@@ -213,7 +211,7 @@ const CheckCodeComponent = ({route, navigation}: Props) => {
             contentContainerStyle={styles.flatListCotent}
           />
           <FlatList
-            data={walletInfo?.secret_phase}
+            data={shuffledCodes}
             renderItem={renderItem}
             numColumns={3}
             columnWrapperStyle={styles.flatListColumn}
@@ -386,7 +384,7 @@ const styles = StyleSheet.create({
     borderColor: '#D32F2F',
   },
   itemEmptyTouch: {
-    borderRadius: 10,
+    borderRadius: 8,
     borderWidth: 2,
     borderColor: '#333333',
     paddingTop: 5,

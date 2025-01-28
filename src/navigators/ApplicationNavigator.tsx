@@ -32,15 +32,11 @@ const defaultTheme = {
 
 const NewWalletStack = createNativeStackNavigator<any>();
 
-const NewWalletStackNavigator = () => {
+export const NewWalletStackNavigator = () => {
   return (
     <NewWalletStack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="SELECT_NETWORK">
-      <NewWalletStack.Screen
-        name="SELECT_NETWORK"
-        component={SelectNetworkComponent}
-      />
+      initialRouteName="NEW_WALLET_PASSWORD">
       <NewWalletStack.Screen
         name="NEW_WALLET_PASSWORD"
         component={WalletPasswordComponent}
@@ -58,10 +54,6 @@ const NewWalletStackNavigator = () => {
         component={CompletedBackupComponent}
       />
       <NewWalletStack.Screen name="CHECK_CODE" component={CheckCodeComponent} />
-      <NewWalletStack.Screen
-        name="DASH_BOARD"
-        component={DashboardBottomNavigator}
-      />
     </NewWalletStack.Navigator>
   );
 };
@@ -96,6 +88,10 @@ const WalletTypeStackNavigator = () => {
         name="WALLET_TYPE"
         component={WalletTypeComponent}
       />
+      <NewWalletStack.Screen
+        name="SELECT_NETWORK"
+        component={SelectNetworkComponent}
+      />
       <WalletTypeStack.Screen
         name="NEW_WALLET"
         component={NewWalletStackNavigator}
@@ -111,12 +107,19 @@ const WalletTypeStackNavigator = () => {
 const MainStack = createNativeStackNavigator<any>();
 
 const MainAppStack = () => {
-  const {isFinishStarted} = useSelector(({authReducer}: any) => authReducer);
-  console.log('isFinishStarted', isFinishStarted);
+  const {isFinishStarted, isAuthenticated} = useSelector(
+    ({authReducer}: any) => authReducer,
+  );
   return (
     <MainStack.Navigator screenOptions={{headerShown: false}}>
       {!isFinishStarted ? (
         <MainStack.Screen name="INTRO" component={IntroComponent} />
+      ) : null}
+      {isAuthenticated ? (
+        <MainStack.Screen
+          name="DASH_BOARD"
+          component={DashboardBottomNavigator}
+        />
       ) : (
         <MainStack.Screen
           name="WALLET_TYPES"
@@ -132,8 +135,13 @@ const AppNavigationContainer = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
   const initializeApp = async () => {
-    const user = await getStorage(localStorageKey.userInfo);
-    dispatch(authAction.setInitialize({isAuthenticated: user !== null, user}));
+    const walletInfo = await getStorage(localStorageKey.walletInfo);
+    dispatch(
+      authAction.setInitialize({
+        isAuthenticated: walletInfo !== null,
+        walletInfo,
+      }),
+    );
   };
 
   useEffect(() => {

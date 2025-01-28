@@ -15,11 +15,13 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../utils/appStyles';
 import ImportWallet from '../../../assets/import_wallet.svg';
 import CreateWallet from '../../../assets/create_wallet.svg';
+import Wallet1 from '../../../assets/wallet1.svg';
+import Wallet2 from '../../../assets/wallet2.svg';
 import {colors} from '../../../utils/colors';
 import Carousel from 'react-native-reanimated-carousel';
 import _ from 'lodash';
 import useCommon from '../../../hooks/useCommon';
-import { Ionicons } from '../../../utils/IconUtils';
+import {Ionicons} from '../../../utils/IconUtils';
 
 type Props = NativeStackScreenProps<any, 'WALLET_TYPE'>;
 
@@ -32,19 +34,16 @@ const {width} = Dimensions.get('window');
 
 const slideContent: any = [
   {
-    title: 'Your Multi-Chain Wallet, Safe & Easy',
+    title: 'Empowering a Global Crypto Future',
     subTitle:
-      'Supporting mainstream chains, EVM-compatible chains, and Layer 2',
+      'Connect your assets to a digital world. Trade, manage, and grow in a seamless global ecosystem.',
+    icon: <Wallet1 />,
   },
   {
-    title: 'Your Multi-Chain Wallet, Safe & Easy',
+    title: 'Unite Your Coins in One Wallet',
     subTitle:
-      'Supporting mainstream chains, EVM-compatible chains, and Layer 2',
-  },
-  {
-    title: 'Your Multi-Chain Wallet, Safe & Easy',
-    subTitle:
-      'Supporting mainstream chains, EVM-compatible chains, and Layer 2',
+      'Store, manage, and explore multiple cryptocurrencies effortlessly with cutting-edge technology at your fingertips.',
+    icon: <Wallet2 />,
   },
 ];
 
@@ -81,11 +80,13 @@ const WalletTypeComponent = ({navigation}: Props) => {
         animated
       />
       <SafeAreaView style={appStyles.container}>
-        <ScrollView>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={appStyles.scrollContainer}>
           <View style={styles.caroselContainer}>
             <Carousel
               width={width}
-              height={400}
+              height={450}
               loop={false}
               data={slideContent}
               scrollAnimationDuration={1000}
@@ -94,7 +95,9 @@ const WalletTypeComponent = ({navigation}: Props) => {
               }}
               renderItem={({index}) => (
                 <View style={styles.carouselContainer}>
-                  <View style={styles.imageView} />
+                  <View style={styles.imageView}>
+                    {slideContent[index].icon}
+                  </View>
 
                   <View style={styles.pageDotView}>
                     <Text style={styles.titleTxt}>
@@ -107,7 +110,7 @@ const WalletTypeComponent = ({navigation}: Props) => {
                 </View>
               )}
             />
-            <PaginationDots count={3} active={activeDot} />
+            <PaginationDots count={2} active={activeDot} />
           </View>
 
           <View style={styles.walletContainer}>
@@ -134,7 +137,7 @@ const WalletTypeComponent = ({navigation}: Props) => {
             <Text style={styles.headerTxt}>I need a new wallet</Text>
             <TouchableOpacity
               style={[appStyles.boxShadow, styles.walletSubContainer]}
-              onPress={() => navigation.navigate('NEW_WALLET')}>
+              onPress={() => navigation.navigate('SELECT_NETWORK')}>
               <CreateWallet width={45} height={45} />
               <View style={styles.txtContainer}>
                 <Text style={styles.walletTitleTxt}>Create New Wallet</Text>
@@ -161,8 +164,8 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   walletContainer: {
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 15,
+    paddingRight: 15,
   },
   walletSubContainer: {
     flexDirection: 'row',
@@ -170,7 +173,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingBottom: 15,
     paddingTop: 15,
-    borderRadius: 5,
+    borderRadius: 12,
     marginTop: 10,
   },
   txtContainer: {
@@ -214,13 +217,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imageView: {
-    backgroundColor: '#D9D9D9',
     height: 250,
     borderRadius: 10,
-    margin: 25,
+    alignSelf: 'center',
+    marginBottom: 20,
   },
   pageDotView: {
-    margin: 10,
+    marginLeft: 30,
+    marginRight: 30,
+    marginTop: 70,
     justifyContent: 'center',
     alignItems: 'center',
   },

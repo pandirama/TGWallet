@@ -20,7 +20,7 @@ import useCommon from '../../../hooks/useCommon';
 import {getErrorMessage} from '../../../utils/common';
 import Recover from '../../../assets/recover_Pharse.svg';
 import {useSelector} from 'react-redux';
-import { Ionicons } from '../../../utils/IconUtils';
+import {Ionicons} from '../../../utils/IconUtils';
 
 type Props = NativeStackScreenProps<any, 'BACKUP_RECOVERY'>;
 
@@ -44,7 +44,6 @@ const BackupRecoveryComponent = ({navigation, route}: Props) => {
   }, [isLoading]);
 
   const getMnemonic = async () => {
-    console.log('walletInfo', walletInfo);
     try {
       const payload = {
         network: walletInfo?.network,
@@ -82,7 +81,9 @@ const BackupRecoveryComponent = ({navigation, route}: Props) => {
       <SafeAreaView style={appStyles.container}>
         <DashBoardHeaderComponent title={'Backup Secret Recovery Phrase'} />
 
-        <ScrollView>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={appStyles.scrollContainer}>
           <View style={styles.container}>
             <Recover width={'100%'} />
             <Text style={styles.recoverTitleTxt}>Backup Recovery Phrase</Text>
@@ -99,45 +100,54 @@ const BackupRecoveryComponent = ({navigation, route}: Props) => {
             </View>
             <Text style={styles.suggestTitleTxt}>Suggested Backup Method</Text>
             <Text style={styles.suggestTxt}>
-              {'\u2B24'} Using pen and paper, write Recovery Phrase correctly in
-              order Keep
+              {'\u25CF'}
+              {'   '} Using pen and paper, write Recovery Phrase correctly in
+              order
             </Text>
             <Text style={styles.suggestTxt}>
-              {'\u2B24'} Recovery Phrase in a safe place
+              {'\u25CF'}
+              {'   '} Keep Recovery Phrase in a safe place
             </Text>
             <Text style={styles.suggestTxt}>
-              {'\u2B24'} Do not save or send Recovery Phrase on the internet
+              {'\u25CF'}
+              {'   '} Do not save or send Recovery Phrase on the internet
             </Text>
             <View style={styles.readAgreeView}>
-              <TouchableOpacity onPress={() => toggleAccept1(a => !a)}>
+              <TouchableOpacity
+                onPress={() => toggleAccept1(a => !a)}
+                style={styles.checkIcon}>
                 <Ionicons
                   name={accept1 ? 'checkbox-outline' : 'square-outline'}
                   size={18}
-                  color={'#0054A6'}
+                  color={accept1 ? '##0054A6' : '#E0E0E0'}
                 />
               </TouchableOpacity>
               <Text style={styles.readAgreeTxt}>
-                if I lost my secrest recovery phrase, my assets will be gone.
+                If I lost my secrest recovery phrase, my assets will be gone.
               </Text>
             </View>
             <View style={styles.readAgreeView}>
-              <TouchableOpacity onPress={() => toggleAccept2(a => !a)}>
+              <TouchableOpacity
+                onPress={() => toggleAccept2(a => !a)}
+                style={styles.checkIcon}>
                 <Ionicons
                   name={accept2 ? 'checkbox-outline' : 'square-outline'}
                   size={18}
-                  color={'#0054A6'}
+                  color={accept2 ? '##0054A6' : '#E0E0E0'}
                 />
               </TouchableOpacity>
               <Text style={styles.readAgreeTxt}>
-                if I share my secret recovery Phrase, my assets will be stolen.
+                If I share my secret recovery Phrase, my assets will be stolen.
               </Text>
             </View>
             <View style={styles.readAgreeView}>
-              <TouchableOpacity onPress={() => toggleAccept3(a => !a)}>
+              <TouchableOpacity
+                onPress={() => toggleAccept3(a => !a)}
+                style={styles.checkIcon}>
                 <Ionicons
                   name={accept3 ? 'checkbox-outline' : 'square-outline'}
                   size={18}
-                  color={'#0054A6'}
+                  color={accept3 ? '##0054A6' : '#E0E0E0'}
                 />
               </TouchableOpacity>
               <Text style={styles.readAgreeTxt}>
@@ -244,16 +254,13 @@ const styles = StyleSheet.create({
   },
   readAgreeView: {
     flexDirection: 'row',
-    marginLeft: 10,
     marginTop: 15,
-    alignItems: 'center',
     marginRight: 20,
   },
   recoverTitleTxt: {
     color: '#333333',
     fontSize: 14,
     fontWeight: 600,
-    marginLeft: 10,
     marginTop: 20,
     marginRight: 20,
   },
@@ -261,7 +268,6 @@ const styles = StyleSheet.create({
     color: '#7C8FAC',
     fontSize: 12,
     fontWeight: 400,
-    marginLeft: 10,
     marginTop: 3,
     marginBottom: 3,
     marginRight: 20,
@@ -292,7 +298,6 @@ const styles = StyleSheet.create({
     color: '#333333',
     fontSize: 14,
     fontWeight: 600,
-    marginLeft: 10,
     marginTop: 15,
     marginBottom: 3,
     marginRight: 20,
@@ -301,7 +306,6 @@ const styles = StyleSheet.create({
     color: '#7C8FAC',
     fontSize: 12,
     fontWeight: 400,
-    marginLeft: 20,
     marginTop: 3,
     marginRight: 20,
   },
@@ -321,10 +325,9 @@ const styles = StyleSheet.create({
   },
   advancedTouch: {
     backgroundColor: colors.white,
-    borderWidth: 0.5,
     marginLeft: 25,
     marginRight: 25,
-    borderRadius: 10,
+    borderRadius: 8,
     marginTop: 15,
   },
   advancedTxt: {
@@ -334,6 +337,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     paddingTop: 15,
     paddingBottom: 15,
+  },
+  checkIcon: {
+    marginTop: 4,
   },
 });
 

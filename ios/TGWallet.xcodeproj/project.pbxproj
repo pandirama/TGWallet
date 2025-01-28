@@ -12,17 +12,17 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		7699B88040F8A987B510C191 /* libPods-TGWallet-TGWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-TGWallet-TGWalletTests.a */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		B5527DCB53509C3DE29611EF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		2FFE3ACB81F84E48BCD83B0C /* InterBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 79CA350972BF4044BBB2EB54 /* InterBold.ttf */; };
+		344550C43A0F4C07AE61BACA /* InterMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 43816315EA2A4445AE569553 /* InterMedium.ttf */; };
+		552B695C9CFB4832A7F47DB5 /* InterThin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A215D2B4C1FE4F10977D8B2A /* InterThin.ttf */; };
+		7699B88040F8A987B510C191 /* libPods-TGWallet-TGWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-TGWallet-TGWalletTests.a */; };
+		796707673F20422EB1580FE6 /* InterLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 81DF4191B6ED466782C6FF30 /* InterLight.ttf */; };
+		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9242473B47EE433584594E50 /* InterSemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AEF4B71D57A94E25971E4B15 /* InterSemiBold.ttf */; };
+		B5527DCB53509C3DE29611EF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		CD10D218C36B432AA4C09F86 /* InterRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 967BC6551B244928A898356D /* InterRegular.ttf */; };
 		D7E73ADABD0948A9B62D4027 /* InterExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7343DEEE07D644EF8A791CF9 /* InterExtraBold.ttf */; };
 		DFCD9EBD625D4C97908FCB0F /* InterExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D838B9F7A0646AFBB435F19 /* InterExtraLight.ttf */; };
-		796707673F20422EB1580FE6 /* InterLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 81DF4191B6ED466782C6FF30 /* InterLight.ttf */; };
-		344550C43A0F4C07AE61BACA /* InterMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 43816315EA2A4445AE569553 /* InterMedium.ttf */; };
-		CD10D218C36B432AA4C09F86 /* InterRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 967BC6551B244928A898356D /* InterRegular.ttf */; };
-		9242473B47EE433584594E50 /* InterSemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AEF4B71D57A94E25971E4B15 /* InterSemiBold.ttf */; };
-		552B695C9CFB4832A7F47DB5 /* InterThin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A215D2B4C1FE4F10977D8B2A /* InterThin.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,20 +48,20 @@
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = TGWallet/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-TGWallet-TGWalletTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TGWallet-TGWalletTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-TGWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TGWallet.debug.xcconfig"; path = "Target Support Files/Pods-TGWallet/Pods-TGWallet.debug.xcconfig"; sourceTree = "<group>"; };
+		43816315EA2A4445AE569553 /* InterMedium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = InterMedium.ttf; path = ../assets/fonts/InterMedium.ttf; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-TGWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TGWallet.release.xcconfig"; path = "Target Support Files/Pods-TGWallet/Pods-TGWallet.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-TGWallet-TGWalletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TGWallet-TGWalletTests.debug.xcconfig"; path = "Target Support Files/Pods-TGWallet-TGWalletTests/Pods-TGWallet-TGWalletTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-TGWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TGWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7343DEEE07D644EF8A791CF9 /* InterExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = InterExtraBold.ttf; path = ../assets/fonts/InterExtraBold.ttf; sourceTree = "<group>"; };
+		79CA350972BF4044BBB2EB54 /* InterBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = InterBold.ttf; path = ../assets/fonts/InterBold.ttf; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = TGWallet/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		81DF4191B6ED466782C6FF30 /* InterLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = InterLight.ttf; path = ../assets/fonts/InterLight.ttf; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-TGWallet-TGWalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TGWallet-TGWalletTests.release.xcconfig"; path = "Target Support Files/Pods-TGWallet-TGWalletTests/Pods-TGWallet-TGWalletTests.release.xcconfig"; sourceTree = "<group>"; };
+		8D838B9F7A0646AFBB435F19 /* InterExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = InterExtraLight.ttf; path = ../assets/fonts/InterExtraLight.ttf; sourceTree = "<group>"; };
+		967BC6551B244928A898356D /* InterRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = InterRegular.ttf; path = ../assets/fonts/InterRegular.ttf; sourceTree = "<group>"; };
+		A215D2B4C1FE4F10977D8B2A /* InterThin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = InterThin.ttf; path = ../assets/fonts/InterThin.ttf; sourceTree = "<group>"; };
+		AEF4B71D57A94E25971E4B15 /* InterSemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = InterSemiBold.ttf; path = ../assets/fonts/InterSemiBold.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		79CA350972BF4044BBB2EB54 /* InterBold.ttf */ = {isa = PBXFileReference; name = "InterBold.ttf"; path = "../assets/fonts/InterBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		7343DEEE07D644EF8A791CF9 /* InterExtraBold.ttf */ = {isa = PBXFileReference; name = "InterExtraBold.ttf"; path = "../assets/fonts/InterExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		8D838B9F7A0646AFBB435F19 /* InterExtraLight.ttf */ = {isa = PBXFileReference; name = "InterExtraLight.ttf"; path = "../assets/fonts/InterExtraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		81DF4191B6ED466782C6FF30 /* InterLight.ttf */ = {isa = PBXFileReference; name = "InterLight.ttf"; path = "../assets/fonts/InterLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		43816315EA2A4445AE569553 /* InterMedium.ttf */ = {isa = PBXFileReference; name = "InterMedium.ttf"; path = "../assets/fonts/InterMedium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		967BC6551B244928A898356D /* InterRegular.ttf */ = {isa = PBXFileReference; name = "InterRegular.ttf"; path = "../assets/fonts/InterRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		AEF4B71D57A94E25971E4B15 /* InterSemiBold.ttf */ = {isa = PBXFileReference; name = "InterSemiBold.ttf"; path = "../assets/fonts/InterSemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A215D2B4C1FE4F10977D8B2A /* InterThin.ttf */ = {isa = PBXFileReference; name = "InterThin.ttf"; path = "../assets/fonts/InterThin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +125,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		64AAECF2A034441F92982ECA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				79CA350972BF4044BBB2EB54 /* InterBold.ttf */,
+				7343DEEE07D644EF8A791CF9 /* InterExtraBold.ttf */,
+				8D838B9F7A0646AFBB435F19 /* InterExtraLight.ttf */,
+				81DF4191B6ED466782C6FF30 /* InterLight.ttf */,
+				43816315EA2A4445AE569553 /* InterMedium.ttf */,
+				967BC6551B244928A898356D /* InterRegular.ttf */,
+				AEF4B71D57A94E25971E4B15 /* InterSemiBold.ttf */,
+				A215D2B4C1FE4F10977D8B2A /* InterThin.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -167,22 +182,6 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
-		};
-		64AAECF2A034441F92982ECA /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				79CA350972BF4044BBB2EB54 /* InterBold.ttf */,
-				7343DEEE07D644EF8A791CF9 /* InterExtraBold.ttf */,
-				8D838B9F7A0646AFBB435F19 /* InterExtraLight.ttf */,
-				81DF4191B6ED466782C6FF30 /* InterLight.ttf */,
-				43816315EA2A4445AE569553 /* InterMedium.ttf */,
-				967BC6551B244928A898356D /* InterRegular.ttf */,
-				AEF4B71D57A94E25971E4B15 /* InterSemiBold.ttf */,
-				A215D2B4C1FE4F10977D8B2A /* InterThin.ttf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
@@ -510,9 +509,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = C95LANV6MW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TGWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -526,7 +526,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.TGWallet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tgwallet.app;
 				PRODUCT_NAME = TGWallet;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -541,9 +541,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = C95LANV6MW;
 				INFOPLIST_FILE = TGWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -556,7 +557,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.TGWallet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tgwallet.app;
 				PRODUCT_NAME = TGWallet;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -633,10 +634,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -705,10 +703,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

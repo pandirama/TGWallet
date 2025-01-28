@@ -18,7 +18,7 @@ import Discord from '../../../../assets/profile/discord.svg';
 import GitHub from '../../../../assets/profile/git_hub.svg';
 import Email from '../../../../assets/profile/email.svg';
 import FeedBack from '../../../../assets/profile/feed_back.svg';
-import { AntDesign, Ionicons } from '../../../../utils/IconUtils';
+import {AntDesign, Ionicons} from '../../../../utils/IconUtils';
 
 type Props = NativeStackScreenProps<any, 'ABOUT_US'>;
 
@@ -150,8 +150,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 10,
     marginTop: 30,
-    marginRight: 20,
-    marginLeft: 15,
+    marginRight: 16,
+    marginLeft: 16,
   },
   logoTxt: {
     fontSize: 20,
@@ -194,9 +194,9 @@ const styles = StyleSheet.create({
   },
   channelContainer: {
     backgroundColor: colors.white,
-    borderRadius: 10,
-    marginLeft: 18,
-    marginRight: 18,
+    borderRadius: 12,
+    marginLeft: 16,
+    marginRight: 16,
   },
   channelsTxt: {
     fontSize: 14,
@@ -204,15 +204,16 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginTop: 25,
     marginBottom: 10,
-    marginLeft: 25,
+    marginLeft: 20,
   },
   channelView: {
     flexDirection: 'row',
+    paddingTop: 20,
+    paddingBottom: 20,
   },
   channelTouch: {
     flex: 1,
     alignItems: 'center',
-    padding: 20,
   },
   channelTxt: {
     fontSize: 11,

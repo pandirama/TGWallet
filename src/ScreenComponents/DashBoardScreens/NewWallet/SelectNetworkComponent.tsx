@@ -5,6 +5,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   FlatList,
   Image,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -24,7 +25,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {useGetNetworksQuery} from '../../../api/auth/authAPI';
 import useCommon from '../../../hooks/useCommon';
 import {getErrorMessage} from '../../../utils/common';
-import { Ionicons } from '../../../utils/IconUtils';
+import {Ionicons} from '../../../utils/IconUtils';
 
 type Props = NativeStackScreenProps<any, 'SELECT_NETWORK'>;
 
@@ -62,7 +63,7 @@ const SelectNetworkComponent = ({navigation}: Props) => {
       <TouchableOpacity
         style={styles.walletTouch}
         onPress={() =>
-          navigation.navigate('NEW_WALLET_PASSWORD', {
+          navigation.navigate('NEW_WALLET', {
             walletNetwork: item,
           })
         }>
@@ -94,6 +95,9 @@ const SelectNetworkComponent = ({navigation}: Props) => {
       />
       <SafeAreaView style={appStyles.container}>
         <DashBoardHeaderComponent title={'Select Network'} />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={appStyles.scrollContainer}>
           <View style={styles.walletContainer}>
             <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
               <TouchableOpacity
@@ -144,6 +148,7 @@ const SelectNetworkComponent = ({navigation}: Props) => {
               styles.walletSubContainer1,
             ]}>
             <FlatList
+              nestedScrollEnabled
               data={networks}
               renderItem={renderItem}
               ItemSeparatorComponent={() => {
@@ -166,6 +171,8 @@ const SelectNetworkComponent = ({navigation}: Props) => {
               }
             />
           </View>
+        </ScrollView>
+
         <ActionsSheets
           actionSheetRef={addActionSheetRef}
           titleTxt={'Add Wallet'}>
@@ -198,13 +205,13 @@ const SelectNetworkComponent = ({navigation}: Props) => {
 
 const styles = StyleSheet.create({
   walletContainer: {
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 16,
+    paddingRight: 16,
   },
   walletSubContainer: {
     backgroundColor: colors.white,
     paddingLeft: 15,
-    borderRadius: 5,
+    borderRadius: 12,
     marginTop: 10,
   },
   walletSubContainer1: {

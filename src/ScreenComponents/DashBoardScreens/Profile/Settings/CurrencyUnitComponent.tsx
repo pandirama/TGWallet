@@ -34,7 +34,6 @@ const currencyUnitList = [
 const CurrencyUnitComponent = ({navigation}: Props) => {
   const [selectedLanguage, setSelectedlanguage] = useState(null);
 
-  console.log('selectedLanguage', selectedLanguage);
   const renderItem = ({item}: any) => {
     return (
       <TouchableOpacity

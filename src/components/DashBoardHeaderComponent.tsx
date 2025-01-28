@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
   },
   backTouch: {
     padding: 10,
+    paddingLeft: 16,
   },
   titleTxt: {
     fontSize: 18,

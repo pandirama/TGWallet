@@ -191,7 +191,6 @@ const IntroComponent = ({}: Props) => {
 
       const response: any = await register(payload);
       if (response?.data?.success) {
-        console.log('response12', response);
         dispatch(authAction.setFinishStarted(true));
         dispatch(authAction.setLogin(response?.data?.userinfo));
       } else {

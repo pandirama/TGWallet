@@ -18,9 +18,7 @@ const appStyles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   scrollContainer: {
-    paddingHorizontal: 20,
-    flexGrow: 1,
-    marginTop: 10,
+    paddingBottom: 30,
   },
   titleTxt: {
     fontSize: 20,
@@ -36,8 +34,8 @@ const appStyles = StyleSheet.create({
         shadowOffset: {width: 0, height: 0},
       },
       android: {
-        elevation: 10,
-        shadowOffset: {width: 0, height: -10},
+        elevation: 1,
+        shadowOffset: {width: 0, height: -5},
       },
     }),
   },

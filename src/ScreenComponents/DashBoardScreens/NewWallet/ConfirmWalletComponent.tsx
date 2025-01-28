@@ -2,7 +2,6 @@
 import React, {useEffect} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
-  Dimensions,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -41,7 +40,6 @@ const ConfirmWalletComponent = ({route, navigation}: Props) => {
   }, [isLoading]);
 
   const approveWallet = async () => {
-    console.log('walletInfo', walletInfo);
     try {
       const payload = {
         network: walletInfo?.network,
@@ -128,8 +126,8 @@ const styles = StyleSheet.create({
   },
   instructionView: {
     flexDirection: 'row',
-    marginLeft: 20,
-    marginRight: 20,
+    marginLeft: 16,
+    marginRight: 16,
     paddingTop: 15,
     paddingBottom: 15,
   },

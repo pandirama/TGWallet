@@ -1,7 +1,10 @@
-import React, {useState} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
+  ActivityIndicator,
   FlatList,
+  Image,
   StatusBar,
   StyleSheet,
   Text,
@@ -20,7 +23,21 @@ import Eye from '../../../assets/eye.svg';
 import Transaction from '../../../assets/profile/transaction.svg';
 import DEFIComponent from './DEFIComponent';
 import NFTComponent from './NFTComponent';
-import { Feather, Foundation, Ionicons, MaterialIcons } from '../../../utils/IconUtils';
+import {
+  Feather,
+  Foundation,
+  Ionicons,
+  MaterialIcons,
+} from '../../../utils/IconUtils';
+import {useSelector} from 'react-redux';
+import ActionSheet, {ActionSheetRef} from 'react-native-actions-sheet';
+import {useWalletListMutation} from '../../../api/walletAPI';
+import useCommon from '../../../hooks/useCommon';
+import {getErrorMessage} from '../../../utils/common';
+import {useFocusEffect} from '@react-navigation/native';
+import {useGetNetworksQuery} from '../../../api/auth/authAPI';
+import Modal from 'react-native-modal';
+// import useCommon from '../../../hooks/useCommon';
 
 type Props = NativeStackScreenProps<any, 'ASSET'>;
 
@@ -40,7 +57,69 @@ const assets = [
 ];
 
 const AssetComponent = ({navigation}: Props) => {
+  const {showToast, toggleBackdrop} = useCommon();
+
+  const actionSheetRef = useRef<ActionSheetRef>(null);
+
   const [selectedAsset, setSelectedAsset] = useState('DEFI');
+  const [networks, setNetworks] = useState<any>([]);
+  const [wallets, setWallets] = useState(null);
+  const [selectedNetwork, setSelectedNetwork] = useState<any>(null);
+
+  const [addWalletVisible, setAddWalletVisible] = useState(false);
+
+  const {userInfo = {}, walletInfo = {}} = useSelector(
+    ({authReducer}: any) => authReducer,
+  );
+  const {wallet_name, wallet_balance} = walletInfo ?? {};
+
+  const [walletCreate, {isLoading}] = useWalletListMutation();
+  const {isFetching, refetch} = useGetNetworksQuery();
+
+  useEffect(() => {
+    toggleBackdrop(isFetching);
+  }, [isFetching]);
+
+  const getWallets = async (networkID: string) => {
+    try {
+      const params = {
+        network: networkID,
+        userid: userInfo?.generated_Id,
+      };
+      const response: any = await walletCreate(params).unwrap();
+      if (response?.success) {
+        setWallets(response?.wallets);
+      } else {
+        showToast({
+          type: 'error',
+          text1: response?.message,
+        });
+      }
+    } catch (err: any) {
+      showToast({
+        type: 'error',
+        text1: getErrorMessage(err),
+      });
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch().then(response => {
+        const {isSuccess, isError, data, error} = response;
+        if (isSuccess) {
+          setNetworks(data?.networks);
+          setSelectedNetwork(data?.networks[0]);
+        } else if (isError) {
+          showToast({
+            type: 'error',
+            text1: getErrorMessage(error),
+          });
+        }
+      });
+      return () => {};
+    }, []),
+  );
 
   const renderItem = ({item}: any) => {
     const findAsset = selectedAsset === item?.assetName;
@@ -63,6 +142,56 @@ const AssetComponent = ({navigation}: Props) => {
     );
   };
 
+  const renderWalletItem = ({item}: any) => {
+    return (
+      <TouchableOpacity
+        style={[appStyles.boxShadow, styles.walletContainer]}
+        onPress={() => {
+          actionSheetRef?.current?.hide();
+          navigation.navigate('WALLET_DETAILS', {
+            walletDetails: item,
+            networkIcon: selectedNetwork?.Wallet_icon,
+          });
+        }}>
+        <Text style={styles.walletListNameTxt}>{item?.wallet_name}</Text>
+        {item?.wallet_address && (
+          <View style={styles.addressView}>
+            <Text style={styles.walletAddressTxt}>{item?.wallet_address}</Text>
+            <Ionicons name={'copy-outline'} size={16} color={'#7C8FAC'} />
+          </View>
+        )}
+        <Text style={styles.walletBalanceTxt}>{item?.wallet_balance}</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderNetworkItem = ({item}: any) => {
+    return (
+      <TouchableOpacity
+        style={[
+          styles.networkListTouch,
+          selectedNetwork?.ID === item?.ID.toString() && {
+            backgroundColor: colors.white,
+          },
+        ]}
+        onPress={() => {
+          setSelectedNetwork(item);
+          getWallets(item?.ID);
+        }}>
+        <Image
+          style={styles.itemLogo}
+          source={{
+            uri: item?.Wallet_icon,
+          }}
+        />
+      </TouchableOpacity>
+    );
+  };
+
+  const onDismiss = () => {
+    setAddWalletVisible(false);
+  };
+
   return (
     <>
       <StatusBar
@@ -74,10 +203,15 @@ const AssetComponent = ({navigation}: Props) => {
       <SafeAreaView style={appStyles.container}>
         <View style={styles.headerView}>
           <View style={styles.headerLeftIconTopView}>
-            <View style={styles.headerLeftIconView}>
-              <TouchableOpacity style={styles.brandIcon}>
+            <TouchableOpacity
+              style={styles.headerLeftIconView}
+              onPress={() => {
+                actionSheetRef?.current?.show();
+                getWallets(selectedNetwork?.ID);
+              }}>
+              <View style={styles.brandIcon}>
                 <TokenBranded width={28} height={28} />
-              </TouchableOpacity>
+              </View>
               <TouchableOpacity style={styles.arrowIcon}>
                 <Ionicons
                   name={'caret-forward-sharp'}
@@ -85,7 +219,7 @@ const AssetComponent = ({navigation}: Props) => {
                   color={'#7E7F82'}
                 />
               </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
           </View>
           <View style={styles.headerRightIconView}>
             <TouchableOpacity style={styles.walletIcon}>
@@ -97,18 +231,18 @@ const AssetComponent = ({navigation}: Props) => {
           </View>
         </View>
         <View style={[appStyles.boxShadow, styles.headerContainer]}>
-          <View style={styles.walletNameView}>
-            <Text style={styles.walletNameTxt}>WalletNameETH11</Text>
+          <TouchableOpacity style={styles.walletNameView}>
+            <Text style={styles.walletNameTxt}>{wallet_name}</Text>
             <MaterialIcons
               name={'keyboard-arrow-right'}
               size={26}
               color={'#FFFFFF'}
             />
-          </View>
+          </TouchableOpacity>
 
           <View style={styles.amountView}>
             <Foundation name={'dollar'} size={38} color={'#FFFFFF'} />
-            <Text style={styles.menuAmountTxt}>384,190</Text>
+            <Text style={styles.menuAmountTxt}>{wallet_balance}</Text>
             <Eye width={30} height={30} />
           </View>
 
@@ -155,6 +289,109 @@ const AssetComponent = ({navigation}: Props) => {
         {selectedAsset === 'DEFI' && <DEFIComponent />}
         {selectedAsset === 'Assets' && <></>}
         {selectedAsset === 'NFT' && <NFTComponent navigation={navigation} />}
+        <ActionSheet
+          ref={actionSheetRef}
+          containerStyle={styles.actionContainer}
+          closeOnPressBack={false}
+          closeOnTouchBackdrop={false}
+          onClose={() => {
+            actionSheetRef?.current?.hide();
+          }}>
+          <View style={styles.actionViewContainer}>
+            <View style={styles.actionTitleView}>
+              <TouchableOpacity
+                onPress={() => {
+                  actionSheetRef?.current?.hide();
+                }}>
+                <Ionicons name={'search'} size={20} color={'#333333'} />
+              </TouchableOpacity>
+              <Text style={styles.actionTitleTxt}>Wallet List</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  actionSheetRef?.current?.hide();
+                }}>
+                <Ionicons name={'close'} size={20} color={'#333333'} />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.borderView} />
+          <View style={styles.walletListView}>
+            <View style={styles.leftList}>
+              <FlatList
+                data={networks}
+                renderItem={renderNetworkItem}
+                keyExtractor={(item: any) => item?.id}
+                style={styles.networkList}
+                showsVerticalScrollIndicator={false}
+              />
+            </View>
+
+            {isLoading ? (
+              <View style={styles.loadingView}>
+                <ActivityIndicator size="large" color={'#6B121C'} />
+              </View>
+            ) : (
+              <View style={styles.walletListTitleView}>
+                <View style={styles.walletTitView}>
+                  <Text style={styles.selectedWalletTxt}>
+                    {selectedNetwork?.Wallet_network}
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.addWalletIcon}
+                    onPress={() => setAddWalletVisible(true)}>
+                    <Feather name={'plus'} size={20} color={'#333333'} />
+                  </TouchableOpacity>
+                </View>
+
+                <FlatList
+                  data={wallets}
+                  renderItem={renderWalletItem}
+                  keyExtractor={(item: any) => item?.id}
+                  contentContainerStyle={styles.walletContentList}
+                  showsVerticalScrollIndicator={false}
+                />
+              </View>
+            )}
+          </View>
+          <Modal
+            isVisible={addWalletVisible}
+            onBackdropPress={onDismiss}
+            animationInTiming={500}
+            animationOutTiming={700}
+            useNativeDriver={true}>
+            <View style={styles.container}>
+              <View style={styles.actionTitleView}>
+                <Text style={styles.titleTxt}>Add Wallet</Text>
+                <TouchableOpacity onPress={onDismiss} style={styles.closeTouch}>
+                  <Ionicons name={'close'} size={20} color={'#9C9DA0'} />
+                </TouchableOpacity>
+              </View>
+              <View style={[appStyles.boxShadow, styles.actionsheetView]}>
+                <TouchableOpacity
+                  style={styles.actionSheetTouch}
+                  onPress={() => {
+                    setAddWalletVisible(false);
+                    actionSheetRef?.current?.hide();
+                    navigation.navigate('NEW_WALLET', {
+                      screen: 'NEW_WALLET_PASSWORD',
+                      params: {walletNetwork: selectedNetwork},
+                    });
+                  }}>
+                  <Text style={styles.actionsheetTxt}>Create Wallet</Text>
+                </TouchableOpacity>
+                <View style={styles.actionSheetBorder} />
+                <TouchableOpacity style={styles.actionSheetTouch}>
+                  <Text style={styles.actionsheetTxt}>Import Wallet</Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                style={[appStyles.boxShadow, styles.cancelTouch]}
+                onPress={() => setAddWalletVisible(false)}>
+                <Text style={styles.cancelTxt}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        </ActionSheet>
       </SafeAreaView>
     </>
   );
@@ -259,7 +496,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   walletNameTxt: {
-    fontSize: 14,
+    fontSize: 20,
     fontWeight: 400,
     color: '#FFFFFF',
   },
@@ -308,6 +545,173 @@ const styles = StyleSheet.create({
   addIcon: {
     marginBottom: 15,
     padding: 10,
+  },
+  actionViewContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  actionContainer: {
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    backgroundColor: '#EFF2F5',
+    height: '80%',
+  },
+  actionTitleView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 12,
+    marginLeft: 12,
+    marginRight: 12,
+  },
+  actionTitleTxt: {
+    flex: 1,
+    fontSize: 14,
+    color: '#333333',
+    textAlign: 'center',
+    fontWeight: 600,
+  },
+  walletContainer: {
+    backgroundColor: colors.white,
+    borderRadius: 8,
+    marginTop: 10,
+    marginLeft: 15,
+    marginRight: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  walletListNameTxt: {
+    fontSize: 14,
+    fontWeight: 400,
+    color: '#333333',
+    flex: 1,
+    textAlignVertical: 'center',
+    marginLeft: 12,
+  },
+  addressView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  walletAddressTxt: {
+    fontSize: 10,
+    fontWeight: 400,
+    color: '#7C8FAC',
+    textAlignVertical: 'center',
+    marginLeft: 12,
+    marginTop: 3,
+    marginRight: 5,
+  },
+  walletBalanceTxt: {
+    fontSize: 12,
+    fontWeight: 400,
+    color: '#333333',
+    flex: 1,
+    textAlignVertical: 'center',
+    alignSelf: 'flex-end',
+    marginRight: 12,
+  },
+  borderView: {
+    borderWidth: 1,
+    borderColor: colors.gray1,
+  },
+  itemLogo: {
+    width: 30,
+    height: 30,
+  },
+  walletListView: {
+    flexDirection: 'row',
+    height: '100%',
+  },
+  walletContentList: {
+    paddingBottom: 70,
+  },
+  networkList: {
+    backgroundColor: '#EFF2F5',
+  },
+  networkListTouch: {
+    paddingLeft: 15,
+    paddingTop: 15,
+    paddingBottom: 15,
+  },
+  loadingView: {
+    width: '85%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  leftList: {
+    width: 60,
+  },
+  walletListTitleView: {
+    flex: 1,
+    backgroundColor: colors.white,
+  },
+  walletTitView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 5,
+  },
+  selectedWalletTxt: {
+    width: '85%',
+    marginLeft: 12,
+    fontSize: 14,
+    fontWeight: 400,
+    color: '#333333',
+  },
+  addWalletIcon: {
+    padding: 5,
+  },
+  actionsheetView: {
+    backgroundColor: colors.white,
+    borderRadius: 10,
+    marginTop: 23,
+    marginLeft: 12,
+    marginRight: 12,
+  },
+  actionsheetTxt: {
+    fontSize: 14,
+    fontWeight: 400,
+    color: '#333333',
+    textAlign: 'center',
+  },
+  actionSheetTouch: {
+    paddingBottom: 15,
+    paddingTop: 15,
+  },
+  actionSheetBorder: {
+    borderWidth: 0.5,
+    borderColor: colors.gray1,
+  },
+  cancelTxt: {
+    fontSize: 16,
+    fontWeight: 600,
+    color: '#333333',
+    textAlign: 'center',
+    paddingBottom: 15,
+    paddingTop: 15,
+  },
+  cancelTouch: {
+    backgroundColor: colors.white,
+    borderRadius: 10,
+    marginTop: 40,
+    marginLeft: 12,
+    marginRight: 12,
+    marginBottom: 12,
+  },
+  container: {
+    backgroundColor: '#EFF2F5',
+    borderRadius: 12,
+    justifyContent: 'center',
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  titleTxt: {
+    fontSize: 14,
+    color: '#333333',
+    flex: 1,
+    textAlign: 'center',
+    fontWeight: 700,
+  },
+  closeTouch: {
+    padding: 5,
   },
 });
 
