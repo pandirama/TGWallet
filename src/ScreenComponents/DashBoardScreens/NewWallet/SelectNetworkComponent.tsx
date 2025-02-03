@@ -64,7 +64,8 @@ const SelectNetworkComponent = ({navigation}: Props) => {
         style={styles.walletTouch}
         onPress={() =>
           navigation.navigate('NEW_WALLET', {
-            walletNetwork: item,
+            screen: 'NEW_WALLET_PASSWORD',
+            params: {walletNetwork: item},
           })
         }>
         <Image

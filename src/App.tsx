@@ -10,10 +10,7 @@ import {Provider as ReduxProvider} from 'react-redux';
 import store, {persistor} from './store';
 import AppNavigationContainer from './navigators/ApplicationNavigator';
 import {CommonProvider} from './contexts/CommonContext';
-
 import SplashComponent from './ScreenComponents/Splash/SplashComponent';
-
-// Firebase FCM TOKEN
 
 const toastConfig = {
   success: (props: any) => <SuccessToast {...props} text1NumberOfLines={3} />,
