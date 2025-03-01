@@ -95,7 +95,7 @@ const CommonProvider = ({children}: React.PropsWithChildren): JSX.Element => {
           <ActivityIndicator
             size="small"
             color={'#6B121C'}
-            style={{transform: [{scaleX: 2}, {scaleY: 2}]}}
+            style={{transform: [{scaleX: 1.3}, {scaleY: 1.3}]}}
           />
         </View>
       )}

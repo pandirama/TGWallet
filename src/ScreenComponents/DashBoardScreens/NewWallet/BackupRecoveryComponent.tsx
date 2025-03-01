@@ -18,9 +18,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useGenerateMnemonicMutation} from '../../../api/auth/authAPI';
 import useCommon from '../../../hooks/useCommon';
 import {getErrorMessage} from '../../../utils/common';
-import Recover from '../../../assets/recover_Pharse.svg';
 import {useSelector} from 'react-redux';
 import {Ionicons} from '../../../utils/IconUtils';
+import RecoveryPharseComponent from '../../../components/RecoveryPharseComponent';
 
 type Props = NativeStackScreenProps<any, 'BACKUP_RECOVERY'>;
 
@@ -85,33 +85,7 @@ const BackupRecoveryComponent = ({navigation, route}: Props) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={appStyles.scrollContainer}>
           <View style={styles.container}>
-            <Recover width={'100%'} />
-            <Text style={styles.recoverTitleTxt}>Backup Recovery Phrase</Text>
-            <Text style={styles.recoversubTitleTxt}>
-              Recovery Phrase is the credientials to recover the wallet, and it
-              is only saved in your device. Please make sure to make a backup so
-              that you can recover it in the future
-            </Text>
-            <View style={styles.importantView}>
-              <Text style={styles.impTitleTxt}>Important</Text>
-              <Text style={styles.impSubTitleTxt}>
-                Anyone who has the mnemonic can take control of your wallets.
-              </Text>
-            </View>
-            <Text style={styles.suggestTitleTxt}>Suggested Backup Method</Text>
-            <Text style={styles.suggestTxt}>
-              {'\u25CF'}
-              {'   '} Using pen and paper, write Recovery Phrase correctly in
-              order
-            </Text>
-            <Text style={styles.suggestTxt}>
-              {'\u25CF'}
-              {'   '} Keep Recovery Phrase in a safe place
-            </Text>
-            <Text style={styles.suggestTxt}>
-              {'\u25CF'}
-              {'   '} Do not save or send Recovery Phrase on the internet
-            </Text>
+            <RecoveryPharseComponent />
             <View style={styles.readAgreeView}>
               <TouchableOpacity
                 onPress={() => toggleAccept1(a => !a)}

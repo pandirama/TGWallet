@@ -113,7 +113,9 @@ const ModifyPasswordComponent = ({route, navigation}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent title={'Modify Password'} />
         <View style={styles.topView}>
           <Text style={styles.inputTitleTxt}>Current Password</Text>

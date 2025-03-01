@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useState} from 'react';
+import React, {useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   FlatList,
@@ -12,7 +12,7 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../../utils/appStyles';
 import {colors} from '../../../../utils/colors';
-import { Ionicons } from '../../../../utils/IconUtils';
+import {Ionicons} from '../../../../utils/IconUtils';
 
 type Props = NativeStackScreenProps<any, 'CURRENCY_UNIT'>;
 
@@ -83,7 +83,8 @@ const CurrencyUnitComponent = ({navigation}: Props) => {
             appStyles.boxShadow,
             styles.walletSubContainer,
           ]}
-          keyExtractor={(item: any) => item?.id}
+          removeClippedSubviews={false}
+          keyExtractor={(item, index) => 'key' + index}
         />
       </SafeAreaView>
     </>

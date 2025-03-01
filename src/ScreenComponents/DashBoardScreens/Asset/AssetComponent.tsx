@@ -1,10 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
-  ActivityIndicator,
+  Dimensions,
   FlatList,
-  Image,
   StatusBar,
   StyleSheet,
   Text,
@@ -30,14 +28,8 @@ import {
   MaterialIcons,
 } from '../../../utils/IconUtils';
 import {useSelector} from 'react-redux';
-import ActionSheet, {ActionSheetRef} from 'react-native-actions-sheet';
-import {useWalletListMutation} from '../../../api/walletAPI';
-import useCommon from '../../../hooks/useCommon';
-import {getErrorMessage} from '../../../utils/common';
-import {useFocusEffect} from '@react-navigation/native';
-import {useGetNetworksQuery} from '../../../api/auth/authAPI';
-import Modal from 'react-native-modal';
-// import useCommon from '../../../hooks/useCommon';
+import WalletBG from '../../../assets/Wallet_BG.svg';
+import WalletListComponent from '../../../components/WalletListComponent';
 
 type Props = NativeStackScreenProps<any, 'ASSET'>;
 
@@ -57,69 +49,11 @@ const assets = [
 ];
 
 const AssetComponent = ({navigation}: Props) => {
-  const {showToast, toggleBackdrop} = useCommon();
-
-  const actionSheetRef = useRef<ActionSheetRef>(null);
-
   const [selectedAsset, setSelectedAsset] = useState('DEFI');
-  const [networks, setNetworks] = useState<any>([]);
-  const [wallets, setWallets] = useState(null);
-  const [selectedNetwork, setSelectedNetwork] = useState<any>(null);
+  const [showWallets, setShowWallets] = useState(false);
 
-  const [addWalletVisible, setAddWalletVisible] = useState(false);
-
-  const {userInfo = {}, walletInfo = {}} = useSelector(
-    ({authReducer}: any) => authReducer,
-  );
+  const {walletInfo = {}} = useSelector(({authReducer}: any) => authReducer);
   const {wallet_name, wallet_balance} = walletInfo ?? {};
-
-  const [walletCreate, {isLoading}] = useWalletListMutation();
-  const {isFetching, refetch} = useGetNetworksQuery();
-
-  useEffect(() => {
-    toggleBackdrop(isFetching);
-  }, [isFetching]);
-
-  const getWallets = async (networkID: string) => {
-    try {
-      const params = {
-        network: networkID,
-        userid: userInfo?.generated_Id,
-      };
-      const response: any = await walletCreate(params).unwrap();
-      if (response?.success) {
-        setWallets(response?.wallets);
-      } else {
-        showToast({
-          type: 'error',
-          text1: response?.message,
-        });
-      }
-    } catch (err: any) {
-      showToast({
-        type: 'error',
-        text1: getErrorMessage(err),
-      });
-    }
-  };
-
-  useFocusEffect(
-    useCallback(() => {
-      refetch().then(response => {
-        const {isSuccess, isError, data, error} = response;
-        if (isSuccess) {
-          setNetworks(data?.networks);
-          setSelectedNetwork(data?.networks[0]);
-        } else if (isError) {
-          showToast({
-            type: 'error',
-            text1: getErrorMessage(error),
-          });
-        }
-      });
-      return () => {};
-    }, []),
-  );
 
   const renderItem = ({item}: any) => {
     const findAsset = selectedAsset === item?.assetName;
@@ -142,56 +76,6 @@ const AssetComponent = ({navigation}: Props) => {
     );
   };
 
-  const renderWalletItem = ({item}: any) => {
-    return (
-      <TouchableOpacity
-        style={[appStyles.boxShadow, styles.walletContainer]}
-        onPress={() => {
-          actionSheetRef?.current?.hide();
-          navigation.navigate('WALLET_DETAILS', {
-            walletDetails: item,
-            networkIcon: selectedNetwork?.Wallet_icon,
-          });
-        }}>
-        <Text style={styles.walletListNameTxt}>{item?.wallet_name}</Text>
-        {item?.wallet_address && (
-          <View style={styles.addressView}>
-            <Text style={styles.walletAddressTxt}>{item?.wallet_address}</Text>
-            <Ionicons name={'copy-outline'} size={16} color={'#7C8FAC'} />
-          </View>
-        )}
-        <Text style={styles.walletBalanceTxt}>{item?.wallet_balance}</Text>
-      </TouchableOpacity>
-    );
-  };
-
-  const renderNetworkItem = ({item}: any) => {
-    return (
-      <TouchableOpacity
-        style={[
-          styles.networkListTouch,
-          selectedNetwork?.ID === item?.ID.toString() && {
-            backgroundColor: colors.white,
-          },
-        ]}
-        onPress={() => {
-          setSelectedNetwork(item);
-          getWallets(item?.ID);
-        }}>
-        <Image
-          style={styles.itemLogo}
-          source={{
-            uri: item?.Wallet_icon,
-          }}
-        />
-      </TouchableOpacity>
-    );
-  };
-
-  const onDismiss = () => {
-    setAddWalletVisible(false);
-  };
-
   return (
     <>
       <StatusBar
@@ -200,14 +84,15 @@ const AssetComponent = ({navigation}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <View style={styles.headerView}>
-          <View style={styles.headerLeftIconTopView}>
+          <TouchableOpacity style={styles.headerLeftIconTopView}>
             <TouchableOpacity
               style={styles.headerLeftIconView}
               onPress={() => {
-                actionSheetRef?.current?.show();
-                getWallets(selectedNetwork?.ID);
+                setShowWallets(true);
               }}>
               <View style={styles.brandIcon}>
                 <TokenBranded width={28} height={28} />
@@ -220,7 +105,7 @@ const AssetComponent = ({navigation}: Props) => {
                 />
               </TouchableOpacity>
             </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
           <View style={styles.headerRightIconView}>
             <TouchableOpacity style={styles.walletIcon}>
               <AddWallet width={28} height={28} />
@@ -231,45 +116,48 @@ const AssetComponent = ({navigation}: Props) => {
           </View>
         </View>
         <View style={[appStyles.boxShadow, styles.headerContainer]}>
-          <TouchableOpacity style={styles.walletNameView}>
-            <Text style={styles.walletNameTxt}>{wallet_name}</Text>
-            <MaterialIcons
-              name={'keyboard-arrow-right'}
-              size={26}
-              color={'#FFFFFF'}
-            />
-          </TouchableOpacity>
-
-          <View style={styles.amountView}>
-            <Foundation name={'dollar'} size={38} color={'#FFFFFF'} />
-            <Text style={styles.menuAmountTxt}>{wallet_balance}</Text>
-            <Eye width={30} height={30} />
-          </View>
-
-          <View style={[appStyles.boxShadow, styles.headerSubContainer]}>
-            <TouchableOpacity style={styles.menuItemTouch}>
-              <Send width={28} height={28} />
-              <Text style={styles.menuItemTxt}>Send</Text>
-            </TouchableOpacity>
-            <View style={styles.horizontalBorder} />
-            <TouchableOpacity style={styles.menuItemTouch}>
-              <Ionicons
-                name={'arrow-down-outline'}
+          <WalletBG width={Dimensions.get('window').width / 1.1} height={182} />
+          <View style={styles.walletView}>
+            <TouchableOpacity style={styles.walletNameView}>
+              <Text style={styles.walletNameTxt}>{wallet_name}</Text>
+              <MaterialIcons
+                name={'keyboard-arrow-right'}
                 size={26}
-                color={'#333333'}
+                color={'#FFFFFF'}
               />
-              <Text style={styles.menuItemTxt}>Receive</Text>
             </TouchableOpacity>
-            <View style={styles.horizontalBorder} />
-            <TouchableOpacity style={styles.menuItemTouch}>
-              <Buy width={28} height={28} />
-              <Text style={styles.menuItemTxt}>Buy</Text>
-            </TouchableOpacity>
-            <View style={styles.horizontalBorder} />
-            <TouchableOpacity style={styles.menuItemTouch}>
-              <Transaction width={28} height={28} />
-              <Text style={styles.menuItemTxt}>Swap</Text>
-            </TouchableOpacity>
+
+            <View style={styles.amountView}>
+              <Foundation name={'dollar'} size={38} color={'#FFFFFF'} />
+              <Text style={styles.menuAmountTxt}>{wallet_balance}</Text>
+              <Eye width={30} height={30} />
+            </View>
+
+            <View style={[appStyles.boxShadow, styles.headerSubContainer]}>
+              <TouchableOpacity style={styles.menuItemTouch}>
+                <Send width={28} height={28} />
+                <Text style={styles.menuItemTxt}>Send</Text>
+              </TouchableOpacity>
+              <View style={styles.horizontalBorder} />
+              <TouchableOpacity style={styles.menuItemTouch}>
+                <Ionicons
+                  name={'arrow-down-outline'}
+                  size={26}
+                  color={'#333333'}
+                />
+                <Text style={styles.menuItemTxt}>Receive</Text>
+              </TouchableOpacity>
+              <View style={styles.horizontalBorder} />
+              <TouchableOpacity style={styles.menuItemTouch}>
+                <Buy width={28} height={28} />
+                <Text style={styles.menuItemTxt}>Buy</Text>
+              </TouchableOpacity>
+              <View style={styles.horizontalBorder} />
+              <TouchableOpacity style={styles.menuItemTouch}>
+                <Transaction width={28} height={28} />
+                <Text style={styles.menuItemTxt}>Swap</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
         <View style={styles.listHeaderView}>
@@ -277,7 +165,8 @@ const AssetComponent = ({navigation}: Props) => {
             <FlatList
               data={assets}
               renderItem={renderItem}
-              keyExtractor={(item: any) => item?.id}
+              removeClippedSubviews={false}
+              keyExtractor={(item, index) => 'key' + index}
               horizontal={true}
             />
           </View>
@@ -289,109 +178,11 @@ const AssetComponent = ({navigation}: Props) => {
         {selectedAsset === 'DEFI' && <DEFIComponent />}
         {selectedAsset === 'Assets' && <></>}
         {selectedAsset === 'NFT' && <NFTComponent navigation={navigation} />}
-        <ActionSheet
-          ref={actionSheetRef}
-          containerStyle={styles.actionContainer}
-          closeOnPressBack={false}
-          closeOnTouchBackdrop={false}
-          onClose={() => {
-            actionSheetRef?.current?.hide();
-          }}>
-          <View style={styles.actionViewContainer}>
-            <View style={styles.actionTitleView}>
-              <TouchableOpacity
-                onPress={() => {
-                  actionSheetRef?.current?.hide();
-                }}>
-                <Ionicons name={'search'} size={20} color={'#333333'} />
-              </TouchableOpacity>
-              <Text style={styles.actionTitleTxt}>Wallet List</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  actionSheetRef?.current?.hide();
-                }}>
-                <Ionicons name={'close'} size={20} color={'#333333'} />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.borderView} />
-          <View style={styles.walletListView}>
-            <View style={styles.leftList}>
-              <FlatList
-                data={networks}
-                renderItem={renderNetworkItem}
-                keyExtractor={(item: any) => item?.id}
-                style={styles.networkList}
-                showsVerticalScrollIndicator={false}
-              />
-            </View>
-
-            {isLoading ? (
-              <View style={styles.loadingView}>
-                <ActivityIndicator size="large" color={'#6B121C'} />
-              </View>
-            ) : (
-              <View style={styles.walletListTitleView}>
-                <View style={styles.walletTitView}>
-                  <Text style={styles.selectedWalletTxt}>
-                    {selectedNetwork?.Wallet_network}
-                  </Text>
-                  <TouchableOpacity
-                    style={styles.addWalletIcon}
-                    onPress={() => setAddWalletVisible(true)}>
-                    <Feather name={'plus'} size={20} color={'#333333'} />
-                  </TouchableOpacity>
-                </View>
-
-                <FlatList
-                  data={wallets}
-                  renderItem={renderWalletItem}
-                  keyExtractor={(item: any) => item?.id}
-                  contentContainerStyle={styles.walletContentList}
-                  showsVerticalScrollIndicator={false}
-                />
-              </View>
-            )}
-          </View>
-          <Modal
-            isVisible={addWalletVisible}
-            onBackdropPress={onDismiss}
-            animationInTiming={500}
-            animationOutTiming={700}
-            useNativeDriver={true}>
-            <View style={styles.container}>
-              <View style={styles.actionTitleView}>
-                <Text style={styles.titleTxt}>Add Wallet</Text>
-                <TouchableOpacity onPress={onDismiss} style={styles.closeTouch}>
-                  <Ionicons name={'close'} size={20} color={'#9C9DA0'} />
-                </TouchableOpacity>
-              </View>
-              <View style={[appStyles.boxShadow, styles.actionsheetView]}>
-                <TouchableOpacity
-                  style={styles.actionSheetTouch}
-                  onPress={() => {
-                    setAddWalletVisible(false);
-                    actionSheetRef?.current?.hide();
-                    navigation.navigate('NEW_WALLET', {
-                      screen: 'NEW_WALLET_PASSWORD',
-                      params: {walletNetwork: selectedNetwork},
-                    });
-                  }}>
-                  <Text style={styles.actionsheetTxt}>Create Wallet</Text>
-                </TouchableOpacity>
-                <View style={styles.actionSheetBorder} />
-                <TouchableOpacity style={styles.actionSheetTouch}>
-                  <Text style={styles.actionsheetTxt}>Import Wallet</Text>
-                </TouchableOpacity>
-              </View>
-              <TouchableOpacity
-                style={[appStyles.boxShadow, styles.cancelTouch]}
-                onPress={() => setAddWalletVisible(false)}>
-                <Text style={styles.cancelTxt}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
-          </Modal>
-        </ActionSheet>
+        <WalletListComponent
+          navigation={navigation}
+          showWallets={showWallets}
+          setShowWallets={setShowWallets}
+        />
       </SafeAreaView>
     </>
   );
@@ -405,6 +196,11 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.gray1,
     alignItems: 'center',
     flexDirection: 'row',
+  },
+  walletView: {
+    position: 'absolute',
+    justifyContent: 'center',
+    width: '100%',
   },
   headerTxt: {
     fontSize: 18,
@@ -426,13 +222,8 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   headerContainer: {
-    backgroundColor: colors.black,
     borderRadius: 10,
     margin: 20,
-    paddingBottom: 15,
-    paddingTop: 10,
-    paddingLeft: 5,
-    paddingRight: 5,
   },
   headerSubContainer: {
     backgroundColor: colors.white,
@@ -447,10 +238,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     marginRight: 10,
+    zIndex: 1,
   },
   headerLeftIconTopView: {
     flex: 1,
     flexDirection: 'row',
+    zIndex: 1,
   },
   headerLeftIconView: {
     borderRadius: 17,
@@ -562,6 +355,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
     marginLeft: 12,
     marginRight: 12,
+    marginBottom: 10,
   },
   actionTitleTxt: {
     flex: 1,

@@ -12,15 +12,15 @@ import {authAction} from '../reducer/auth/authSlice';
 import SplashComponent from '../ScreenComponents/Splash/SplashComponent';
 import IntroComponent from '../ScreenComponents/Intro/IntroComponent';
 import WalletTypeComponent from '../ScreenComponents/DashBoardScreens/WalletType/WalletTypeComponent';
-import SelectNetworkComponent from '../ScreenComponents/DashBoardScreens/NewWallet/SelectNetworkComponent';
+import SelectNetworkComponent from '../ScreenComponents/DashBoardScreens/WalletType/SelectNetworkComponent';
 import WalletPasswordComponent from '../ScreenComponents/DashBoardScreens/NewWallet/WalletPasswordComponent';
 import BackupRecoveryComponent from '../ScreenComponents/DashBoardScreens/NewWallet/BackupRecoveryComponent';
 import CompletedBackupComponent from '../ScreenComponents/DashBoardScreens/NewWallet/CompletedBackupComponent';
 import ConfirmWalletComponent from '../ScreenComponents/DashBoardScreens/NewWallet/ConfirmWalletComponent';
 import CheckCodeComponent from '../ScreenComponents/DashBoardScreens/NewWallet/CheckCodeComponent';
 import ImportWalletsComponent from '../ScreenComponents/DashBoardScreens/ImportWallet/ImportWalletsComponent';
-import SingleNetworkComponent from '../ScreenComponents/DashBoardScreens/ImportWallet/SingleNetworkComponent';
 import DashboardBottomNavigator from './DashboardBottomNavigator';
+import ImportTypeComponent from '../ScreenComponents/DashBoardScreens/ImportWallet/ImportTypeComponent';
 
 const defaultTheme = {
   ...DefaultTheme,
@@ -60,14 +60,14 @@ export const NewWalletStackNavigator = () => {
 
 const ImportWalletStack = createNativeStackNavigator<any>();
 
-const ImportWalletStackNavigator = () => {
+export const ImportWalletStackNavigator = () => {
   return (
     <ImportWalletStack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="SINGLE_NETWORK">
+      initialRouteName="IMPORT_TYPE">
       <ImportWalletStack.Screen
-        name="SINGLE_NETWORK"
-        component={SingleNetworkComponent}
+        name="IMPORT_TYPE"
+        component={ImportTypeComponent}
       />
       <ImportWalletStack.Screen
         name="IMPORT_WALLET"

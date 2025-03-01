@@ -14,7 +14,11 @@ import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
 import DashBoardHeaderComponent from '../../../components/DashBoardHeaderComponent';
 import LinearGradient from 'react-native-linear-gradient';
-import {getErrorMessage, localStorageKey, setStorage} from '../../../utils/common';
+import {
+  getErrorMessage,
+  localStorageKey,
+  setStorage,
+} from '../../../utils/common';
 import useCommon from '../../../hooks/useCommon';
 import {useSelector} from 'react-redux';
 import {useVerifyMnemonicMutation} from '../../../api/auth/authAPI';
@@ -24,7 +28,7 @@ import {authAction} from '../../../reducer/auth/authSlice';
 
 type Props = NativeStackScreenProps<any, 'CHECK_CODE'>;
 
-const CheckCodeComponent = ({route}: Props) => {
+const CheckCodeComponent = ({navigation, route}: Props) => {
   let {walletInfo} = route?.params ?? {};
   const dispatch = useAppDispatch();
 
@@ -34,7 +38,9 @@ const CheckCodeComponent = ({route}: Props) => {
 
   const [shuffledCodes, setShuffledCodes] = useState<string[]>([]);
 
-  const {userInfo = {}} = useSelector(({authReducer}: any) => authReducer);
+  const {userInfo = {}, isHomeNewWallet} = useSelector(
+    ({authReducer}: any) => authReducer,
+  );
 
   const [verifyMnemonic, {isLoading}] = useVerifyMnemonicMutation();
 
@@ -55,12 +61,30 @@ const CheckCodeComponent = ({route}: Props) => {
   }, []);
 
   const completedBackup = async () => {
+    if (updateCodes?.length < walletInfo?.secret_phase?.length) {
+      showToast({
+        type: 'error',
+        text1: 'Select All Secret Phase',
+      });
+      return;
+    }
+
+    if (
+      JSON.stringify(updateCodes) !== JSON.stringify(walletInfo?.secret_phase)
+    ) {
+      showToast({
+        type: 'error',
+        text1: 'Select Correct Secret Phase',
+      });
+      return;
+    }
+
     try {
       const payload = {
         network_mode: walletInfo?.network,
         wallet_id: walletInfo?.wallet_id,
         userid: userInfo?.generated_Id,
-        pharse: walletInfo?.secret_phase,
+        pharse: updateCodes,
       };
 
       const response: any = await verifyMnemonic(payload).unwrap();
@@ -70,7 +94,15 @@ const CheckCodeComponent = ({route}: Props) => {
           localStorageKey.walletInfo,
           JSON.stringify(response?.walletinfo),
         );
-        dispatch(authAction.setAuthenticated(true));
+        if (isHomeNewWallet) {
+          dispatch(authAction.setHomeNewWallet(false));
+          navigation.navigate('DASH_BOARD', {
+            screen: 'Asset',
+          });
+          navigation.replace('DASH_BOARD');
+        } else {
+          dispatch(authAction.setAuthenticated(true));
+        }
       } else {
         showToast({
           type: 'error',
@@ -209,6 +241,8 @@ const CheckCodeComponent = ({route}: Props) => {
             numColumns={3}
             columnWrapperStyle={styles.flatListColumn}
             contentContainerStyle={styles.flatListCotent}
+            removeClippedSubviews={false}
+            keyExtractor={(item, index) => 'key' + index}
           />
           <FlatList
             data={shuffledCodes}
@@ -216,6 +250,8 @@ const CheckCodeComponent = ({route}: Props) => {
             numColumns={3}
             columnWrapperStyle={styles.flatListColumn}
             contentContainerStyle={styles.flatListCotent}
+            removeClippedSubviews={false}
+            keyExtractor={(item, index) => 'key' + index}
           />
         </View>
 

@@ -92,6 +92,8 @@ const NFTComponent = ({navigation}: any) => {
             ItemSeparatorComponent={() => {
               return <View style={styles.borderView} />;
             }}
+            removeClippedSubviews={false}
+            keyExtractor={(item, index) => 'key' + index}
           />
         </View>
       ) : (

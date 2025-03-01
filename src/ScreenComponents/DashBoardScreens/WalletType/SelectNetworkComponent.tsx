@@ -29,7 +29,8 @@ import {Ionicons} from '../../../utils/IconUtils';
 
 type Props = NativeStackScreenProps<any, 'SELECT_NETWORK'>;
 
-const SelectNetworkComponent = ({navigation}: Props) => {
+const SelectNetworkComponent = ({navigation, route}: Props) => {
+  const {fromImport} = route?.params ?? {};
   const {showToast, toggleBackdrop} = useCommon();
   const [searchTerm, setSearchTerm] = useState('');
   const [networks, setNetworks] = useState<any>([]);
@@ -62,12 +63,19 @@ const SelectNetworkComponent = ({navigation}: Props) => {
     return (
       <TouchableOpacity
         style={styles.walletTouch}
-        onPress={() =>
-          navigation.navigate('NEW_WALLET', {
-            screen: 'NEW_WALLET_PASSWORD',
-            params: {walletNetwork: item},
-          })
-        }>
+        onPress={() => {
+          if (fromImport) {
+            navigation.navigate('IMPORT_WALLET', {
+              screen: 'IMPORT_TYPE',
+              params: {walletNetwork: item},
+            });
+          } else {
+            navigation.navigate('NEW_WALLET', {
+              screen: 'NEW_WALLET_PASSWORD',
+              params: {walletNetwork: item},
+            });
+          }
+        }}>
         <Image
           style={styles.itemLogo}
           source={{
@@ -155,7 +163,8 @@ const SelectNetworkComponent = ({navigation}: Props) => {
               ItemSeparatorComponent={() => {
                 return <View style={styles.borderView} />;
               }}
-              keyExtractor={(item: any) => item?._id}
+              removeClippedSubviews={false}
+              keyExtractor={(item, index) => 'key' + index}
               ListHeaderComponent={
                 <View style={styles.searchView}>
                   <View style={styles.searchContainer}>
@@ -183,7 +192,7 @@ const SelectNetworkComponent = ({navigation}: Props) => {
                 style={styles.actionSheetTouch}
                 onPress={() => {
                   addActionSheetRef?.current?.hide();
-                  navigation.navigate('SINGLE_NETWORK');
+                  navigation.navigate('IMPORT_TYPE');
                 }}>
                 <Text style={styles.actionsheetTxt}>Create Wallet</Text>
               </TouchableOpacity>

@@ -17,15 +17,26 @@ import {colors} from '../../../../utils/colors';
 import {Ionicons} from '../../../../utils/IconUtils';
 import QRCode from 'react-native-qrcode-svg';
 import LinearGradient from 'react-native-linear-gradient';
+import useCommon from '../../../../hooks/useCommon';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 type Props = NativeStackScreenProps<any, 'EXPORT_PRIVATEKEY'>;
 
-const ExportPrivateKeyComponent = ({}: Props) => {
+const ExportPrivateKeyComponent = ({route}: Props) => {
+  const {walletInfo} = route?.params ?? {};
+  const {showToast} = useCommon();
+
   const [activeTab, setActiveTab] = useState(RecoveryTabs.HandwrittenBackup);
   const [showKeyCode, setShowKeyCode] = useState(false);
   const [showQRCode, setShowQRCode] = useState(false);
 
-  const completedBackup = async () => {};
+  const completedBackup = async () => {
+    showToast({
+      type: 'success',
+      text1: 'Private Key Copied Successfully',
+    });
+    Clipboard.setString(walletInfo?.private_key);
+  };
 
   const qRCodeView = () => {
     if (showQRCode) {
@@ -59,9 +70,7 @@ const ExportPrivateKeyComponent = ({}: Props) => {
     if (showKeyCode) {
       return (
         <View style={[appStyles.boxShadow, styles.keyView]}>
-          <Text style={styles.keyTxt}>
-            0xdijdadsjd9d0u09saudasydy7ayd78asy78tas68723989ydashdiuasy789y98
-          </Text>
+          <Text style={styles.keyTxt}>{walletInfo?.private_key}</Text>
         </View>
       );
     }
@@ -120,7 +129,9 @@ const ExportPrivateKeyComponent = ({}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent title={'Backup Private Key'} />
         <View style={styles.tabsView}>
           <CustomTabs

@@ -48,6 +48,22 @@ export const walletAPI = createApi({
       }),
       transformResponse: (response: {data: any}) => response,
     }),
+    privateKey: builder.mutation({
+      query: walletParams => ({
+        url: WALLET_URLS.PRIVATE_KEY,
+        method: 'POST',
+        body: walletParams,
+      }),
+      transformResponse: (response: {data: any}) => response,
+    }),
+    secretPhase: builder.mutation({
+      query: walletParams => ({
+        url: WALLET_URLS.SECRET_PHASE,
+        method: 'POST',
+        body: walletParams,
+      }),
+      transformResponse: (response: {data: any}) => response,
+    }),
   }),
 });
 
@@ -57,4 +73,6 @@ export const {
   useWalletChangePwdMutation,
   useWalletResetPwdMutation,
   useWalletVerifyPwdMutation,
+  usePrivateKeyMutation,
+  useSecretPhaseMutation,
 } = walletAPI;

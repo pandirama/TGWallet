@@ -1,12 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {StatusBar, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
@@ -14,7 +9,7 @@ import DashBoardHeaderComponent from '../../../components/DashBoardHeaderCompone
 import NFTNotFound from '../../../assets/nftnotfound.svg';
 import Ethereum from '../../../assets/ethereum.svg';
 import BinanceIcon from '../../../assets/binance_icon.svg';
-import { Ionicons } from '../../../utils/IconUtils';
+import {Ionicons} from '../../../utils/IconUtils';
 
 type Props = NativeStackScreenProps<any, 'NFTDETAILS'>;
 
@@ -27,7 +22,9 @@ const NFTDetailsComponent = ({}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent title={'NFT Details'} />
         <View style={styles.walletContainer}>
           <View style={[appStyles.boxShadow, styles.walletSubContainer]}>

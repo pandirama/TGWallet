@@ -110,10 +110,12 @@ const AddNFTComponent = ({navigation}: Props) => {
         animated
       />
 
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{flex:1}}>
+          style={{flex: 1}}>
           <DashBoardHeaderComponent title={'NFT'} />
           <View style={styles.walletContainer}>
             <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
@@ -190,6 +192,8 @@ const AddNFTComponent = ({navigation}: Props) => {
                   </View>
                 </View>
               }
+              removeClippedSubviews={false}
+              keyExtractor={(item, index) => 'key' + index}
             />
           </View>
         </KeyboardAvoidingView>

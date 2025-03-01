@@ -14,7 +14,7 @@ import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
 import NFTName from '../../../assets/NFT_name.svg';
 import DashBoardHeaderComponent from '../../../components/DashBoardHeaderComponent';
-import { EvilIcons } from '../../../utils/IconUtils';
+import {EvilIcons} from '../../../utils/IconUtils';
 
 type Props = NativeStackScreenProps<any, 'NFTs'>;
 
@@ -105,7 +105,9 @@ const NFTsComponent = ({route}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent title={title} />
         <View style={styles.walletContainer}>
           <Text style={styles.networkTxt}>Asset List</Text>
@@ -117,6 +119,8 @@ const NFTsComponent = ({route}: Props) => {
               ItemSeparatorComponent={() => {
                 return <View style={styles.borderView} />;
               }}
+              removeClippedSubviews={false}
+              keyExtractor={(item, index) => 'key' + index}
             />
           </View>
         </View>

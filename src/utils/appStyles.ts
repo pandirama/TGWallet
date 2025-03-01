@@ -27,15 +27,16 @@ const appStyles = StyleSheet.create({
   },
   boxShadow: {
     shadowColor: colors.arrowShadow,
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
+    shadowRadius: 8,
     ...Platform.select({
       ios: {
         shadowOffset: {width: 0, height: 0},
+        shadowOpacity: 0.2,
       },
       android: {
         elevation: 1,
         shadowOffset: {width: 0, height: -5},
+        shadowOpacity: 0.5,
       },
     }),
   },

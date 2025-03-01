@@ -17,9 +17,9 @@ import Profile from '../assets/profile.svg';
 import ProfileActive from '../assets/profile_active.svg';
 import MarketsComponent from '../ScreenComponents/DashBoardScreens/Markets/MarketsComponent';
 import DiscoverComponent from '../ScreenComponents/DashBoardScreens/Discover/DiscoverComponent';
-import NewWalletComponent from '../ScreenComponents/DashBoardScreens/NewWallet/SelectNetworkComponent';
+import NewWalletComponent from '../ScreenComponents/DashBoardScreens/WalletType/SelectNetworkComponent';
 import WalletPasswordComponent from '../ScreenComponents/DashBoardScreens/NewWallet/WalletPasswordComponent';
-import SingleNetworkComponent from '../ScreenComponents/DashBoardScreens/ImportWallet/SingleNetworkComponent';
+import SingleNetworkComponent from '../ScreenComponents/DashBoardScreens/ImportWallet/ImportTypeComponent';
 import ImportWalletsComponent from '../ScreenComponents/DashBoardScreens/ImportWallet/ImportWalletsComponent';
 import AddressBookComponent from '../ScreenComponents/DashBoardScreens/Profile/AddressBook/AddressBookComponent';
 import AssetComponent from '../ScreenComponents/DashBoardScreens/Asset/AssetComponent';
@@ -40,9 +40,62 @@ import WalletDetailsComponent from '../ScreenComponents/DashBoardScreens/Asset/W
 import ModifyPasswordComponent from '../ScreenComponents/DashBoardScreens/Asset/Wallet/ModifyPasswordComponent';
 import ExportPrivateKeyComponent from '../ScreenComponents/DashBoardScreens/Asset/Wallet/ExportPrivateKeyComponent';
 import ResetPasswordComponent from '../ScreenComponents/DashBoardScreens/Asset/Wallet/ResetPasswordComponent';
-import { NewWalletStackNavigator } from './ApplicationNavigator';
+import {
+  ImportWalletStackNavigator,
+  NewWalletStackNavigator,
+} from './ApplicationNavigator';
+import ExportSecretPharseComponent from '../ScreenComponents/DashBoardScreens/Asset/Wallet/ExportSecretPharseComponent';
+import CopySecretPharseComponent from '../ScreenComponents/DashBoardScreens/Asset/Wallet/CopySecretPharseComponent';
+import EditAddressBookComponent from '../ScreenComponents/DashBoardScreens/Profile/AddressBook/EditAddressBookComponent';
+import AddressBookInfoComponent from '../ScreenComponents/DashBoardScreens/Profile/AddressBook/AddressBookInfoComponent';
+import AddAddressBookComponent from '../ScreenComponents/DashBoardScreens/Profile/AddressBook/AddAddressBookComponent';
 
-const ProductsStack = createNativeStackNavigator<any>();
+const WalletStack = createNativeStackNavigator<any>();
+
+const WalletStackNavigator = () => {
+  return (
+    <WalletStack.Navigator
+      screenOptions={{headerShown: false}}
+      initialRouteName="WALLET_DETAILS">
+      <WalletStack.Screen
+        name="WALLET_DETAILS"
+        component={WalletDetailsComponent}
+      />
+      <WalletStack.Screen
+        name="MODIFY_PASSWORD"
+        component={ModifyPasswordComponent}
+      />
+      <WalletStack.Screen
+        name="RESET_PASSWORD"
+        component={ResetPasswordComponent}
+      />
+      <WalletStack.Screen
+        name="EXPORT_PRIVATEKEY"
+        component={ExportPrivateKeyComponent}
+      />
+
+      <WalletStack.Screen
+        name="EXPORT_SECRET_PHARSE"
+        component={ExportSecretPharseComponent}
+      />
+
+      <WalletStack.Screen
+        name="COPY_SECRET_PHARSE"
+        component={CopySecretPharseComponent}
+      />
+
+      <WalletStack.Screen
+        name="NEW_WALLET"
+        component={NewWalletStackNavigator}
+      />
+
+      <WalletStack.Screen
+        name="IMPORT_WALLET"
+        component={ImportWalletStackNavigator}
+      />
+    </WalletStack.Navigator>
+  );
+};
 
 const AssetStack = createNativeStackNavigator<any>();
 
@@ -52,27 +105,7 @@ const AssetStackNavigator = () => {
       screenOptions={{headerShown: false}}
       initialRouteName="ASSET">
       <AssetStack.Screen name="ASSET" component={AssetComponent} />
-      <AssetStack.Screen
-        name="WALLET_DETAILS"
-        component={WalletDetailsComponent}
-      />
-      <AssetStack.Screen
-        name="MODIFY_PASSWORD"
-        component={ModifyPasswordComponent}
-      />
-      <AssetStack.Screen
-        name="RESET_PASSWORD"
-        component={ResetPasswordComponent}
-      />
-      <AssetStack.Screen
-        name="EXPORT_PRIVATEKEY"
-        component={ExportPrivateKeyComponent}
-      />
-
-      <AssetStack.Screen
-        name="NEW_WALLET"
-        component={NewWalletStackNavigator}
-      />
+      <AssetStack.Screen name="WALLET_STACK" component={WalletStackNavigator} />
       <AssetStack.Screen name="ADDNFT" component={AddNFTComponent} />
       <AssetStack.Screen name="ADDNEWNFT" component={AddNewNFTComponent} />
       <AssetStack.Screen name="NFTs" component={NFTsComponent} />
@@ -81,23 +114,27 @@ const AssetStackNavigator = () => {
   );
 };
 
+const MarketsStack = createNativeStackNavigator<any>();
+
 const MarketsStackNavigator = () => {
   return (
-    <ProductsStack.Navigator
+    <MarketsStack.Navigator
       screenOptions={{headerShown: false}}
       initialRouteName="MARKETS">
-      <ProductsStack.Screen name="MARKETS" component={MarketsComponent} />
-    </ProductsStack.Navigator>
+      <MarketsStack.Screen name="MARKETS" component={MarketsComponent} />
+    </MarketsStack.Navigator>
   );
 };
 
+const DiscoverStack = createNativeStackNavigator<any>();
+
 const DiscoverStackNavigator = () => {
   return (
-    <ProductsStack.Navigator
+    <DiscoverStack.Navigator
       screenOptions={{headerShown: false}}
       initialRouteName="DISCOVER">
-      <ProductsStack.Screen name="DISCOVER" component={DiscoverComponent} />
-    </ProductsStack.Navigator>
+      <DiscoverStack.Screen name="DISCOVER" component={DiscoverComponent} />
+    </DiscoverStack.Navigator>
   );
 };
 
@@ -112,8 +149,18 @@ const AddressBookStackNavigator = () => {
         name="ADDRESS_LIST"
         component={AddressBookComponent}
       />
-      {/* <ProfileStack.Screen name="NEW_ADDRESS" component={ProfileComponent} /> */}
-      {/* <ProfileStack.Screen name="EDIT_ADDRESS" component={ProfileComponent} /> */}
+      <AddressBookStack.Screen
+        name="ADD_ADDRESS"
+        component={AddAddressBookComponent}
+      />
+      <AddressBookStack.Screen
+        name="ADDRESS_INFO"
+        component={AddressBookInfoComponent}
+      />
+      <AddressBookStack.Screen
+        name="EDIT_ADDRESS"
+        component={EditAddressBookComponent}
+      />
     </AddressBookStack.Navigator>
   );
 };
@@ -162,6 +209,10 @@ const ProfileStackNavigator = () => {
       screenOptions={{headerShown: false}}
       initialRouteName="PROFILE">
       <ProfileStack.Screen name="PROFILE" component={ProfileComponent} />
+      <ProfileStack.Screen
+        name="WALLET_STACK"
+        component={WalletStackNavigator}
+      />
       <ProfileStack.Screen
         name="ADDRESS_BOOK"
         component={AddressBookStackNavigator}
@@ -288,7 +339,17 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: 60,
+    ...Platform.select({
+      ios: {
+        height: 80,
+        paddingTop: 10,
+        paddingBottom: 10,
+      },
+      android: {
+        height: 65,
+        paddingTop: 5,
+      },
+    }),
   },
   bottomView: {
     flexDirection: 'row',

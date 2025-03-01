@@ -19,9 +19,7 @@ import appStyles from '../../../../utils/appStyles';
 import {colors} from '../../../../utils/colors';
 import {getErrorMessage} from '../../../../utils/common';
 import {Feather} from '../../../../utils/IconUtils';
-import {
-  useWalletResetPwdMutation,
-} from '../../../../api/walletAPI';
+import {useWalletResetPwdMutation} from '../../../../api/walletAPI';
 
 type Props = NativeStackScreenProps<any, 'RESET_PASSWORD'>;
 
@@ -115,7 +113,9 @@ const ResetPasswordComponent = ({route, navigation}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent title={'Reset Password'} />
         <View style={styles.topView}>
           <View style={styles.searchWordsContainer}>

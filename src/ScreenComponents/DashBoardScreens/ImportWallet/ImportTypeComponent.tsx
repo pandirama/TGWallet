@@ -16,11 +16,15 @@ import ColdWallet from '../../../assets/cold_wallet.svg';
 import WatchWallet from '../../../assets/watch_wallet.svg';
 import {colors} from '../../../utils/colors';
 import DashBoardHeaderComponent from '../../../components/DashBoardHeaderComponent';
-import { Ionicons } from '../../../utils/IconUtils';
+import {Ionicons} from '../../../utils/IconUtils';
+import {WalletTabs} from '../../../components/CustomTabs';
 
-type Props = NativeStackScreenProps<any, 'SINGLE_NETWORK'>;
+type Props = NativeStackScreenProps<any, 'IMPORT_TYPE'>;
 
-const SingleNetworkComponent = ({}: Props) => {
+const ImportTypeComponent = ({navigation, route}: Props) => {
+  const {walletNetwork} = route?.params ?? {};
+
+  console.log('walletNetwork', walletNetwork);
   return (
     <>
       <StatusBar
@@ -34,7 +38,14 @@ const SingleNetworkComponent = ({}: Props) => {
         <ScrollView>
           <View style={styles.walletContainer}>
             <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
-              <TouchableOpacity style={styles.walletTouch}>
+              <TouchableOpacity
+                style={styles.walletTouch}
+                onPress={() => {
+                  navigation.navigate('IMPORT_WALLET', {
+                    walletTabs: WalletTabs.RecoveryPhrase,
+                    walletNetwork,
+                  });
+                }}>
                 <RecoveryPhrase
                   width={20}
                   height={20}
@@ -54,7 +65,14 @@ const SingleNetworkComponent = ({}: Props) => {
                 />
               </TouchableOpacity>
               <View style={styles.borderView} />
-              <TouchableOpacity style={styles.walletTouch}>
+              <TouchableOpacity
+                style={styles.walletTouch}
+                onPress={() => {
+                  navigation.navigate('IMPORT_WALLET', {
+                    walletTabs: WalletTabs.PrivateKey,
+                    walletNetwork,
+                  });
+                }}>
                 <PrivateKey width={20} height={20} style={styles.walletIcon} />
                 <View style={styles.txtContainer}>
                   <Text style={styles.walletTitleTxt}>Private Key</Text>
@@ -163,4 +181,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SingleNetworkComponent;
+export default ImportTypeComponent;

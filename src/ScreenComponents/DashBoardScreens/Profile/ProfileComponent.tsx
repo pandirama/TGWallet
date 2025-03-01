@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   ScrollView,
@@ -16,10 +16,13 @@ import InviteFriends from '../../../assets/profile/invite_friends.svg';
 import Transaction from '../../../assets/profile/transaction.svg';
 import WalletGuide from '../../../assets/profile/wallet_guide.svg';
 import {Fontisto, Ionicons, SimpleLineIcons} from '../../../utils/IconUtils';
+import WalletListComponent from '../../../components/WalletListComponent';
 
 type Props = NativeStackScreenProps<any, 'PROFILE'>;
 
 const ProfileComponent = ({navigation}: Props) => {
+  const [showWallets, setShowWallets] = useState(false);
+
   return (
     <>
       <StatusBar
@@ -65,7 +68,11 @@ const ProfileComponent = ({navigation}: Props) => {
               />
             </TouchableOpacity>
             <View style={styles.borderView} />
-            <TouchableOpacity style={styles.walletTouch}>
+            <TouchableOpacity
+              style={styles.walletTouch}
+              onPress={() => {
+                setShowWallets(true);
+              }}>
               <WalletNew width={22} height={21} style={styles.walletIcon} />
               <Text style={styles.walletTitleTxt}>Manage Wallets</Text>
               <Ionicons
@@ -191,6 +198,11 @@ const ProfileComponent = ({navigation}: Props) => {
             </TouchableOpacity>
           </View>
         </ScrollView>
+        <WalletListComponent
+          navigation={navigation}
+          showWallets={showWallets}
+          setShowWallets={setShowWallets}
+        />
       </SafeAreaView>
     </>
   );

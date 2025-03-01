@@ -117,7 +117,11 @@ const WalletTypeComponent = ({navigation}: Props) => {
             <Text style={styles.headerTxt}>I have my own wallet</Text>
             <TouchableOpacity
               style={[appStyles.boxShadow, styles.walletSubContainer]}
-              onPress={() => navigation.navigate('IMPORT_WALLET')}>
+              onPress={() =>
+                navigation.navigate('SELECT_NETWORK', {
+                  fromImport: true,
+                })
+              }>
               <ImportWallet width={45} height={45} />
               <View style={styles.txtContainer}>
                 <Text style={styles.walletTitleTxt}>

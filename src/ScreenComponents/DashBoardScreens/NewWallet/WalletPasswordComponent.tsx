@@ -27,8 +27,6 @@ type Props = NativeStackScreenProps<any, 'NEW_WALLET_PASSWORD'>;
 const WalletPasswordComponent = ({route, navigation}: Props) => {
   const {walletNetwork} = route?.params ?? {};
 
-  console.log('walletNetwork', route);
-
   const {showToast, toggleBackdrop} = useCommon();
 
   const [showPassword, togglePassword] = useState(true);

@@ -15,4 +15,13 @@ export const WALLET_URLS = {
   WALLET_CHANGE_PWD: `${BASE_URL}/changepwd`,
   WALLET_RESET_PWD: `${BASE_URL}/resetpwd`,
   WALLET_VERIFY_PWD: `${BASE_URL}/verifypwd`,
+  PRIVATE_KEY: `${BASE_URL}/walletimport_private`,
+  SECRET_PHASE: `${BASE_URL}/walletimport_secret`,
+};
+
+export const ADDRESS_BOOK_URLS = {
+  ADDRESS_BOOK: `${BASE_URL}/walletbook`,
+  ADD_ADDRESS_BOOK: `${BASE_URL}/addcontact`,
+  ADDRESS_BOOK_INFO: `${BASE_URL}/editcontact`,
+  UPDATE_ADDRESS_BOOK: `${BASE_URL}/updatecontact`,
 };

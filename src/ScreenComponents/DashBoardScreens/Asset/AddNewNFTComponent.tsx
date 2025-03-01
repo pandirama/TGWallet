@@ -30,7 +30,9 @@ const AddNewNFTComponent = ({}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent
           title={'Add NFT'}
           rightIcon={<Scan width={24} height={24} style={styles.scanIcon} />}

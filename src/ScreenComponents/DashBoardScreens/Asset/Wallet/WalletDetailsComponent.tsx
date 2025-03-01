@@ -2,6 +2,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
+  Dimensions,
   Image,
   ScrollView,
   StatusBar,
@@ -25,6 +26,7 @@ import {
 import useCommon from '../../../../hooks/useCommon';
 import {useSelector} from 'react-redux';
 import {getErrorMessage} from '../../../../utils/common';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 type Props = NativeStackScreenProps<any, 'WALLET_DETAILS'>;
 
@@ -39,6 +41,7 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
   const [walletName, setWalletname] = useState(walletDetails?.wallet_name);
 
   const [pwdModalVisible, setPwdModalVisible] = useState(false);
+  const [exportText, setExportText] = useState('');
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorTxt, setPasswordErrorTxt] = useState('');
@@ -80,7 +83,6 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
           wallet_name: walletName,
         };
         const response: any = await walletNameChange(params).unwrap();
-        console.log('response', response);
         if (response?.success) {
           showToast({
             type: 'success',
@@ -119,7 +121,15 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
       const response: any = await walletVerifyPwd(params).unwrap();
       setPassword('');
       if (response?.success) {
-        navigation.navigate('EXPORT_PRIVATEKEY');
+        if (exportText === 'recoveryPhrase') {
+          navigation.navigate('EXPORT_SECRET_PHARSE', {
+            walletInfo: response?.walletinfo,
+          });
+        } else {
+          navigation.navigate('EXPORT_PRIVATEKEY', {
+            walletInfo: response?.walletinfo,
+          });
+        }
       } else {
         showToast({
           type: 'error',
@@ -142,7 +152,9 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent title={'Wallet Details'} />
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -166,13 +178,25 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
               <Text style={styles.walletAddressTxt}>Wallet Address</Text>
               <View style={styles.walletCopyView}>
                 <Text style={styles.walletCopyTxt}>
-                  {updateWalletDetails?.wallet_address}
+                  {updateWalletDetails?.wallet_address ??
+                    updateWalletDetails?.address}
                 </Text>
-                <Ionicons name={'copy-outline'} size={16} color={'#333333'} />
+                <TouchableOpacity
+                  onPress={() => {
+                    showToast({
+                      type: 'success',
+                      text1: 'Address Copied Successfully',
+                    });
+                    Clipboard.setString(
+                      updateWalletDetails?.wallet_address ??
+                        updateWalletDetails?.address,
+                    );
+                  }}>
+                  <Ionicons name={'copy-outline'} size={16} color={'#333333'} />
+                </TouchableOpacity>
               </View>
             </View>
           </View>
-
           <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
             <TouchableOpacity
               style={styles.walletTouch}
@@ -196,6 +220,7 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
               style={styles.walletTouch}
               onPress={() => {
                 setPwdModalVisible(true);
+                setExportText('recoveryPhrase');
               }}>
               <Text style={styles.walletTitleTxt}>
                 Export Secret Recovery Phrase
@@ -212,6 +237,7 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
               style={styles.walletTouch}
               onPress={() => {
                 setPwdModalVisible(true);
+                setExportText('privateKey');
               }}>
               <Text style={styles.walletTitleTxt}>Export Private Key</Text>
               <Ionicons
@@ -330,7 +356,7 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
 const styles = StyleSheet.create({
   walletSubContainer: {
     backgroundColor: colors.white,
-    borderRadius: 5,
+    borderRadius: 6,
     marginTop: 20,
     marginRight: 20,
     marginLeft: 15,
@@ -392,6 +418,7 @@ const styles = StyleSheet.create({
   },
   walletCopyView: {
     flexDirection: 'row',
+    width: Dimensions.get('screen').width / 1.5,
   },
   walletCopyTxt: {
     fontSize: 12,

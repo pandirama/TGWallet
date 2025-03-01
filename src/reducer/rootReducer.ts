@@ -1,11 +1,12 @@
-import { combineReducers, Reducer } from '@reduxjs/toolkit';
-import { createAction } from '@reduxjs/toolkit';
+import {combineReducers, Reducer} from '@reduxjs/toolkit';
+import {createAction} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { persistReducer } from 'redux-persist';
+import {persistReducer} from 'redux-persist';
 
 import authReducer from './auth/authSlice';
-import { authAPI } from '../api/auth/authAPI';
-import { walletAPI } from '../api/walletAPI';
+import {authAPI} from '../api/auth/authAPI';
+import {walletAPI} from '../api/walletAPI';
+import {addressBookAPI} from '../api/addressBookAPI';
 
 export const rootPersistConfig = {
   key: 'root',
@@ -24,6 +25,7 @@ export const combinedReducer = combineReducers({
   authReducer: persistReducer(authReducerPersistConfig, authReducer),
   [authAPI.reducerPath]: authAPI.reducer,
   [walletAPI.reducerPath]: walletAPI.reducer,
+  [addressBookAPI.reducerPath]: addressBookAPI.reducer,
 });
 
 export const rootReducer: Reducer<RootState> = (state, action) => {
@@ -36,7 +38,7 @@ export const rootReducer: Reducer<RootState> = (state, action) => {
 
 export const RESET_STATE_ACTION_TYPE = 'resetState';
 export const resetStateAction = createAction(RESET_STATE_ACTION_TYPE, () => {
-  return { payload: null };
+  return {payload: null};
 });
 
 export type RootState = ReturnType<typeof combinedReducer>;

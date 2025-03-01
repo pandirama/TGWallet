@@ -12,7 +12,7 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../../utils/appStyles';
 import {colors} from '../../../../utils/colors';
-import { Ionicons } from '../../../../utils/IconUtils';
+import {Ionicons} from '../../../../utils/IconUtils';
 
 type Props = NativeStackScreenProps<any, 'LANGUAGE'>;
 
@@ -83,7 +83,8 @@ const LanguageComponent = ({navigation}: Props) => {
             appStyles.boxShadow,
             styles.walletSubContainer,
           ]}
-          keyExtractor={(item: any) => item?.id}
+          removeClippedSubviews={false}
+          keyExtractor={(item, index) => 'key' + index}
         />
       </SafeAreaView>
     </>

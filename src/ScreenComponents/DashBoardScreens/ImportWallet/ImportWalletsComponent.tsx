@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   StatusBar,
@@ -15,15 +16,45 @@ import {colors} from '../../../utils/colors';
 import DashBoardHeaderComponent from '../../../components/DashBoardHeaderComponent';
 import CustomTabs, {WalletTabs} from '../../../components/CustomTabs';
 import LinearGradient from 'react-native-linear-gradient';
-import { Ionicons } from '../../../utils/IconUtils';
+import {Ionicons} from '../../../utils/IconUtils';
+import useCommon from '../../../hooks/useCommon';
+import {useSelector} from 'react-redux';
+import {
+  getErrorMessage,
+  localStorageKey,
+  setStorage,
+} from '../../../utils/common';
+import {
+  usePrivateKeyMutation,
+  useSecretPhaseMutation,
+} from '../../../api/walletAPI';
+import Clipboard from '@react-native-clipboard/clipboard';
+import {useAppDispatch} from '../../../store';
+import {authAction} from '../../../reducer/auth/authSlice';
 
 type Props = NativeStackScreenProps<any, 'IMPORT_WALLET'>;
 
-const ImportWalletsComponent = ({}: Props) => {
-  const [activeTab, setActiveTab] = useState(WalletTabs.RecoveryPhrase);
+const ImportWalletsComponent = ({navigation, route}: Props) => {
+  const {walletTabs, walletNetwork} = route?.params ?? {};
+
+  const {showToast, toggleBackdrop} = useCommon();
+  const dispatch = useAppDispatch();
+
+  const [activeTab, setActiveTab] = useState(walletTabs);
   const [walletName, setWalletName] = useState('');
   const [recoveryPhrase, setRecoveryPhrase] = useState('');
   const [accept, toggleAccept] = useState(false);
+
+  const [privateKey, {isLoading}] = usePrivateKeyMutation();
+  const [secretPhase, {isLoading: isSecretLoading}] = useSecretPhaseMutation();
+
+  const {userInfo = {}, isHomeNewWallet} = useSelector(
+    ({authReducer}: any) => authReducer,
+  );
+
+  useEffect(() => {
+    toggleBackdrop(isLoading || isSecretLoading);
+  }, [isLoading || isSecretLoading]);
 
   const recoveryPhraseTab = activeTab === WalletTabs.RecoveryPhrase;
 
@@ -33,6 +64,14 @@ const ImportWalletsComponent = ({}: Props) => {
   const titleTxt = recoveryPhraseTab
     ? 'Please use cold wallet in disconnected environment. The cold wallet must be used in conjunction with watch wallet. You can create you new wallet offline here, please back it up well.'
     : 'Please use cold wallet in disconnected environment. The cold wallet must be used in conjunction with watch wallet. You can create you new wallet offline here, please back it up well.';
+
+  const fetchCopiedKey = async () => {
+    const text = await Clipboard.getString();
+    if (text) {
+      console.log('text', text);
+      setRecoveryPhrase(text);
+    }
+  };
 
   const tabsView = () => {
     return (
@@ -51,7 +90,7 @@ const ImportWalletsComponent = ({}: Props) => {
             <TouchableOpacity>
               <Text style={styles.pasteTxt}>KeyPal Card</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => fetchCopiedKey()}>
               <Text style={styles.pasteTxt}>Paste</Text>
             </TouchableOpacity>
           </View>
@@ -75,6 +114,59 @@ const ImportWalletsComponent = ({}: Props) => {
       </View>
     );
   };
+
+  const importKeys = async () => {
+    try {
+      let params: any = {
+        network: walletNetwork?.ID,
+        userid: userInfo?.generated_Id,
+      };
+      params =
+        activeTab === WalletTabs.PrivateKey
+          ? {
+              ...params,
+              private_key: recoveryPhrase,
+            }
+          : {
+              ...params,
+              secret_key: [recoveryPhrase],
+            };
+      let response: any;
+      if (activeTab === WalletTabs.PrivateKey) {
+        response = await privateKey(params).unwrap();
+      } else {
+        response = await secretPhase(params).unwrap();
+      }
+
+      if (response?.success) {
+        dispatch(authAction.setWalletInfo(response?.walletinfo));
+        await setStorage(
+          localStorageKey.walletInfo,
+          JSON.stringify(response?.walletinfo),
+        );
+        if (isHomeNewWallet) {
+          dispatch(authAction.setHomeNewWallet(false));
+          navigation.navigate('DASH_BOARD', {
+            screen: 'Asset',
+          });
+          navigation.replace('DASH_BOARD');
+        } else {
+          dispatch(authAction.setAuthenticated(true));
+        }
+      } else {
+        showToast({
+          type: 'error',
+          text1: response?.message,
+        });
+      }
+    } catch (err: any) {
+      showToast({
+        type: 'error',
+        text1: getErrorMessage(err),
+      });
+    }
+  };
+
   return (
     <>
       <StatusBar
@@ -110,7 +202,10 @@ const ImportWalletsComponent = ({}: Props) => {
           </View>
           <TouchableOpacity
             style={[styles.startedTouch, !accept && styles.touchOpacity]}
-            disabled={!accept}>
+            disabled={!accept}
+            onPress={() => {
+              importKeys();
+            }}>
             <LinearGradient
               colors={['#6B121C', '#ED1C24']}
               style={styles.startedBtn}>

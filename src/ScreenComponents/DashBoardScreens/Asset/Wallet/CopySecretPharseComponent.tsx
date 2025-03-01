@@ -10,31 +10,29 @@ import {
   View,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import appStyles from '../../../utils/appStyles';
-import {colors} from '../../../utils/colors';
-import DashBoardHeaderComponent from '../../../components/DashBoardHeaderComponent';
-import LinearGradient from 'react-native-linear-gradient';
-import PlainTxt from '../../../assets/plain_txt.svg';
-import PlainTxtEye from '../../../assets/plain_txt_eye.svg';
-import CustomTabs, {RecoveryTabs} from '../../../components/CustomTabs';
-import {Ionicons} from '../../../utils/IconUtils';
+import PlainTxt from '../../../../assets/plain_txt.svg';
+import PlainTxtEye from '../../../../assets/plain_txt_eye.svg';
+import CustomTabs, {RecoveryTabs} from '../../../../components/CustomTabs';
+import appStyles from '../../../../utils/appStyles';
+import {Ionicons} from '../../../../utils/IconUtils';
+import {colors} from '../../../../utils/colors';
+import DashBoardHeaderComponent from '../../../../components/DashBoardHeaderComponent';
+import Clipboard from '@react-native-clipboard/clipboard';
+import useCommon from '../../../../hooks/useCommon';
 import QRCode from 'react-native-qrcode-svg';
 
-type Props = NativeStackScreenProps<any, 'COMPLETED_BACKUP'>;
+type Props = NativeStackScreenProps<any, 'COPY_SECRET_PHARSE'>;
 
-const CompletedBackupComponent = ({route, navigation}: Props) => {
+const CopySecretPharseComponent = ({route}: Props) => {
   const {walletInfo} = route?.params ?? {};
+  const {showToast} = useCommon();
+
+  const secretPharse = JSON.parse(walletInfo?.secret_pharse);
 
   const [activeTab, setActiveTab] = useState(RecoveryTabs.HandwrittenBackup);
   const [showCode, setShowCode] = useState(false);
   const [showQRCode, setShowQRCode] = useState(false);
   const [showQR, setShowQR] = useState(false);
-
-  const completedBackup = async () => {
-    navigation.navigate('CHECK_CODE', {
-      walletInfo: walletInfo,
-    });
-  };
 
   const getIndexTxt = (index: number) => {
     if (index > 8) {
@@ -81,7 +79,7 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
     if (showCode) {
       return (
         <FlatList
-          data={walletInfo?.secret_phase}
+          data={secretPharse}
           renderItem={renderItem}
           numColumns={3}
           columnWrapperStyle={styles.flatListColumn}
@@ -139,27 +137,18 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
             </TouchableOpacity>
           </View>
           {showQRCode ? qRCodeView() : plainTxtView()}
-          <View style={styles.copyView}>
+          <TouchableOpacity
+            style={styles.copyView}
+            onPress={() => {
+              showToast({
+                type: 'success',
+                text1: 'Secret Phrase Copied Successfully',
+              });
+              Clipboard.setString(walletInfo?.secret_pharse);
+            }}>
             <Ionicons name={'copy-outline'} size={12} color={'#7C8FAC'} />
             <Text style={styles.copyTxt}>Copy secret recovery phase</Text>
-          </View>
-          <View style={styles.importantView}>
-            <Text style={styles.impTitleTxt}>Remember:</Text>
-            <Text style={styles.impSubTitleTxt}>
-              {'\u25CF'} Don’t disclose recovery phase to anyone
-            </Text>
-            <Text style={styles.impSubTitleTxt}>
-              {'\u25CF'} Once the recovery phase is lost, asset cannot be
-              recovery
-            </Text>
-            <Text style={styles.impSubTitleTxt}>
-              {'\u25CF'} Don’t disclose recovery phase to anyone
-            </Text>
-            <Text style={styles.impSubTitleTxt}>
-              {'\u25CF'} Once the secret recovery phase is lost, asset cannot be
-              recovery
-            </Text>
-          </View>
+          </TouchableOpacity>
         </View>
       );
     }
@@ -174,7 +163,9 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent title={'Backup Secret Recovery Phrase'} />
         <View style={styles.tabsView}>
           <CustomTabs
@@ -189,15 +180,6 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
         <ScrollView>
           <View style={styles.container}>{tabsView()}</View>
         </ScrollView>
-        <TouchableOpacity style={styles.startedTouch} onPress={completedBackup}>
-          <LinearGradient
-            colors={['#6B121C', '#ED1C24']}
-            style={styles.startedBtn}>
-            <Text style={styles.startedBtnTxt}>
-              Completed Backup & Verify It
-            </Text>
-          </LinearGradient>
-        </TouchableOpacity>
       </SafeAreaView>
     </>
   );
@@ -308,7 +290,7 @@ const styles = StyleSheet.create({
   },
   copyView: {
     flexDirection: 'row',
-    marginTop: 10,
+    marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -385,7 +367,7 @@ const styles = StyleSheet.create({
     width: 200,
     padding: 30,
     backgroundColor: colors.white,
-    marginTop: 10,
+    marginTop: 20,
     alignSelf: 'center',
   },
   QROpacityView: {
@@ -393,4 +375,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CompletedBackupComponent;
+export default CopySecretPharseComponent;

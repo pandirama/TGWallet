@@ -154,7 +154,8 @@ const DEFIComponent = () => {
     <FlatList
       data={DEFIs}
       renderItem={renderItem}
-      keyExtractor={(item: any) => item?.id}
+      removeClippedSubviews={false}
+      keyExtractor={(item, index) => 'key' + index}
       showsVerticalScrollIndicator={false}
       ItemSeparatorComponent={() => {
         return <View style={styles.borderView} />;
