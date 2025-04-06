@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useCallback, useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   ScrollView,
@@ -17,11 +18,47 @@ import Transaction from '../../../assets/profile/transaction.svg';
 import WalletGuide from '../../../assets/profile/wallet_guide.svg';
 import {Fontisto, Ionicons, SimpleLineIcons} from '../../../utils/IconUtils';
 import WalletListComponent from '../../../components/WalletListComponent';
+import {useGetNetworksQuery} from '../../../api/auth/authAPI';
+import {useFocusEffect} from '@react-navigation/native';
+import {getErrorMessage} from '../../../utils/common';
+import useCommon from '../../../hooks/useCommon';
+import {useSelector} from 'react-redux';
 
 type Props = NativeStackScreenProps<any, 'PROFILE'>;
 
 const ProfileComponent = ({navigation}: Props) => {
+  const {showToast, toggleBackdrop} = useCommon();
+
+  const {walletInfo = {}} = useSelector(({authReducer}: any) => authReducer);
+  const {network_mode} = walletInfo ?? {};
+
   const [showWallets, setShowWallets] = useState(false);
+  const [networks, setNetworks] = useState<any>([]);
+  const [selectedNetwork, setSelectedNetwork] = useState<any>(null);
+
+  const {isFetching, refetch} = useGetNetworksQuery();
+
+  useEffect(() => {
+    toggleBackdrop(isFetching);
+  }, [isFetching]);
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch().then(response => {
+        const {isSuccess, isError, data, error} = response;
+        if (isSuccess) {
+          setNetworks(data?.networks);
+          setSelectedNetwork(data?.networks[0]);
+        } else if (isError) {
+          showToast({
+            type: 'error',
+            text1: getErrorMessage(error),
+          });
+        }
+      });
+      return () => {};
+    }, []),
+  );
 
   return (
     <>
@@ -202,6 +239,9 @@ const ProfileComponent = ({navigation}: Props) => {
           navigation={navigation}
           showWallets={showWallets}
           setShowWallets={setShowWallets}
+          networkMode={network_mode}
+          selectedNetworkMode={selectedNetwork}
+          networks={networks}
         />
       </SafeAreaView>
     </>

@@ -1,148 +1,40 @@
 /* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {colors} from '../../../utils/colors';
-import BitCoin from '../../../assets/bit_coin.svg';
-import Ethereum from '../../../assets/ethereum.svg';
 
-const DEFIs = [
-  {
-    id: 0,
-    walletName: 'USDC',
-    amount: '$3,678.05',
-    spendAmount: '+72.03%',
-    add: true,
-    icon: <BitCoin width={28} height={28} />,
-  },
-  {
-    id: 1,
-    walletName: 'ETH',
-    amount: '$3,678.05',
-    spendAmount: '-72.03%',
-    add: false,
-    icon: <Ethereum width={28} height={28} />,
-  },
-  {
-    id: 2,
-    walletName: 'USDC',
-    amount: '$3,678.05',
-    spendAmount: '+72.03%',
-    add: true,
-    icon: <BitCoin width={28} height={28} />,
-  },
-  {
-    id: 3,
-    walletName: 'ETH',
-    amount: '$3,678.05',
-    spendAmount: '-72.03%',
-    add: false,
-    icon: <Ethereum width={28} height={28} />,
-  },
-  {
-    id: 4,
-    walletName: 'USDC',
-    amount: '$3,678.05',
-    spendAmount: '+72.03%',
-    add: true,
-    icon: <BitCoin width={28} height={28} />,
-  },
-  {
-    id: 5,
-    walletName: 'ETH',
-    amount: '$3,678.05',
-    spendAmount: '-72.03%',
-    add: false,
-    icon: <Ethereum width={28} height={28} />,
-  },
-  {
-    id: 6,
-    walletName: 'USDC',
-    amount: '$3,678.05',
-    spendAmount: '+72.03%',
-    add: true,
-    icon: <BitCoin width={28} height={28} />,
-  },
-  {
-    id: 7,
-    walletName: 'ETH',
-    amount: '$3,678.05',
-    spendAmount: '-72.03%',
-    add: false,
-    icon: <Ethereum width={28} height={28} />,
-  },
-  {
-    id: 8,
-    walletName: 'USDC',
-    amount: '$3,678.05',
-    spendAmount: '+72.03%',
-    add: true,
-    icon: <BitCoin width={28} height={28} />,
-  },
-  {
-    id: 9,
-    walletName: 'ETH',
-    amount: '$3,678.05',
-    spendAmount: '-72.03%',
-    add: false,
-    icon: <Ethereum width={28} height={28} />,
-  },
-  {
-    id: 10,
-    walletName: 'USDC',
-    amount: '$3,678.05',
-    spendAmount: '+72.03%',
-    add: true,
-    icon: <BitCoin width={28} height={28} />,
-  },
-  {
-    id: 11,
-    walletName: 'ETH',
-    amount: '$3,678.05',
-    spendAmount: '-72.03%',
-    add: false,
-    icon: <Ethereum width={28} height={28} />,
-  },
-];
 
-const DEFIComponent = () => {
+const DEFIComponent = ({tokenAssets, navigation}: any) => {
   const renderItem = ({item}: any) => {
     return (
-      <TouchableOpacity style={styles.defiListTouch}>
-        <View style={styles.defiListIconView}>{item?.icon}</View>
+      <TouchableOpacity
+        style={styles.defiListTouch}
+        onPress={() =>
+          navigation.navigate('TOKEN', {
+            token: item,
+          })
+        }>
+        <View style={styles.defiListIconView}>
+          <Image
+            style={styles.itemLogo}
+            source={{
+              uri: item?.tokenImage,
+            }}
+          />
+        </View>
         <View style={styles.defiListHeaderTxtView}>
+          <Text style={[styles.defiListnameTxt]}>{item?.tokenName}</Text>
           <View style={styles.defiListTxtView}>
-            <Text style={[styles.defiListnameTxt, {flex: 1}]}>
-              {item?.walletName}
-            </Text>
-            <Text style={styles.defiListnameTxt}>0</Text>
-          </View>
-          <View style={styles.defiListTxtView}>
-            <Text style={styles.defiListamountTxt}>{item?.amount}</Text>
-            <View
-              style={[
-                styles.spendView,
-                item?.add ? styles.spendColour : styles.minusColor,
-              ]}>
-              <Text
-                style={[
-                  {
-                    fontSize: 12,
-                    fontWeight: 500,
-                  },
-                  item?.add
-                    ? {
-                        color: '#167E8D',
-                      }
-                    : {color: '#D32F2F'},
-                ]}>
-                {item?.spendAmount}
-              </Text>
-            </View>
-
-            <Text
-              style={[styles.defiListamountTxt, {textAlign: 'right', flex: 1}]}>
-              $0
+            <Text style={styles.defiListnameTxt}>{item?.balance}</Text>
+            <Text style={[styles.defiListamountTxt]}>
+              {`$${item?.balanceInUSD}`}
             </Text>
           </View>
         </View>
@@ -152,7 +44,7 @@ const DEFIComponent = () => {
 
   return (
     <FlatList
-      data={DEFIs}
+      data={tokenAssets}
       renderItem={renderItem}
       removeClippedSubviews={false}
       keyExtractor={(item, index) => 'key' + index}
@@ -176,18 +68,22 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   defiListHeaderTxtView: {
-    marginLeft: 15,
-    width: '82%',
+    marginLeft: 5,
+    flexDirection: 'row',
+    flex: 1,
   },
   defiListTxtView: {
-    flexDirection: 'row',
     padding: 2,
     alignItems: 'center',
+    alignSelf: 'flex-end',
+    marginRight: 15,
   },
   defiListnameTxt: {
     fontSize: 14,
     fontWeight: 600,
     color: '#333333',
+    alignSelf: 'center',
+    flex: 1,
   },
   defiListamountTxt: {
     fontSize: 14,
@@ -217,6 +113,10 @@ const styles = StyleSheet.create({
   minusColor: {
     backgroundColor: '#FDEDED',
     borderColor: '#D32F2F',
+  },
+  itemLogo: {
+    width: 30,
+    height: 30,
   },
 });
 

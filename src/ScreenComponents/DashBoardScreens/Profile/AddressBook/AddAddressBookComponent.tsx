@@ -28,7 +28,7 @@ import Scan from '../../../../assets/scan.svg';
 
 type Props = NativeStackScreenProps<any, 'ADD_ADDRESS'>;
 
-const AddAddressBookComponent = ({route}: Props) => {
+const AddAddressBookComponent = ({navigation,route}: Props) => {
   const {networks} = route?.params ?? {};
   const {showToast, toggleBackdrop} = useCommon();
 
@@ -66,6 +66,11 @@ const AddAddressBookComponent = ({route}: Props) => {
 
       const response: any = await addAddressBook(params).unwrap();
       if (response?.success) {
+        showToast({
+          type: 'success',
+          text1: response?.message,
+        });
+        navigation?.goBack();
       } else {
         showToast({
           type: 'error',

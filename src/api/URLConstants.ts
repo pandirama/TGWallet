@@ -4,6 +4,8 @@ export const NEW_WALLET_URLS = {
   REGISTER: `${BASE_URL}/register`,
   NETWORKS: `${BASE_URL}/networks`,
   WALLET_CREATION: `${BASE_URL}/wallet_generate`,
+  HD_WALLET_GENERATION: `${BASE_URL}/hdwallet_generate`,
+  HD_WALLET_CREATION: `${BASE_URL}/hdwallet_create`,
   WALLET_APPROVE: `${BASE_URL}/wallet_approve`,
   GENERATE_MNEMONIC: `${BASE_URL}/generate_mnemonic`,
   VERIFY_MNEMONIC: `${BASE_URL}/verify_mnemonic`,
@@ -17,6 +19,12 @@ export const WALLET_URLS = {
   WALLET_VERIFY_PWD: `${BASE_URL}/verifypwd`,
   PRIVATE_KEY: `${BASE_URL}/walletimport_private`,
   SECRET_PHASE: `${BASE_URL}/walletimport_secret`,
+  WATCH_ADDRESS: `${BASE_URL}/watch_address`,
+  WALLET_INFO: `${BASE_URL}/wallet_info`,
+  TOKEN_INFO: `${BASE_URL}/get_walletinfo`,
+  SEND_WALLET_INFO: `${BASE_URL}/get_sendwallet`,
+  SEND_WALLET: `${BASE_URL}/send_wallet`,
+  RECEIVE_WALLET: `${BASE_URL}/receive_wallet`,
 };
 
 export const ADDRESS_BOOK_URLS = {

@@ -38,9 +38,11 @@ const CheckCodeComponent = ({navigation, route}: Props) => {
 
   const [shuffledCodes, setShuffledCodes] = useState<string[]>([]);
 
-  const {userInfo = {}, isHomeNewWallet} = useSelector(
-    ({authReducer}: any) => authReducer,
-  );
+  const {
+    userInfo = {},
+    isHomeNewWallet,
+    walletType,
+  } = useSelector(({authReducer}: any) => authReducer);
 
   const [verifyMnemonic, {isLoading}] = useVerifyMnemonicMutation();
 
@@ -61,6 +63,8 @@ const CheckCodeComponent = ({navigation, route}: Props) => {
   }, []);
 
   const completedBackup = async () => {
+    // navigation.navigate('HD_WALLET');
+    // return;
     if (updateCodes?.length < walletInfo?.secret_phase?.length) {
       showToast({
         type: 'error',
@@ -89,19 +93,23 @@ const CheckCodeComponent = ({navigation, route}: Props) => {
 
       const response: any = await verifyMnemonic(payload).unwrap();
       if (response?.success) {
-        dispatch(authAction.setWalletInfo(response?.walletinfo));
-        await setStorage(
-          localStorageKey.walletInfo,
-          JSON.stringify(response?.walletinfo),
-        );
-        if (isHomeNewWallet) {
-          dispatch(authAction.setHomeNewWallet(false));
-          navigation.navigate('DASH_BOARD', {
-            screen: 'Asset',
-          });
-          navigation.replace('DASH_BOARD');
-        } else {
-          dispatch(authAction.setAuthenticated(true));
+        if (walletType === 'SingleNetwork') {
+          dispatch(authAction.setWalletInfo(response?.walletinfo));
+          await setStorage(
+            localStorageKey.walletInfo,
+            JSON.stringify(response?.walletinfo),
+          );
+          if (isHomeNewWallet) {
+            dispatch(authAction.setHomeNewWallet(false));
+            navigation.navigate('DASH_BOARD', {
+              screen: 'Asset',
+            });
+            navigation.replace('DASH_BOARD');
+          } else {
+            dispatch(authAction.setAuthenticated(true));
+          }
+        } else if (walletType === 'HDWallet') {
+          navigation.navigate('HD_WALLET');
         }
       } else {
         showToast({

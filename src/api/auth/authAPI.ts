@@ -31,6 +31,22 @@ export const authAPI = createApi({
       }),
       transformResponse: (response: {data: any}) => response,
     }),
+    HDWalletGenerate: builder.mutation({
+      query: registerParams => ({
+        url: NEW_WALLET_URLS.HD_WALLET_GENERATION,
+        method: 'POST',
+        body: registerParams,
+      }),
+      transformResponse: (response: {data: any}) => response,
+    }),
+    HDWalletCreate: builder.mutation({
+      query: registerParams => ({
+        url: NEW_WALLET_URLS.HD_WALLET_CREATION,
+        method: 'POST',
+        body: registerParams,
+      }),
+      transformResponse: (response: {data: any}) => response,
+    }),
     walletApprove: builder.mutation({
       query: registerParams => ({
         url: NEW_WALLET_URLS.WALLET_APPROVE,
@@ -62,6 +78,8 @@ export const {
   useRegisterMutation,
   useGetNetworksQuery,
   useWalletCreateMutation,
+  useHDWalletGenerateMutation,
+  useHDWalletCreateMutation,
   useWalletApproveMutation,
   useGenerateMnemonicMutation,
   useVerifyMnemonicMutation,

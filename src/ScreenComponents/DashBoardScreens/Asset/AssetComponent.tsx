@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useCallback, useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   Dimensions,
   FlatList,
+  Image,
   StatusBar,
   StyleSheet,
   Text,
@@ -14,7 +16,6 @@ import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
 import Scan from '../../../assets/scan.svg';
 import AddWallet from '../../../assets/add_wallet.svg';
-import TokenBranded from '../../../assets/token_branded.svg';
 import Buy from '../../../assets/buy.svg';
 import Send from '../../../assets/send.svg';
 import Eye from '../../../assets/eye.svg';
@@ -30,30 +31,96 @@ import {
 import {useSelector} from 'react-redux';
 import WalletBG from '../../../assets/Wallet_BG.svg';
 import WalletListComponent from '../../../components/WalletListComponent';
+import {useWalletInfosMutation} from '../../../api/walletAPI';
+import useCommon from '../../../hooks/useCommon';
+import {useFocusEffect} from '@react-navigation/native';
+import {getErrorMessage} from '../../../utils/common';
+import {useGetNetworksQuery} from '../../../api/auth/authAPI';
 
 type Props = NativeStackScreenProps<any, 'ASSET'>;
 
 const assets = [
   {
     id: 0,
-    assetName: 'DEFI',
-  },
-  {
-    id: 1,
     assetName: 'Assets',
   },
   {
-    id: 2,
+    id: 1,
     assetName: 'NFT',
   },
 ];
 
 const AssetComponent = ({navigation}: Props) => {
-  const [selectedAsset, setSelectedAsset] = useState('DEFI');
+  const {showToast, toggleBackdrop} = useCommon();
+  const [selectedAsset, setSelectedAsset] = useState('Assets');
+  const [tokenAssets, setTokenAssets] = useState([]);
+  const [tokenNFTs, setTokenNFTs] = useState([]);
   const [showWallets, setShowWallets] = useState(false);
+  const [networks, setNetworks] = useState<any>([]);
+  const [selectedNetwork, setSelectedNetwork] = useState<any>(null);
+  const [walletIcon, setWalletIcon] = useState<any>(null);
 
-  const {walletInfo = {}} = useSelector(({authReducer}: any) => authReducer);
-  const {wallet_name, wallet_balance} = walletInfo ?? {};
+  const {walletInfo = {}, userInfo = {}} = useSelector(
+    ({authReducer}: any) => authReducer,
+  );
+  const {wallet_name, wallet_balance, network_mode} = walletInfo ?? {};
+
+  const {isFetching, refetch} = useGetNetworksQuery();
+
+  const [walletInfos, {isLoading}] = useWalletInfosMutation();
+
+  useEffect(() => {
+    toggleBackdrop(isLoading || isFetching);
+  }, [isLoading || isFetching]);
+
+  const getWalletInfos = async () => {
+    try {
+      const params = {
+        wallet_id: walletInfo?.wallet_id,
+        userid: userInfo?.generated_Id,
+      };
+      const response: any = await walletInfos(params).unwrap();
+      if (response?.success) {
+        setTokenAssets(response?.message?.tokenBalances);
+        setTokenNFTs(response?.message?.nfts);
+      } else {
+        setTokenAssets([]);
+        setTokenNFTs([]);
+        showToast({
+          type: 'error',
+          text1: response?.message,
+        });
+      }
+    } catch (err: any) {
+      showToast({
+        type: 'error',
+        text1: getErrorMessage(err),
+      });
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch().then(response => {
+        const {isSuccess, isError, data, error} = response;
+        if (isSuccess) {
+          setNetworks(data?.networks);
+          setSelectedNetwork(data?.networks[0]);
+          const networkIcon = data?.networks?.filter((network: any) => {
+            return network?.ID === walletInfo?.network_mode;
+          })?.[0]?.Wallet_icon;
+          setWalletIcon(networkIcon);
+        } else if (isError) {
+          showToast({
+            type: 'error',
+            text1: getErrorMessage(error),
+          });
+        }
+      });
+      getWalletInfos();
+      return () => {};
+    }, []),
+  );
 
   const renderItem = ({item}: any) => {
     const findAsset = selectedAsset === item?.assetName;
@@ -95,7 +162,12 @@ const AssetComponent = ({navigation}: Props) => {
                 setShowWallets(true);
               }}>
               <View style={styles.brandIcon}>
-                <TokenBranded width={28} height={28} />
+                <Image
+                  style={styles.walletItemLogo}
+                  source={{
+                    uri: walletIcon,
+                  }}
+                />
               </View>
               <TouchableOpacity style={styles.arrowIcon}>
                 <Ionicons
@@ -118,7 +190,17 @@ const AssetComponent = ({navigation}: Props) => {
         <View style={[appStyles.boxShadow, styles.headerContainer]}>
           <WalletBG width={Dimensions.get('window').width / 1.1} height={182} />
           <View style={styles.walletView}>
-            <TouchableOpacity style={styles.walletNameView}>
+            <TouchableOpacity
+              style={styles.walletNameView}
+              onPress={() => {
+                navigation.navigate('WALLET_STACK', {
+                  screen: 'WALLET_DETAILS',
+                  params: {
+                    walletDetails: walletInfo,
+                    networkIcon: walletInfo?.Wallet_icon,
+                  },
+                });
+              }}>
               <Text style={styles.walletNameTxt}>{wallet_name}</Text>
               <MaterialIcons
                 name={'keyboard-arrow-right'}
@@ -134,12 +216,20 @@ const AssetComponent = ({navigation}: Props) => {
             </View>
 
             <View style={[appStyles.boxShadow, styles.headerSubContainer]}>
-              <TouchableOpacity style={styles.menuItemTouch}>
+              <TouchableOpacity
+                style={styles.menuItemTouch}
+                onPress={() => {
+                  navigation.navigate('SEND');
+                }}>
                 <Send width={28} height={28} />
                 <Text style={styles.menuItemTxt}>Send</Text>
               </TouchableOpacity>
               <View style={styles.horizontalBorder} />
-              <TouchableOpacity style={styles.menuItemTouch}>
+              <TouchableOpacity
+                style={styles.menuItemTouch}
+                onPress={() => {
+                  navigation.navigate('RECEIVE');
+                }}>
                 <Ionicons
                   name={'arrow-down-outline'}
                   size={26}
@@ -175,13 +265,20 @@ const AssetComponent = ({navigation}: Props) => {
             <Feather name={'plus'} size={20} color={'#333333'} />
           </TouchableOpacity>
         </View>
-        {selectedAsset === 'DEFI' && <DEFIComponent />}
-        {selectedAsset === 'Assets' && <></>}
-        {selectedAsset === 'NFT' && <NFTComponent navigation={navigation} />}
+        {/* {selectedAsset === 'DEFI' && <DEFIComponent />} */}
+        {selectedAsset === 'Assets' && (
+          <DEFIComponent tokenAssets={tokenAssets} navigation={navigation} />
+        )}
+        {selectedAsset === 'NFT' && (
+          <NFTComponent navigation={navigation} tokenNFTs={tokenNFTs} />
+        )}
         <WalletListComponent
           navigation={navigation}
           showWallets={showWallets}
           setShowWallets={setShowWallets}
+          networkMode={network_mode}
+          selectedNetworkMode={selectedNetwork}
+          networks={networks}
         />
       </SafeAreaView>
     </>
@@ -410,6 +507,11 @@ const styles = StyleSheet.create({
   itemLogo: {
     width: 30,
     height: 30,
+  },
+  walletItemLogo: {
+    width: 28,
+    height: 28,
+    borderRadius: 100,
   },
   walletListView: {
     flexDirection: 'row',

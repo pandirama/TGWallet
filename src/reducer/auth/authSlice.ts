@@ -6,6 +6,7 @@ const initialState = {
   isFinishStarted: false,
   userInfo: null,
   walletInfo: null,
+  walletType: null,
   isHomeNewWallet: false,
 };
 
@@ -35,6 +36,9 @@ const slice = createSlice({
     },
     setWalletInfo: (state, action) => {
       state.walletInfo = action.payload;
+    },
+    setWalletType: (state, action) => {
+      state.walletType = action.payload;
     },
     setHomeNewWallet: (state, action) => {
       state.isHomeNewWallet = action.payload;

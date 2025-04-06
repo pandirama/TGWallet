@@ -64,6 +64,54 @@ export const walletAPI = createApi({
       }),
       transformResponse: (response: {data: any}) => response,
     }),
+    watchAddress: builder.mutation({
+      query: walletParams => ({
+        url: WALLET_URLS.WATCH_ADDRESS,
+        method: 'POST',
+        body: walletParams,
+      }),
+      transformResponse: (response: {data: any}) => response,
+    }),
+    walletInfos: builder.mutation({
+      query: walletParams => ({
+        url: WALLET_URLS.WALLET_INFO,
+        method: 'POST',
+        body: walletParams,
+      }),
+      transformResponse: (response: {data: any}) => response,
+    }),
+    tokenInfo: builder.mutation({
+      query: walletParams => ({
+        url: WALLET_URLS.TOKEN_INFO,
+        method: 'POST',
+        body: walletParams,
+      }),
+      transformResponse: (response: {data: any}) => response,
+    }),
+    getSendWallet: builder.mutation({
+      query: walletParams => ({
+        url: WALLET_URLS.SEND_WALLET_INFO,
+        method: 'POST',
+        body: walletParams,
+      }),
+      transformResponse: (response: {data: any}) => response,
+    }),
+    sendWallet: builder.mutation({
+      query: walletParams => ({
+        url: WALLET_URLS.SEND_WALLET,
+        method: 'POST',
+        body: walletParams,
+      }),
+      transformResponse: (response: {data: any}) => response,
+    }),
+    receiveWallet: builder.mutation({
+      query: walletParams => ({
+        url: WALLET_URLS.RECEIVE_WALLET,
+        method: 'POST',
+        body: walletParams,
+      }),
+      transformResponse: (response: {data: any}) => response,
+    }),
   }),
 });
 
@@ -75,4 +123,10 @@ export const {
   useWalletVerifyPwdMutation,
   usePrivateKeyMutation,
   useSecretPhaseMutation,
+  useWatchAddressMutation,
+  useWalletInfosMutation,
+  useTokenInfoMutation,
+  useGetSendWalletMutation,
+  useSendWalletMutation,
+  useReceiveWalletMutation,
 } = walletAPI;

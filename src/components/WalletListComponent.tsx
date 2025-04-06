@@ -1,164 +1,27 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {useSelector} from 'react-redux';
+import React, {useEffect, useRef} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import ActionSheet, {ActionSheetRef} from 'react-native-actions-sheet';
-import {useFocusEffect} from '@react-navigation/native';
-import Modal from 'react-native-modal';
-import Clipboard from '@react-native-clipboard/clipboard';
-import {Feather, Ionicons} from '../utils/IconUtils';
-import appStyles from '../utils/appStyles';
-import {useAppDispatch} from '../store';
-import {authAction} from '../reducer/auth/authSlice';
-import {useWalletListMutation} from '../api/walletAPI';
-import {useGetNetworksQuery} from '../api/auth/authAPI';
-import useCommon from '../hooks/useCommon';
+import {Ionicons} from '../utils/IconUtils';
 import {colors} from '../utils/colors';
-import {getErrorMessage} from '../utils/common';
+import WalletComponent from './WalletComponent';
 
 const WalletListComponent = ({
   navigation,
   setShowWallets,
   showWallets,
+  networkMode = '',
+  selectedNetworkMode,
+  networks,
 }: any) => {
-  const {showToast, toggleBackdrop} = useCommon();
-  const dispatch = useAppDispatch();
-
   const actionSheetRef = useRef<ActionSheetRef>(null);
-
-  const [networks, setNetworks] = useState<any>([]);
-  const [wallets, setWallets] = useState<any>(null);
-  const [selectedNetwork, setSelectedNetwork] = useState<any>(null);
-
-  const [addWalletVisible, setAddWalletVisible] = useState(false);
-
-  const {userInfo = {}} = useSelector(({authReducer}: any) => authReducer);
-
-  const [walletCreate, {isLoading}] = useWalletListMutation();
-  const {isFetching, refetch} = useGetNetworksQuery();
-
-  useEffect(() => {
-    toggleBackdrop(isFetching);
-  }, [isFetching]);
 
   useEffect(() => {
     if (showWallets) {
       actionSheetRef?.current?.show();
+    }else{
+      actionSheetRef?.current?.hide();
     }
   }, [showWallets]);
-
-  const getWallets = async (networkID: string) => {
-    try {
-      const params = {
-        network: networkID,
-        userid: userInfo?.generated_Id,
-      };
-      const response: any = await walletCreate(params).unwrap();
-      if (response?.success) {
-        setWallets(response?.wallets);
-      } else {
-        setWallets([]);
-        showToast({
-          type: 'error',
-          text1: response?.message,
-        });
-      }
-    } catch (err: any) {
-      showToast({
-        type: 'error',
-        text1: getErrorMessage(err),
-      });
-    }
-  };
-
-  useFocusEffect(
-    useCallback(() => {
-      refetch().then(response => {
-        const {isSuccess, isError, data, error} = response;
-        if (isSuccess) {
-          setNetworks(data?.networks);
-          setSelectedNetwork(data?.networks[0]);
-          getWallets(data?.networks[0]);
-        } else if (isError) {
-          showToast({
-            type: 'error',
-            text1: getErrorMessage(error),
-          });
-        }
-      });
-      return () => {};
-    }, []),
-  );
-
-  const renderWalletItem = ({item}: any) => {
-    return (
-      <TouchableOpacity
-        style={[appStyles.boxShadow, styles.walletContainer]}
-        onPress={() => {
-          actionSheetRef?.current?.hide();
-          setShowWallets(false);
-          navigation.navigate('WALLET_STACK', {
-            screen: 'WALLET_DETAILS',
-            params: {
-              walletDetails: item,
-              networkIcon: selectedNetwork?.Wallet_icon,
-            },
-          });
-        }}>
-        <Text style={styles.walletListNameTxt}>{item?.wallet_name}</Text>
-        {item?.wallet_address && (
-          <TouchableOpacity
-            style={styles.addressView}
-            onPress={() => {
-              showToast({
-                type: 'success',
-                text1: 'Address Copied Successfully',
-              });
-              Clipboard.setString(item?.wallet_address);
-            }}>
-            <Text style={styles.walletAddressTxt}>{item?.wallet_address}</Text>
-            <Ionicons name={'copy-outline'} size={16} color={'#7C8FAC'} />
-          </TouchableOpacity>
-        )}
-        <Text style={styles.walletBalanceTxt}>{item?.wallet_balance}</Text>
-      </TouchableOpacity>
-    );
-  };
-
-  const renderNetworkItem = ({item}: any) => {
-    return (
-      <TouchableOpacity
-        style={[
-          styles.networkListTouch,
-          selectedNetwork?.ID === item?.ID.toString() && {
-            backgroundColor: colors.white,
-          },
-        ]}
-        onPress={() => {
-          setSelectedNetwork(item);
-          getWallets(item?.ID);
-        }}>
-        <Image
-          style={styles.itemLogo}
-          source={{
-            uri: item?.Wallet_icon,
-          }}
-        />
-      </TouchableOpacity>
-    );
-  };
-
-  const onDismiss = () => {
-    setAddWalletVisible(false);
-  };
 
   return (
     <ActionSheet
@@ -190,103 +53,14 @@ const WalletListComponent = ({
         </View>
       </View>
       <View style={styles.borderView} />
-      <View style={styles.walletListView}>
-        <View style={styles.leftList}>
-          <FlatList
-            data={networks}
-            renderItem={renderNetworkItem}
-            removeClippedSubviews={false}
-            keyExtractor={(item, index) => 'key' + index}
-            style={styles.networkList}
-            showsVerticalScrollIndicator={false}
-          />
-        </View>
-
-        {isLoading ? (
-          <View style={styles.loadingView}>
-            <ActivityIndicator size="large" color={'#6B121C'} />
-          </View>
-        ) : (
-          <View style={styles.walletListTitleView}>
-            <View style={styles.walletTitView}>
-              <Text style={styles.selectedWalletTxt}>
-                {selectedNetwork?.Wallet_network}
-              </Text>
-              <TouchableOpacity
-                style={styles.addWalletIcon}
-                onPress={() => setAddWalletVisible(true)}>
-                <Feather name={'plus'} size={20} color={'#333333'} />
-              </TouchableOpacity>
-            </View>
-
-            <FlatList
-              data={wallets}
-              renderItem={renderWalletItem}
-              removeClippedSubviews={false}
-              keyExtractor={(item, index) => 'key' + index}
-              contentContainerStyle={styles.walletContentList}
-              showsVerticalScrollIndicator={false}
-            />
-          </View>
-        )}
-      </View>
-      <Modal
-        isVisible={addWalletVisible}
-        onBackdropPress={onDismiss}
-        animationInTiming={500}
-        animationOutTiming={700}
-        useNativeDriver={true}>
-        <View style={styles.container}>
-          <View style={styles.actionTitleView}>
-            <Text style={styles.titleTxt}>Add Wallet</Text>
-            <TouchableOpacity onPress={onDismiss} style={styles.closeTouch}>
-              <Ionicons name={'close'} size={20} color={'#9C9DA0'} />
-            </TouchableOpacity>
-          </View>
-          <View style={[appStyles.boxShadow, styles.actionsheetView]}>
-            <TouchableOpacity
-              style={styles.actionSheetTouch}
-              onPress={() => {
-                setAddWalletVisible(false);
-                actionSheetRef?.current?.hide();
-                setShowWallets(false);
-                dispatch(authAction.setHomeNewWallet(true));
-                navigation.navigate('WALLET_STACK', {
-                  screen: 'NEW_WALLET',
-                  params: {
-                    screen: 'NEW_WALLET_PASSWORD',
-                    params: {walletNetwork: selectedNetwork},
-                  },
-                });
-              }}>
-              <Text style={styles.actionsheetTxt}>Create Wallet</Text>
-            </TouchableOpacity>
-            <View style={styles.actionSheetBorder} />
-            <TouchableOpacity
-              style={styles.actionSheetTouch}
-              onPress={() => {
-                setAddWalletVisible(false);
-                actionSheetRef?.current?.hide();
-                setShowWallets(false);
-                dispatch(authAction.setHomeNewWallet(true));
-                navigation.navigate('WALLET_STACK', {
-                  screen: 'IMPORT_WALLET',
-                  params: {
-                    screen: 'IMPORT_TYPE',
-                    params: {walletNetwork: selectedNetwork},
-                  },
-                });
-              }}>
-              <Text style={styles.actionsheetTxt}>Import Wallet</Text>
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity
-            style={[appStyles.boxShadow, styles.cancelTouch]}
-            onPress={() => setAddWalletVisible(false)}>
-            <Text style={styles.cancelTxt}>Cancel</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
+      <WalletComponent
+        navigation={navigation}
+        showWallets={showWallets}
+        setShowWallets={setShowWallets}
+        networkMode={networkMode}
+        selectedNetworkMode={selectedNetworkMode}
+        networks={networks}
+      />
     </ActionSheet>
   );
 };
@@ -483,6 +257,27 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlignVertical: 'center',
     marginLeft: 12,
+  },
+  walletListLabelTopView: {
+    flexDirection: 'row',
+    flex: 1,
+  },
+  walletListLabelView: {
+    marginLeft: 12,
+    borderWidth: 1,
+    borderRadius: 5,
+    flex: 0.3,
+    alignItems: 'center',
+    borderColor: colors.gray_bg,
+    justifyContent: 'center',
+    paddingTop: 2,
+    paddingBottom: 2,
+  },
+  walletListLabelTxt: {
+    fontSize: 14,
+    fontWeight: 400,
+    color: '#333333',
+    textAlign: 'center',
   },
   addressView: {
     flexDirection: 'row',

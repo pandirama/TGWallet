@@ -24,7 +24,6 @@ type Props = NativeStackScreenProps<any, 'IMPORT_TYPE'>;
 const ImportTypeComponent = ({navigation, route}: Props) => {
   const {walletNetwork} = route?.params ?? {};
 
-  console.log('walletNetwork', walletNetwork);
   return (
     <>
       <StatusBar
@@ -110,7 +109,13 @@ const ImportTypeComponent = ({navigation, route}: Props) => {
                 />
               </TouchableOpacity>
               <View style={styles.borderView} />
-              <TouchableOpacity style={styles.walletTouch}>
+              <TouchableOpacity
+                style={styles.walletTouch}
+                onPress={() => {
+                  navigation.navigate('WATCH_WALLET', {
+                    walletNetwork,
+                  });
+                }}>
                 <WatchWallet width={20} height={20} style={styles.walletIcon} />
                 <View style={styles.txtContainer}>
                   <Text style={styles.walletTitleTxt}>Watch Wallet</Text>

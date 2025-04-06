@@ -16,7 +16,10 @@ import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
 import DashBoardHeaderComponent from '../../../components/DashBoardHeaderComponent';
 import LinearGradient from 'react-native-linear-gradient';
-import {useWalletCreateMutation} from '../../../api/auth/authAPI';
+import {
+  useHDWalletGenerateMutation,
+  useWalletCreateMutation,
+} from '../../../api/auth/authAPI';
 import useCommon from '../../../hooks/useCommon';
 import {getErrorMessage} from '../../../utils/common';
 import {useSelector} from 'react-redux';
@@ -48,11 +51,16 @@ const WalletPasswordComponent = ({route, navigation}: Props) => {
 
   const [walletCreate, {isLoading}] = useWalletCreateMutation();
 
-  const {userInfo = {}} = useSelector(({authReducer}: any) => authReducer);
+  const [HDWalletGenerate, {isLoading: isHDWalletLoading}] =
+    useHDWalletGenerateMutation();
+
+  const {userInfo = {}, walletType} = useSelector(
+    ({authReducer}: any) => authReducer,
+  );
 
   useEffect(() => {
-    toggleBackdrop(isLoading);
-  }, [isLoading]);
+    toggleBackdrop(isLoading || isHDWalletLoading);
+  }, [isLoading || isHDWalletLoading]);
 
   const generateWallet = async () => {
     if (walletName === '') {
@@ -82,8 +90,13 @@ const WalletPasswordComponent = ({route, navigation}: Props) => {
         password: password,
         hint: passwordHint,
       };
+      let response: any;
+      if (walletType === 'HDWallet') {
+        response = await HDWalletGenerate(payload).unwrap();
+      } else if (walletType === 'SingleNetwork') {
+        response = await walletCreate(payload).unwrap();
+      }
 
-      const response: any = await walletCreate(payload).unwrap();
       if (response?.success) {
         navigation.navigate('CONFIRM_WALLET', {
           walletInfo: response?.walletinfo,
@@ -124,7 +137,7 @@ const WalletPasswordComponent = ({route, navigation}: Props) => {
 
             <View>
               <Text style={styles.inputTitleTxt}>
-                Wallet Name ({walletNetwork?.Wallet_network})
+                Wallet Name ({walletNetwork?.Wallet_network ?? 'HD'})
               </Text>
               <View style={styles.searchContainer}>
                 <TextInput

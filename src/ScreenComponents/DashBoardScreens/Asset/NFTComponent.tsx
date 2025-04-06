@@ -64,7 +64,7 @@ const NFTs = [
   },
 ];
 
-const NFTComponent = ({navigation}: any) => {
+const NFTComponent = ({navigation, tokenNFTs}: any) => {
   const [showNFTs, setShowNFTs] = useState(false);
 
   const renderItem = ({item}: any) => {

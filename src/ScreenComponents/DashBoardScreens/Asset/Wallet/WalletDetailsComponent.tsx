@@ -31,7 +31,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 type Props = NativeStackScreenProps<any, 'WALLET_DETAILS'>;
 
 const WalletDetailsComponent = ({navigation, route}: Props) => {
-  const {walletDetails, networkIcon} = route?.params ?? {};
+  const {walletDetails, networkIcon = ''} = route?.params ?? {};
 
   const {showToast, toggleBackdrop} = useCommon();
 

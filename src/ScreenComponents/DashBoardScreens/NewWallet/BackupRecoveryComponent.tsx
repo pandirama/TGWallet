@@ -93,7 +93,7 @@ const BackupRecoveryComponent = ({navigation, route}: Props) => {
                 <Ionicons
                   name={accept1 ? 'checkbox-outline' : 'square-outline'}
                   size={18}
-                  color={accept1 ? '##0054A6' : '#E0E0E0'}
+                  color={accept1 ? '#0054A6' : '#E0E0E0'}
                 />
               </TouchableOpacity>
               <Text style={styles.readAgreeTxt}>

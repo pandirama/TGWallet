@@ -21,6 +21,8 @@ import CheckCodeComponent from '../ScreenComponents/DashBoardScreens/NewWallet/C
 import ImportWalletsComponent from '../ScreenComponents/DashBoardScreens/ImportWallet/ImportWalletsComponent';
 import DashboardBottomNavigator from './DashboardBottomNavigator';
 import ImportTypeComponent from '../ScreenComponents/DashBoardScreens/ImportWallet/ImportTypeComponent';
+import HDWalletComponent from '../ScreenComponents/DashBoardScreens/NewWallet/HDWalletComponent';
+import WatchWalletComponent from '../ScreenComponents/DashBoardScreens/ImportWallet/WatchWalletComponent';
 
 const defaultTheme = {
   ...DefaultTheme,
@@ -54,6 +56,7 @@ export const NewWalletStackNavigator = () => {
         component={CompletedBackupComponent}
       />
       <NewWalletStack.Screen name="CHECK_CODE" component={CheckCodeComponent} />
+      <NewWalletStack.Screen name="HD_WALLET" component={HDWalletComponent} />
     </NewWalletStack.Navigator>
   );
 };
@@ -72,6 +75,10 @@ export const ImportWalletStackNavigator = () => {
       <ImportWalletStack.Screen
         name="IMPORT_WALLET"
         component={ImportWalletsComponent}
+      />
+      <ImportWalletStack.Screen
+        name="WATCH_WALLET"
+        component={WatchWalletComponent}
       />
     </ImportWalletStack.Navigator>
   );

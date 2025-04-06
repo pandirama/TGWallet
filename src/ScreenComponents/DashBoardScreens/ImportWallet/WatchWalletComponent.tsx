@@ -2,7 +2,6 @@
 import React, {useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
-  Platform,
   StatusBar,
   StyleSheet,
   Text,
@@ -15,9 +14,8 @@ import appStyles from '../../../utils/appStyles';
 import Scan from '../../../assets/scan.svg';
 import {colors} from '../../../utils/colors';
 import DashBoardHeaderComponent from '../../../components/DashBoardHeaderComponent';
-import CustomTabs, {WalletTabs} from '../../../components/CustomTabs';
 import LinearGradient from 'react-native-linear-gradient';
-import {Feather, Ionicons} from '../../../utils/IconUtils';
+import {Ionicons} from '../../../utils/IconUtils';
 import useCommon from '../../../hooks/useCommon';
 import {useSelector} from 'react-redux';
 import {
@@ -26,78 +24,77 @@ import {
   setStorage,
 } from '../../../utils/common';
 import {
-  usePrivateKeyMutation,
-  useSecretPhaseMutation,
+  useWatchAddressMutation,
 } from '../../../api/walletAPI';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {useAppDispatch} from '../../../store';
 import {authAction} from '../../../reducer/auth/authSlice';
 
-type Props = NativeStackScreenProps<any, 'IMPORT_WALLET'>;
+type Props = NativeStackScreenProps<any, 'WATCH_WALLET'>;
 
-const ImportWalletsComponent = ({navigation, route}: Props) => {
-  const {walletTabs, walletNetwork} = route?.params ?? {};
+const WatchWalletComponent = ({navigation, route}: Props) => {
+  const {walletNetwork} = route?.params ?? {};
 
   const {showToast, toggleBackdrop} = useCommon();
   const dispatch = useAppDispatch();
 
-  const [activeTab, setActiveTab] = useState(walletTabs);
+  const [chainType, setChainType] = useState(
+    walletNetwork?.Wallet_network ?? '',
+  );
   const [walletName, setWalletName] = useState('');
-  const [recoveryPhrase, setRecoveryPhrase] = useState('');
+  const [walletAddress, setWalletAddress] = useState('');
   const [accept, toggleAccept] = useState(false);
-  const [showPassword, togglePassword] = useState(true);
-  const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState(false);
-  const [passwordErrorTxt, setPasswordErrorTxt] = useState('');
 
-  const [privateKey, {isLoading}] = usePrivateKeyMutation();
-  const [secretPhase, {isLoading: isSecretLoading}] = useSecretPhaseMutation();
+  const [watchAddress, {isLoading}] = useWatchAddressMutation();
 
   const {userInfo = {}, isHomeNewWallet} = useSelector(
     ({authReducer}: any) => authReducer,
   );
 
   useEffect(() => {
-    toggleBackdrop(isLoading || isSecretLoading);
-  }, [isLoading || isSecretLoading]);
-
-  const recoveryPhraseTab = activeTab === WalletTabs.RecoveryPhrase;
-
-  const placeHolderTxt = recoveryPhraseTab
-    ? 'Please enter the Recovery Phrase in order and separate them with spaces'
-    : 'Please enter private key or scan its QR code';
-  const titleTxt = recoveryPhraseTab
-    ? 'Please use cold wallet in disconnected environment. The cold wallet must be used in conjunction with watch wallet. You can create you new wallet offline here, please back it up well.'
-    : 'Please use cold wallet in disconnected environment. The cold wallet must be used in conjunction with watch wallet. You can create you new wallet offline here, please back it up well.';
+    toggleBackdrop(isLoading);
+  }, [isLoading]);
 
   const fetchCopiedKey = async () => {
     const text = await Clipboard.getString();
     if (text) {
-      setRecoveryPhrase(text);
+      setWalletAddress(text);
     }
   };
 
   const tabsView = () => {
     return (
       <View style={styles.containerView}>
-        {!recoveryPhraseTab && <Text style={styles.titleTxt}>{titleTxt}</Text>}
+        <Text style={styles.titleTxt}>
+          Please use cold wallet in disconnected environment. The cold wallet
+          must be used in conjunction with watch wallet. You can create you new
+          wallet offline here, please back it up well.
+        </Text>
         <View style={styles.multiLineContainer}>
           <TextInput
             style={styles.multiLineInput}
-            placeholder={placeHolderTxt}
+            placeholder={'Please enter private key or scan its QR code'}
             placeholderTextColor="#9C9DA0"
-            value={recoveryPhrase}
+            value={walletAddress}
             multiline={true}
-            onChangeText={text => setRecoveryPhrase(text)}
+            onChangeText={text => setWalletAddress(text)}
           />
           <View style={styles.pasteCard}>
-            <TouchableOpacity>
-              <Text style={styles.pasteTxt}>KeyPal Card</Text>
-            </TouchableOpacity>
             <TouchableOpacity onPress={() => fetchCopiedKey()}>
               <Text style={styles.pasteTxt}>Paste</Text>
             </TouchableOpacity>
           </View>
+        </View>
+        <Text style={styles.inputTitleTxt}>Chain Type</Text>
+        <View style={styles.searchContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="BTC-2"
+            placeholderTextColor="#9C9DA0"
+            value={chainType}
+            editable={false}
+            onChangeText={text => setChainType(text)}
+          />
         </View>
         <Text style={styles.inputTitleTxt}>Wallet Name</Text>
         <View style={styles.searchContainer}>
@@ -109,38 +106,6 @@ const ImportWalletsComponent = ({navigation, route}: Props) => {
             onChangeText={text => setWalletName(text)}
           />
         </View>
-        <Text style={styles.inputTitleTxt}>Password</Text>
-        <View style={styles.searchContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Min. 8 characters"
-            placeholderTextColor="#9C9DA0"
-            value={password}
-            secureTextEntry={showPassword}
-            onChangeText={text => {
-              setPassword(text);
-              setPasswordError(false);
-              setPasswordErrorTxt('');
-            }}
-            returnKeyType={Platform.OS === 'ios' ? 'done' : 'next'}
-          />
-          <TouchableOpacity onPress={() => togglePassword(p => !p)}>
-            <Feather
-              name={showPassword ? 'eye-off' : 'eye'}
-              size={18}
-              color={passwordErrorTxt && passwordError ? '#F04438' : '#9C9DA0'}
-            />
-          </TouchableOpacity>
-        </View>
-        {passwordErrorTxt && passwordError && (
-          <Text style={styles.errorTxt}>{passwordErrorTxt}</Text>
-        )}
-        {recoveryPhraseTab && (
-          <TouchableOpacity style={[styles.pasteCard, styles.advanceCard]}>
-            <Text style={styles.modeTxt}>Advanced Mode</Text>
-            <Ionicons name={'chevron-down'} size={18} color={'#333333'} />
-          </TouchableOpacity>
-        )}
       </View>
     );
   };
@@ -151,31 +116,16 @@ const ImportWalletsComponent = ({navigation, route}: Props) => {
         network: walletNetwork?.ID,
         userid: userInfo?.generated_Id,
         wallet_name: walletName,
-        password: password,
+        wallet_address: walletAddress,
       };
-      params =
-        activeTab === WalletTabs.PrivateKey
-          ? {
-              ...params,
-              private_key: recoveryPhrase,
-            }
-          : {
-              ...params,
-              secret_key: [recoveryPhrase],
-            };
-      let response: any;
-      if (activeTab === WalletTabs.PrivateKey) {
-        response = await privateKey(params).unwrap();
-      } else {
-        response = await secretPhase(params).unwrap();
-      }
+      const response: any = await watchAddress(params).unwrap();
+
       if (response?.success) {
-        const wallet = {
-          ...response?.walletinfo,
-          Wallet_icon: walletNetwork?.Wallet_icon,
-        };
-        dispatch(authAction.setWalletInfo(wallet));
-        await setStorage(localStorageKey.walletInfo, JSON.stringify(wallet));
+        dispatch(authAction.setWalletInfo(response?.walletinfo));
+        await setStorage(
+          localStorageKey.walletInfo,
+          JSON.stringify(response?.walletinfo),
+        );
         if (isHomeNewWallet) {
           dispatch(authAction.setHomeNewWallet(false));
           navigation.navigate('DASH_BOARD', {
@@ -209,16 +159,9 @@ const ImportWalletsComponent = ({navigation, route}: Props) => {
       />
       <SafeAreaView style={appStyles.container}>
         <DashBoardHeaderComponent
-          title={'Import Wallets'}
+          title={'Watch Wallet'}
           rightIcon={<Scan width={24} height={24} style={styles.scanIcon} />}
         />
-        <View style={styles.tabsView}>
-          <CustomTabs
-            activeTab={activeTab}
-            onSelectItem={(val: any) => setActiveTab(val)}
-            titles={[WalletTabs.RecoveryPhrase, WalletTabs.PrivateKey]}
-          />
-        </View>
         {tabsView()}
         <View style={styles.bottomView}>
           <View style={styles.readAgreeView}>
@@ -376,4 +319,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ImportWalletsComponent;
+export default WatchWalletComponent;
