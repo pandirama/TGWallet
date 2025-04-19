@@ -89,7 +89,7 @@ const WatchWalletComponent = ({navigation, route}: Props) => {
         <View style={styles.searchContainer}>
           <TextInput
             style={styles.input}
-            placeholder="BTC-2"
+            placeholder="Enter Chain Type"
             placeholderTextColor="#9C9DA0"
             value={chainType}
             editable={false}
@@ -100,7 +100,7 @@ const WatchWalletComponent = ({navigation, route}: Props) => {
         <View style={styles.searchContainer}>
           <TextInput
             style={styles.input}
-            placeholder="BTC-2"
+            placeholder="Enter Wallet Name"
             placeholderTextColor="#9C9DA0"
             value={walletName}
             onChangeText={text => setWalletName(text)}

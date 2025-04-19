@@ -8,6 +8,7 @@ const initialState = {
   walletInfo: null,
   walletType: null,
   isHomeNewWallet: false,
+  selectedNetwork: null,
 };
 
 const slice = createSlice({
@@ -42,6 +43,9 @@ const slice = createSlice({
     },
     setHomeNewWallet: (state, action) => {
       state.isHomeNewWallet = action.payload;
+    },
+    setSelectedNetwork: (state, action) => {
+      state.selectedNetwork = action.payload;
     },
   },
 });

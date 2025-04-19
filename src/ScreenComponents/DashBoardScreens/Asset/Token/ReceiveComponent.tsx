@@ -91,7 +91,7 @@ const ReceiveComponent = ({}: Props) => {
               paddingBottom: 10,
               textAlign: 'center',
             }}>
-            This address only supports BSC/NEP20 related assets
+            {receiveWalletInfo?.wallet_label}
           </Text>
         </View>
 

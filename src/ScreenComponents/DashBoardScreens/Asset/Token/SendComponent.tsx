@@ -65,7 +65,6 @@ const SendComponent = ({navigation}: Props) => {
         token_address: walletInfo?.address,
       };
       const response: any = await getSendWallet(params).unwrap();
-      console.log(response);
       if (response?.success) {
         setChooseWallets(response?.choose_wallets);
       } else {

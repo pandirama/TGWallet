@@ -52,6 +52,7 @@ import AddAddressBookComponent from '../ScreenComponents/DashBoardScreens/Profil
 import TokenComponent from '../ScreenComponents/DashBoardScreens/Asset/Token/TokenComponent';
 import SendComponent from '../ScreenComponents/DashBoardScreens/Asset/Token/SendComponent';
 import ReceiveComponent from '../ScreenComponents/DashBoardScreens/Asset/Token/ReceiveComponent';
+import BuyComponent from '../ScreenComponents/DashBoardScreens/Asset/Buy/BuyComponent';
 
 const WalletStack = createNativeStackNavigator<any>();
 
@@ -112,6 +113,7 @@ const AssetStackNavigator = () => {
       <AssetStack.Screen name="ADDNFT" component={AddNFTComponent} />
       <AssetStack.Screen name="TOKEN" component={TokenComponent} />
       <AssetStack.Screen name="SEND" component={SendComponent} />
+      <AssetStack.Screen name="BUY" component={BuyComponent} />
       <AssetStack.Screen name="RECEIVE" component={ReceiveComponent} />
       <AssetStack.Screen name="ADDNEWNFT" component={AddNewNFTComponent} />
       <AssetStack.Screen name="NFTs" component={NFTsComponent} />

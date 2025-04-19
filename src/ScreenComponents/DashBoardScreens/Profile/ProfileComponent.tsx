@@ -34,7 +34,6 @@ const ProfileComponent = ({navigation}: Props) => {
 
   const [showWallets, setShowWallets] = useState(false);
   const [networks, setNetworks] = useState<any>([]);
-  const [selectedNetwork, setSelectedNetwork] = useState<any>(null);
 
   const {isFetching, refetch} = useGetNetworksQuery();
 
@@ -48,7 +47,6 @@ const ProfileComponent = ({navigation}: Props) => {
         const {isSuccess, isError, data, error} = response;
         if (isSuccess) {
           setNetworks(data?.networks);
-          setSelectedNetwork(data?.networks[0]);
         } else if (isError) {
           showToast({
             type: 'error',
@@ -240,7 +238,6 @@ const ProfileComponent = ({navigation}: Props) => {
           showWallets={showWallets}
           setShowWallets={setShowWallets}
           networkMode={network_mode}
-          selectedNetworkMode={selectedNetwork}
           networks={networks}
         />
       </SafeAreaView>

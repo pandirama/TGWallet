@@ -10,7 +10,6 @@ const WalletListComponent = ({
   setShowWallets,
   showWallets,
   networkMode = '',
-  selectedNetworkMode,
   networks,
 }: any) => {
   const actionSheetRef = useRef<ActionSheetRef>(null);
@@ -18,7 +17,7 @@ const WalletListComponent = ({
   useEffect(() => {
     if (showWallets) {
       actionSheetRef?.current?.show();
-    }else{
+    } else {
       actionSheetRef?.current?.hide();
     }
   }, [showWallets]);
@@ -58,7 +57,6 @@ const WalletListComponent = ({
         showWallets={showWallets}
         setShowWallets={setShowWallets}
         networkMode={networkMode}
-        selectedNetworkMode={selectedNetworkMode}
         networks={networks}
       />
     </ActionSheet>

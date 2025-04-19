@@ -22,12 +22,7 @@ import Eye from '../../../assets/eye.svg';
 import Transaction from '../../../assets/profile/transaction.svg';
 import DEFIComponent from './DEFIComponent';
 import NFTComponent from './NFTComponent';
-import {
-  Feather,
-  Foundation,
-  Ionicons,
-  MaterialIcons,
-} from '../../../utils/IconUtils';
+import {Feather, Ionicons, MaterialIcons} from '../../../utils/IconUtils';
 import {useSelector} from 'react-redux';
 import WalletBG from '../../../assets/Wallet_BG.svg';
 import WalletListComponent from '../../../components/WalletListComponent';
@@ -36,6 +31,8 @@ import useCommon from '../../../hooks/useCommon';
 import {useFocusEffect} from '@react-navigation/native';
 import {getErrorMessage} from '../../../utils/common';
 import {useGetNetworksQuery} from '../../../api/auth/authAPI';
+import {authAction} from '../../../reducer/auth/authSlice';
+import {useAppDispatch} from '../../../store';
 
 type Props = NativeStackScreenProps<any, 'ASSET'>;
 
@@ -52,17 +49,20 @@ const assets = [
 
 const AssetComponent = ({navigation}: Props) => {
   const {showToast, toggleBackdrop} = useCommon();
+  const dispatch = useAppDispatch();
+
   const [selectedAsset, setSelectedAsset] = useState('Assets');
   const [tokenAssets, setTokenAssets] = useState([]);
   const [tokenNFTs, setTokenNFTs] = useState([]);
   const [showWallets, setShowWallets] = useState(false);
   const [networks, setNetworks] = useState<any>([]);
-  const [selectedNetwork, setSelectedNetwork] = useState<any>(null);
   const [walletIcon, setWalletIcon] = useState<any>(null);
 
-  const {walletInfo = {}, userInfo = {}} = useSelector(
-    ({authReducer}: any) => authReducer,
-  );
+  const {
+    walletInfo = {},
+    userInfo = {},
+    selectedNetwork,
+  } = useSelector(({authReducer}: any) => authReducer);
   const {wallet_name, wallet_balance, network_mode} = walletInfo ?? {};
 
   const {isFetching, refetch} = useGetNetworksQuery();
@@ -72,6 +72,10 @@ const AssetComponent = ({navigation}: Props) => {
   useEffect(() => {
     toggleBackdrop(isLoading || isFetching);
   }, [isLoading || isFetching]);
+
+  useEffect(() => {
+    setWalletIcon(walletInfo?.Wallet_icon);
+  }, [walletInfo]);
 
   const getWalletInfos = async () => {
     try {
@@ -105,10 +109,11 @@ const AssetComponent = ({navigation}: Props) => {
         const {isSuccess, isError, data, error} = response;
         if (isSuccess) {
           setNetworks(data?.networks);
-          setSelectedNetwork(data?.networks[0]);
-          const networkIcon = data?.networks?.filter((network: any) => {
+          const networkData = data?.networks?.filter((network: any) => {
             return network?.ID === walletInfo?.network_mode;
-          })?.[0]?.Wallet_icon;
+          })?.[0];
+          dispatch(authAction.setSelectedNetwork(networkData));
+          const networkIcon = networkData?.Wallet_icon;
           setWalletIcon(networkIcon);
         } else if (isError) {
           showToast({
@@ -119,7 +124,7 @@ const AssetComponent = ({navigation}: Props) => {
       });
       getWalletInfos();
       return () => {};
-    }, []),
+    }, [showWallets, walletInfo]),
   );
 
   const renderItem = ({item}: any) => {
@@ -144,144 +149,149 @@ const AssetComponent = ({navigation}: Props) => {
   };
 
   return (
-    <>
+    <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
       <StatusBar
         barStyle="dark-content"
         translucent={true}
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView
-        style={appStyles.container}
-        edges={['right', 'left', 'top']}>
-        <View style={styles.headerView}>
-          <TouchableOpacity style={styles.headerLeftIconTopView}>
-            <TouchableOpacity
-              style={styles.headerLeftIconView}
-              onPress={() => {
-                setShowWallets(true);
-              }}>
-              <View style={styles.brandIcon}>
-                <Image
-                  style={styles.walletItemLogo}
-                  source={{
-                    uri: walletIcon,
-                  }}
-                />
-              </View>
-              <TouchableOpacity style={styles.arrowIcon}>
-                <Ionicons
-                  name={'caret-forward-sharp'}
-                  size={18}
-                  color={'#7E7F82'}
-                />
-              </TouchableOpacity>
-            </TouchableOpacity>
-          </TouchableOpacity>
-          <View style={styles.headerRightIconView}>
-            <TouchableOpacity style={styles.walletIcon}>
-              <AddWallet width={28} height={28} />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Scan width={28} height={28} />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={[appStyles.boxShadow, styles.headerContainer]}>
-          <WalletBG width={Dimensions.get('window').width / 1.1} height={182} />
-          <View style={styles.walletView}>
-            <TouchableOpacity
-              style={styles.walletNameView}
-              onPress={() => {
-                navigation.navigate('WALLET_STACK', {
-                  screen: 'WALLET_DETAILS',
-                  params: {
-                    walletDetails: walletInfo,
-                    networkIcon: walletInfo?.Wallet_icon,
-                  },
-                });
-              }}>
-              <Text style={styles.walletNameTxt}>{wallet_name}</Text>
-              <MaterialIcons
-                name={'keyboard-arrow-right'}
-                size={26}
-                color={'#FFFFFF'}
+      <View style={styles.headerView}>
+        <View style={styles.headerLeftIconTopView}>
+          <TouchableOpacity
+            style={styles.headerLeftIconView}
+            onPress={() => {
+              setShowWallets(true);
+            }}>
+            <View style={styles.brandIcon}>
+              <Image
+                style={styles.walletItemLogo}
+                source={{
+                  uri: walletIcon,
+                }}
+              />
+            </View>
+            <TouchableOpacity style={styles.arrowIcon}>
+              <Ionicons
+                name={'caret-forward-sharp'}
+                size={18}
+                color={'#7E7F82'}
               />
             </TouchableOpacity>
-
-            <View style={styles.amountView}>
-              <Foundation name={'dollar'} size={38} color={'#FFFFFF'} />
-              <Text style={styles.menuAmountTxt}>{wallet_balance}</Text>
-              <Eye width={30} height={30} />
-            </View>
-
-            <View style={[appStyles.boxShadow, styles.headerSubContainer]}>
-              <TouchableOpacity
-                style={styles.menuItemTouch}
-                onPress={() => {
-                  navigation.navigate('SEND');
-                }}>
-                <Send width={28} height={28} />
-                <Text style={styles.menuItemTxt}>Send</Text>
-              </TouchableOpacity>
-              <View style={styles.horizontalBorder} />
-              <TouchableOpacity
-                style={styles.menuItemTouch}
-                onPress={() => {
-                  navigation.navigate('RECEIVE');
-                }}>
-                <Ionicons
-                  name={'arrow-down-outline'}
-                  size={26}
-                  color={'#333333'}
-                />
-                <Text style={styles.menuItemTxt}>Receive</Text>
-              </TouchableOpacity>
-              <View style={styles.horizontalBorder} />
-              <TouchableOpacity style={styles.menuItemTouch}>
-                <Buy width={28} height={28} />
-                <Text style={styles.menuItemTxt}>Buy</Text>
-              </TouchableOpacity>
-              <View style={styles.horizontalBorder} />
-              <TouchableOpacity style={styles.menuItemTouch}>
-                <Transaction width={28} height={28} />
-                <Text style={styles.menuItemTxt}>Swap</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-        <View style={styles.listHeaderView}>
-          <View style={styles.listView}>
-            <FlatList
-              data={assets}
-              renderItem={renderItem}
-              removeClippedSubviews={false}
-              keyExtractor={(item, index) => 'key' + index}
-              horizontal={true}
-            />
-          </View>
-
-          <TouchableOpacity style={styles.addIcon}>
-            <Feather name={'plus'} size={20} color={'#333333'} />
           </TouchableOpacity>
         </View>
-        {/* {selectedAsset === 'DEFI' && <DEFIComponent />} */}
-        {selectedAsset === 'Assets' && (
-          <DEFIComponent tokenAssets={tokenAssets} navigation={navigation} />
-        )}
-        {selectedAsset === 'NFT' && (
-          <NFTComponent navigation={navigation} tokenNFTs={tokenNFTs} />
-        )}
-        <WalletListComponent
-          navigation={navigation}
-          showWallets={showWallets}
-          setShowWallets={setShowWallets}
-          networkMode={network_mode}
-          selectedNetworkMode={selectedNetwork}
-          networks={networks}
-        />
-      </SafeAreaView>
-    </>
+        <View style={styles.headerRightIconView}>
+          <TouchableOpacity style={styles.walletIcon}>
+            <AddWallet width={28} height={28} />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Scan width={28} height={28} />
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View style={[appStyles.boxShadow, styles.headerContainer]}>
+        <WalletBG width={Dimensions.get('window').width / 1.1} height={182} />
+        <View style={styles.walletView}>
+          <TouchableOpacity
+            style={styles.walletNameView}
+            onPress={() => {
+              navigation.navigate('WALLET_STACK', {
+                screen: 'WALLET_DETAILS',
+                params: {
+                  walletDetails: walletInfo,
+                  networkIcon: walletInfo?.Wallet_icon,
+                },
+              });
+            }}>
+            <Text style={styles.walletNameTxt}>{wallet_name}</Text>
+            <MaterialIcons
+              name={'keyboard-arrow-right'}
+              size={26}
+              color={'#FFFFFF'}
+            />
+          </TouchableOpacity>
+
+          <View style={styles.amountView}>
+            <Text style={styles.menuAmountTxt}>{wallet_balance}</Text>
+            <Eye width={30} height={30} />
+          </View>
+
+          <View style={[appStyles.boxShadow, styles.headerSubContainer]}>
+            <TouchableOpacity
+              style={styles.menuItemTouch}
+              onPress={() => {
+                navigation.navigate('SEND');
+              }}>
+              <Send width={28} height={28} />
+              <Text style={styles.menuItemTxt}>Send</Text>
+            </TouchableOpacity>
+            <View style={styles.horizontalBorder} />
+            <TouchableOpacity
+              style={styles.menuItemTouch}
+              onPress={() => {
+                navigation.navigate('RECEIVE');
+              }}>
+              <Ionicons
+                name={'arrow-down-outline'}
+                size={26}
+                color={'#333333'}
+              />
+              <Text style={styles.menuItemTxt}>Receive</Text>
+            </TouchableOpacity>
+            <View style={styles.horizontalBorder} />
+            <TouchableOpacity
+              style={styles.menuItemTouch}
+              onPress={() => {
+                navigation.navigate('BUY', {
+                  navigation: navigation,
+                  showWallets: showWallets,
+                  setShowWallets: setShowWallets,
+                  networkMode: network_mode,
+                  selectedNetworkMode: selectedNetwork,
+                  networks: networks,
+                });
+              }}>
+              <Buy width={28} height={28} />
+              <Text style={styles.menuItemTxt}>Buy</Text>
+            </TouchableOpacity>
+            <View style={styles.horizontalBorder} />
+            <TouchableOpacity style={styles.menuItemTouch}>
+              <Transaction width={28} height={28} />
+              <Text style={styles.menuItemTxt}>Swap</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+      <View style={styles.listHeaderView}>
+        <View style={styles.listView}>
+          <FlatList
+            data={assets}
+            renderItem={renderItem}
+            removeClippedSubviews={false}
+            keyExtractor={(item, index) => 'key' + index}
+            horizontal={true}
+          />
+        </View>
+
+        <TouchableOpacity style={styles.addIcon}>
+          <Feather name={'plus'} size={20} color={'#333333'} />
+        </TouchableOpacity>
+      </View>
+      {selectedAsset === 'Assets' && (
+        <DEFIComponent tokenAssets={tokenAssets} navigation={navigation} />
+      )}
+      {selectedAsset === 'NFT' && (
+        <NFTComponent navigation={navigation} tokenNFTs={tokenNFTs} />
+      )}
+      <WalletListComponent
+        navigation={navigation}
+        showWallets={showWallets}
+        setShowWallets={setShowWallets}
+        networkMode={network_mode}
+        selectedNetworkMode={selectedNetwork}
+        networks={networks}
+      />
+    </SafeAreaView>
   );
 };
 
@@ -335,12 +345,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     marginRight: 10,
-    zIndex: 1,
   },
   headerLeftIconTopView: {
     flex: 1,
     flexDirection: 'row',
-    zIndex: 1,
   },
   headerLeftIconView: {
     borderRadius: 17,

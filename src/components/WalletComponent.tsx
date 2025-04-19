@@ -26,23 +26,23 @@ const WalletComponent = ({
   navigation,
   setShowWallets,
   networkMode = '',
-  selectedNetworkMode,
   networks,
 }: any) => {
+
   const {showToast} = useCommon();
   const dispatch = useAppDispatch();
 
   const [wallets, setWallets] = useState<any>(null);
-  const [selectedNetwork, setSelectedNetwork] = useState<any>(null);
+  const [selectedNetworks, setSelectedNetworks] = useState<any>(null);
 
   const [addWalletVisible, setAddWalletVisible] = useState(false);
 
-  const {userInfo = {}} = useSelector(({authReducer}: any) => authReducer);
+  const {userInfo = {}, selectedNetwork} = useSelector(({authReducer}: any) => authReducer);
 
   const [walletCreate, {isLoading}] = useWalletListMutation();
 
   useEffect(() => {
-    setSelectedNetwork(selectedNetworkMode);
+    setSelectedNetworks(selectedNetwork);
   }, []);
 
   const getWallets = async (networkID: string) => {
@@ -85,10 +85,11 @@ const WalletComponent = ({
             ...item,
             address: item?.wallet_address,
             userid: userInfo?.generated_Id,
-            network_mode: selectedNetwork?.ID,
-            Wallet_icon: selectedNetwork?.Wallet_icon,
+            network_mode: selectedNetworks?.ID,
+            Wallet_icon: selectedNetworks?.Wallet_icon,
           };
           dispatch(authAction.setWalletInfo(wallet));
+          dispatch(authAction.setSelectedNetwork(selectedNetworks));
           await setStorage(localStorageKey.walletInfo, JSON.stringify(wallet));
           setShowWallets(false);
         }}>
@@ -122,12 +123,12 @@ const WalletComponent = ({
       <TouchableOpacity
         style={[
           styles.networkListTouch,
-          selectedNetwork?.ID === item?.ID.toString() && {
+          selectedNetworks?.ID === item?.ID.toString() && {
             backgroundColor: colors.white,
           },
         ]}
         onPress={() => {
-          setSelectedNetwork(item);
+          setSelectedNetworks(item);
           getWallets(item?.ID);
         }}>
         <Image
@@ -166,7 +167,7 @@ const WalletComponent = ({
           <View style={styles.walletListTitleView}>
             <View style={styles.walletTitView}>
               <Text style={styles.selectedWalletTxt}>
-                {selectedNetwork?.Wallet_network}
+                {selectedNetworks?.Wallet_network}
               </Text>
               <TouchableOpacity
                 style={styles.addWalletIcon}
@@ -210,7 +211,7 @@ const WalletComponent = ({
                   screen: 'NEW_WALLET',
                   params: {
                     screen: 'NEW_WALLET_PASSWORD',
-                    params: {walletNetwork: selectedNetwork},
+                    params: {walletNetwork: selectedNetworks},
                   },
                 });
               }}>
@@ -227,7 +228,7 @@ const WalletComponent = ({
                   screen: 'IMPORT_WALLET',
                   params: {
                     screen: 'IMPORT_TYPE',
-                    params: {walletNetwork: selectedNetwork},
+                    params: {walletNetwork: selectedNetworks},
                   },
                 });
               }}>
