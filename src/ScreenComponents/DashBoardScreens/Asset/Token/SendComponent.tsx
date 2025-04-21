@@ -41,10 +41,11 @@ const SendComponent = ({navigation}: Props) => {
   const {network_mode} = walletInfo ?? {};
 
   const [inputName, setInputName] = useState('');
+  const [inputAmount, setInputAmount] = useState('');
   const [showWallets, setShowWallets] = useState(false);
   const [networks, setNetworks] = useState<any>([]);
   const [selectedNetwork, setSelectedNetwork] = useState<any>(null);
-  const [chooseWallets, setChooseWallets] = useState<any>(null);
+  const [sendResponse, setSendResponse] = useState<any>(null);
 
   const [sendWallet, {isLoading}] = useSendWalletMutation();
 
@@ -57,6 +58,8 @@ const SendComponent = ({navigation}: Props) => {
     toggleBackdrop(isLoading || isFetching || isTokenLoading);
   }, [isLoading || isFetching || isTokenLoading]);
 
+  console.log('isTokenLoading', isTokenLoading);
+
   const getWalletInfos = async () => {
     try {
       const params = {
@@ -66,7 +69,7 @@ const SendComponent = ({navigation}: Props) => {
       };
       const response: any = await getSendWallet(params).unwrap();
       if (response?.success) {
-        setChooseWallets(response?.choose_wallets);
+        setSendResponse(response);
       } else {
         showToast({
           type: 'error',
@@ -193,26 +196,18 @@ const SendComponent = ({navigation}: Props) => {
             </Text>
 
             <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
-              <View style={{marginLeft: 5, marginBottom: 10}}>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontWeight: 400,
-                    color: '#9C9DA0',
-                  }}>
-                  0
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 10,
-                    fontWeight: 400,
-                    color: '#9C9DA0',
-                  }}>
-                  $0
-                </Text>
+              <View style={{marginBottom: 10, marginTop: 5}}>
+                <TextInput
+                  style={styles.inputAmount}
+                  placeholder="0"
+                  placeholderTextColor="#9C9DA0"
+                  value={inputAmount}
+                  keyboardType="numeric"
+                  onChangeText={text => {
+                    setInputAmount(text);
+                  }}
+                />
               </View>
-
-              <View style={styles.borderView} />
               <View style={styles.walletTouch}>
                 <Text
                   style={{
@@ -231,7 +226,28 @@ const SendComponent = ({navigation}: Props) => {
                     marginLeft: 5,
                     textAlign: 'center',
                   }}>
-                  0
+                  {sendResponse?.Balance}
+                </Text>
+              </View>
+              <View style={styles.walletUSDTouch}>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontWeight: 400,
+                    color: '#333333',
+                    textAlign: 'center',
+                  }}>
+                  BalanceInUSD:
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontWeight: 400,
+                    color: '#9C9DA0',
+                    marginLeft: 5,
+                    textAlign: 'center',
+                  }}>
+                  {sendResponse?.BalanceInUSD}
                 </Text>
               </View>
             </View>
@@ -267,7 +283,7 @@ const SendComponent = ({navigation}: Props) => {
                     marginRight: 15,
                     color: '#333333',
                   }}>
-                  $0
+                  {sendResponse?.NetworkFee}
                 </Text>
               </View>
               <View
@@ -290,7 +306,7 @@ const SendComponent = ({navigation}: Props) => {
                     marginRight: 15,
                     color: '#333333',
                   }}>
-                  $0
+                  {sendResponse?.MaxFee}
                 </Text>
               </View>
             </View>
@@ -314,7 +330,7 @@ const SendComponent = ({navigation}: Props) => {
           networkMode={network_mode}
           selectedNetworkMode={selectedNetwork}
           networks={networks}
-          chooseWallets={chooseWallets}
+          chooseWallets={sendResponse?.choose_wallets}
         />
       </SafeAreaView>
     </>
@@ -360,7 +376,13 @@ const styles = StyleSheet.create({
   },
   walletTouch: {
     flexDirection: 'row',
-    paddingTop: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
+    justifyContent: 'flex-end',
+    marginRight: 20,
+  },
+  walletUSDTouch: {
+    flexDirection: 'row',
     paddingBottom: 10,
     justifyContent: 'flex-end',
     marginRight: 20,
@@ -392,6 +414,13 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 13,
     color: colors.black,
+  },
+  inputAmount: {
+    borderBottomColor: colors.border,
+    borderBottomWidth: 1,
+    paddingVertical: 15,
+    color: colors.black,
+    marginRight: 15,
   },
   nftNameTxt: {
     fontSize: 12,

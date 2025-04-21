@@ -71,9 +71,9 @@ const TokenComponent = ({navigation, route}: Props) => {
       };
       const response: any = await tokenInfo(params).unwrap();
       if (response?.success) {
-        setAll(response?.transactions?.all);
-        setIncoming(response?.transactions?.incoming);
-        setOutgoing(response?.transactions?.outgoing);
+        setAll(response?.tokeninfo?.transactions?.all);
+        setIncoming(response?.tokeninfo?.transactions?.incoming);
+        setOutgoing(response?.tokeninfo?.transactions?.outgoing);
       } else {
         setAll([]);
         setIncoming([]);

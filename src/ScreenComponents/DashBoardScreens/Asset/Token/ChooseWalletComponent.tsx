@@ -20,7 +20,6 @@ import appStyles from '../../../../utils/appStyles';
 const ChooseWalletComponent = ({
   setShowWallets,
   showWallets,
-  networks,
   chooseWallets,
 }: any) => {
   const {showToast} = useCommon();
@@ -69,9 +68,6 @@ const ChooseWalletComponent = ({
         </View>
       );
     } else if (selectedWalletType === 'wallet') {
-      const networkIcon = networks?.filter((network: any) => {
-        return network?.ID === item?.wallet_type;
-      })?.[0]?.Wallet_icon;
       return (
         <TouchableOpacity
           style={[
@@ -92,7 +88,7 @@ const ChooseWalletComponent = ({
           <Image
             style={styles.walletItemLogo}
             source={{
-              uri: networkIcon,
+              uri: item?.Wallet_icon,
             }}
           />
           <View style={{marginLeft: 10}}>

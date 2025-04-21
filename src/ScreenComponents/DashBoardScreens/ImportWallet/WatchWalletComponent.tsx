@@ -73,7 +73,7 @@ const WatchWalletComponent = ({navigation, route}: Props) => {
         <View style={styles.multiLineContainer}>
           <TextInput
             style={styles.multiLineInput}
-            placeholder={'Please enter private key or scan its QR code'}
+            placeholder={'Please Enter Address or Scan its QR code'}
             placeholderTextColor="#9C9DA0"
             value={walletAddress}
             multiline={true}
