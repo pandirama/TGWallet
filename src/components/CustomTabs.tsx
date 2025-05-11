@@ -12,6 +12,11 @@ export const RecoveryTabs = {
   KeypalCardBackup: 'Keypal Card Backup',
 };
 
+export const MarketTabs = {
+  SwapBridge: 'Swap & Bridge',
+  Market: 'Market',
+};
+
 const TabPill = ({
   title,
   isActive,
@@ -36,7 +41,7 @@ const TabPill = ({
 type Prop = {
   onSelectItem: (userType: string) => void;
   activeTab: string;
-  titles: string[]
+  titles: string[];
 };
 
 const CustomTabs = (props: Prop) => {

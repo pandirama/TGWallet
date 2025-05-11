@@ -32,7 +32,7 @@ const DEFIComponent = ({tokenAssets, navigation}: any) => {
         <View style={styles.defiListHeaderTxtView}>
           <Text style={[styles.defiListnameTxt]}>{item?.tokenName}</Text>
           <View style={styles.defiListTxtView}>
-            <Text style={styles.defiListnameTxt}>{item?.balance}</Text>
+            <Text style={styles.defiListNameTxt}>{item?.balance}</Text>
             <Text style={[styles.defiListamountTxt]}>
               {`$${item?.balanceInUSD}`}
             </Text>
@@ -74,8 +74,6 @@ const styles = StyleSheet.create({
   },
   defiListTxtView: {
     padding: 2,
-    alignItems: 'center',
-    alignSelf: 'flex-end',
     marginRight: 15,
   },
   defiListnameTxt: {
@@ -85,10 +83,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
   },
+  defiListNameTxt: {
+    fontSize: 14,
+    fontWeight: 600,
+    color: '#333333',
+    textAlign: 'right',
+  },
   defiListamountTxt: {
     fontSize: 14,
     fontWeight: 400,
     color: '#7C8FAC',
+    textAlign: 'right',
   },
   borderView: {
     borderWidth: 0.5,

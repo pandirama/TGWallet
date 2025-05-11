@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback, useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -24,7 +25,6 @@ import DEFIComponent from './DEFIComponent';
 import NFTComponent from './NFTComponent';
 import {Feather, Ionicons, MaterialIcons} from '../../../utils/IconUtils';
 import {useSelector} from 'react-redux';
-import WalletBG from '../../../assets/Wallet_BG.svg';
 import WalletListComponent from '../../../components/WalletListComponent';
 import {useWalletInfosMutation} from '../../../api/walletAPI';
 import useCommon from '../../../hooks/useCommon';
@@ -157,12 +157,12 @@ const AssetComponent = ({navigation}: Props) => {
         animated
       />
       <View style={styles.headerView}>
-        <View style={styles.headerLeftIconTopView}>
-          <TouchableOpacity
-            style={styles.headerLeftIconView}
-            onPress={() => {
-              setShowWallets(true);
-            }}>
+        <TouchableOpacity
+          style={styles.headerLeftIconTopView}
+          onPress={() => {
+            setShowWallets(true);
+          }}>
+          <View style={styles.headerLeftIconView}>
             <View style={styles.brandIcon}>
               <Image
                 style={styles.walletItemLogo}
@@ -171,15 +171,15 @@ const AssetComponent = ({navigation}: Props) => {
                 }}
               />
             </View>
-            <TouchableOpacity style={styles.arrowIcon}>
+            <View style={styles.arrowIcon}>
               <Ionicons
                 name={'caret-forward-sharp'}
                 size={18}
                 color={'#7E7F82'}
               />
-            </TouchableOpacity>
-          </TouchableOpacity>
-        </View>
+            </View>
+          </View>
+        </TouchableOpacity>
         <View style={styles.headerRightIconView}>
           <TouchableOpacity style={styles.walletIcon}>
             <AddWallet width={28} height={28} />
@@ -190,7 +190,14 @@ const AssetComponent = ({navigation}: Props) => {
         </View>
       </View>
       <View style={[appStyles.boxShadow, styles.headerContainer]}>
-        <WalletBG width={Dimensions.get('window').width / 1.1} height={182} />
+        <Image
+          source={require('../../../assets/Wallet_BG.png')}
+          style={{
+            width: Dimensions.get('window').width / 1.1,
+            height: 182,
+            borderRadius: 10,
+          }}
+        />
         <View style={styles.walletView}>
           <TouchableOpacity
             style={styles.walletNameView}

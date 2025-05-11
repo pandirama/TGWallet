@@ -58,8 +58,6 @@ const SendComponent = ({navigation}: Props) => {
     toggleBackdrop(isLoading || isFetching || isTokenLoading);
   }, [isLoading || isFetching || isTokenLoading]);
 
-  console.log('isTokenLoading', isTokenLoading);
-
   const getWalletInfos = async () => {
     try {
       const params = {
@@ -110,6 +108,7 @@ const SendComponent = ({navigation}: Props) => {
         userid: userInfo?.generated_Id,
         network: walletInfo?.ID,
         receive_address: inputName,
+        amount: inputAmount,
       };
       const response: any = await sendWallet(params).unwrap();
       if (response?.success) {

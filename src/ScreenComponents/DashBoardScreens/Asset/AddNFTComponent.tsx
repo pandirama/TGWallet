@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
 import React, {useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
