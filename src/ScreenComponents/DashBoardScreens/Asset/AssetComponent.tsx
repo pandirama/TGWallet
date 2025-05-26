@@ -22,7 +22,6 @@ import Send from '../../../assets/send.svg';
 import Eye from '../../../assets/eye.svg';
 import Transaction from '../../../assets/profile/transaction.svg';
 import DEFIComponent from './DEFIComponent';
-import NFTComponent from './NFTComponent';
 import {Feather, Ionicons, MaterialIcons} from '../../../utils/IconUtils';
 import {useSelector} from 'react-redux';
 import WalletListComponent from '../../../components/WalletListComponent';
@@ -41,10 +40,10 @@ const assets = [
     id: 0,
     assetName: 'Assets',
   },
-  {
-    id: 1,
-    assetName: 'NFT',
-  },
+  // {
+  //   id: 1,
+  //   assetName: 'NFT',
+  // },
 ];
 
 const AssetComponent = ({navigation}: Props) => {
@@ -53,7 +52,7 @@ const AssetComponent = ({navigation}: Props) => {
 
   const [selectedAsset, setSelectedAsset] = useState('Assets');
   const [tokenAssets, setTokenAssets] = useState([]);
-  const [tokenNFTs, setTokenNFTs] = useState([]);
+  // const [tokenNFTs, setTokenNFTs] = useState([]);
   const [showWallets, setShowWallets] = useState(false);
   const [networks, setNetworks] = useState<any>([]);
   const [walletIcon, setWalletIcon] = useState<any>(null);
@@ -86,10 +85,10 @@ const AssetComponent = ({navigation}: Props) => {
       const response: any = await walletInfos(params).unwrap();
       if (response?.success) {
         setTokenAssets(response?.message?.tokenBalances);
-        setTokenNFTs(response?.message?.nfts);
+        // setTokenNFTs(response?.message?.nfts);
       } else {
         setTokenAssets([]);
-        setTokenNFTs([]);
+        // setTokenNFTs([]);
         showToast({
           type: 'error',
           text1: response?.message,
@@ -280,16 +279,18 @@ const AssetComponent = ({navigation}: Props) => {
           />
         </View>
 
-        <TouchableOpacity style={styles.addIcon}>
+        <TouchableOpacity
+          style={styles.addIcon}
+          onPress={() => navigation.navigate('TOKENS')}>
           <Feather name={'plus'} size={20} color={'#333333'} />
         </TouchableOpacity>
       </View>
       {selectedAsset === 'Assets' && (
         <DEFIComponent tokenAssets={tokenAssets} navigation={navigation} />
       )}
-      {selectedAsset === 'NFT' && (
+      {/* {selectedAsset === 'NFT' && (
         <NFTComponent navigation={navigation} tokenNFTs={tokenNFTs} />
-      )}
+      )} */}
       <WalletListComponent
         navigation={navigation}
         showWallets={showWallets}

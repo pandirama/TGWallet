@@ -8,6 +8,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -26,6 +27,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {getErrorMessage} from '../../../../utils/common';
 import Send from '../../../../assets/send.svg';
 import Transaction from '../../../../assets/profile/transaction.svg';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 type Props = NativeStackScreenProps<any, 'TOKEN'>;
 
@@ -120,30 +122,50 @@ const TokenComponent = ({navigation, route}: Props) => {
   };
 
   const renderAssets = ({item}: any) => {
+    const address = item?.type === 'in' ? item?.from : item?.to;
     return (
-      <View>
-        <TouchableOpacity
+      <View
+        style={{
+          backgroundColor: colors.white,
+          paddingLeft: 15,
+          paddingRight: 15,
+          paddingTop: 20,
+          paddingBottom: 20,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <View
           style={{
-            backgroundColor: colors.white,
-            padding: 15,
+            backgroundColor: item?.type === 'in' ? 'green' : 'red',
+            padding: 5,
+            borderRadius: 100,
           }}>
+          <Feather
+            name={item?.type === 'in' ? 'arrow-down-left' : 'arrow-up-right'}
+            size={20}
+            color={'#FFFFFF'}
+          />
+        </View>
+
+        <View style={{flex: 1, marginLeft: 10, marginRight: 10}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.itemTitleTxt}>From : </Text>
-            <Text style={styles.itemSubTxt}>{item?.from}</Text>
+            <Text style={styles.itemTitleTxt} numberOfLines={1}>
+              {address}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                showToast({
+                  type: 'success',
+                  text1: 'Address Copied Successfully',
+                });
+                Clipboard.setString(address);
+              }}>
+              <Ionicons name={'copy-outline'} size={16} color={'#7C8FAC'} />
+            </TouchableOpacity>
           </View>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.itemTitleTxt}>To : </Text>
-            <Text style={styles.itemSubTxt}>{item?.to}</Text>
-          </View>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.itemTitleTxt}>Time : </Text>
-            <Text style={styles.itemSubTxt}>{item?.time}</Text>
-          </View>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.itemTitleTxt}>Value : </Text>
-            <Text style={styles.itemSubTxt}>{item?.value}</Text>
-          </View>
-        </TouchableOpacity>
+          <Text style={styles.itemSubTxt}>{item?.time}</Text>
+        </View>
+        <Text style={styles.itemSubValueTxt}>{item?.value}</Text>
       </View>
     );
   };
@@ -174,100 +196,104 @@ const TokenComponent = ({navigation, route}: Props) => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{flex: 1}}>
           <DashBoardHeaderComponent title={token?.tokenName} />
-          <View style={styles.walletContainer}>
-            <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
-              <View style={{flexDirection: 'row', paddingBottom: 20}}>
-                <Image
-                  style={styles.itemLogo}
-                  source={{
-                    uri: token?.tokenImage,
-                  }}
-                />
-                <View style={{marginLeft: 20}}>
-                  <Text style={styles.balanceTxt}>Balance</Text>
-                  <Text style={styles.balanceValTxt}>{token?.balance}</Text>
-                  <Text style={styles.balanceUSDTxt}>
-                    {`$${token?.balanceInUSD}`}
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.walletContainer}>
+              <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
+                <View style={{flexDirection: 'row', paddingBottom: 20}}>
+                  <Image
+                    style={styles.itemLogo}
+                    source={{
+                      uri: token?.tokenImage,
+                    }}
+                  />
+                  <View style={{marginLeft: 20}}>
+                    <Text style={styles.balanceTxt}>Balance</Text>
+                    <Text style={styles.balanceValTxt}>{token?.balance}</Text>
+                    <Text style={styles.balanceUSDTxt}>
+                      {`$${token?.balanceInUSD}`}
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={styles.borderView} />
+                <View style={styles.walletTouch}>
+                  <Text style={styles.walletTitleTxt}>Price</Text>
+                  <Text style={[styles.walletTitleTxt, {textAlign: 'right'}]}>
+                    {`$${token?.tokenPrice}`}
                   </Text>
+                  <Ionicons
+                    name={'chevron-forward'}
+                    size={25}
+                    color={colors.black}
+                    style={styles.icon}
+                  />
                 </View>
               </View>
-
-              <View style={styles.borderView} />
-              <View style={styles.walletTouch}>
-                <Text style={styles.walletTitleTxt}>Price</Text>
-                <Text style={[styles.walletTitleTxt, {textAlign: 'right'}]}>
-                  {`$${token?.tokenPrice}`}
-                </Text>
+            </View>
+            <View style={[appStyles.boxShadow, styles.headerSubContainer]}>
+              <TouchableOpacity
+                style={styles.menuItemTouch}
+                onPress={() => {
+                  navigation.navigate('SEND');
+                }}>
+                <Send width={28} height={28} />
+                <Text style={styles.menuItemTxt}>Send</Text>
+              </TouchableOpacity>
+              <View style={styles.horizontalBorder} />
+              <TouchableOpacity
+                style={styles.menuItemTouch}
+                onPress={() => {
+                  navigation.navigate('RECEIVE');
+                }}>
                 <Ionicons
-                  name={'chevron-forward'}
-                  size={25}
-                  color={colors.black}
-                  style={styles.icon}
+                  name={'arrow-down-outline'}
+                  size={26}
+                  color={'#333333'}
+                />
+                <Text style={styles.menuItemTxt}>Receive</Text>
+              </TouchableOpacity>
+              <View style={styles.horizontalBorder} />
+              <View style={styles.horizontalBorder} />
+              <TouchableOpacity style={styles.menuItemTouch}>
+                <Transaction width={28} height={28} />
+                <Text style={styles.menuItemTxt}>Swap</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.listHeaderView}>
+              <View style={styles.listView}>
+                <FlatList
+                  data={assets}
+                  renderItem={renderItem}
+                  scrollEnabled={false}
+                  removeClippedSubviews={false}
+                  keyExtractor={(item, index) => 'key' + index}
+                  horizontal={true}
                 />
               </View>
-            </View>
-          </View>
-          <View style={[appStyles.boxShadow, styles.headerSubContainer]}>
-            <TouchableOpacity
-              style={styles.menuItemTouch}
-              onPress={() => {
-                navigation.navigate('SEND');
-              }}>
-              <Send width={28} height={28} />
-              <Text style={styles.menuItemTxt}>Send</Text>
-            </TouchableOpacity>
-            <View style={styles.horizontalBorder} />
-            <TouchableOpacity
-              style={styles.menuItemTouch}
-              onPress={() => {
-                navigation.navigate('RECEIVE');
-              }}>
-              <Ionicons
-                name={'arrow-down-outline'}
-                size={26}
-                color={'#333333'}
-              />
-              <Text style={styles.menuItemTxt}>Receive</Text>
-            </TouchableOpacity>
-            <View style={styles.horizontalBorder} />
-            <View style={styles.horizontalBorder} />
-            <TouchableOpacity style={styles.menuItemTouch}>
-              <Transaction width={28} height={28} />
-              <Text style={styles.menuItemTxt}>Swap</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.listHeaderView}>
-            <View style={styles.listView}>
-              <FlatList
-                data={assets}
-                renderItem={renderItem}
-                removeClippedSubviews={false}
-                keyExtractor={(item, index) => 'key' + index}
-                horizontal={true}
-              />
-            </View>
 
-            <TouchableOpacity style={styles.addIcon}>
-              <Feather name={'filter'} size={20} color={'#333333'} />
-            </TouchableOpacity>
-          </View>
-          <FlatList
-            data={getData()}
-            renderItem={renderAssets}
-            removeClippedSubviews={false}
-            keyExtractor={(item, index) => 'key' + index}
-            showsVerticalScrollIndicator={false}
-            ItemSeparatorComponent={() => {
-              return <View style={styles.borderView} />;
-            }}
-          />
-          {/* {selectedAsset === 'DEFI' && <DEFIComponent />} */}
-          {/* {selectedAsset === 'Assets' && (
+              <TouchableOpacity style={styles.addIcon}>
+                <Feather name={'filter'} size={20} color={'#333333'} />
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={getData()}
+              renderItem={renderAssets}
+              removeClippedSubviews={false}
+              scrollEnabled={false}
+              keyExtractor={(item, index) => 'key' + index}
+              showsVerticalScrollIndicator={false}
+              ItemSeparatorComponent={() => {
+                return <View style={styles.borderView} />;
+              }}
+            />
+            {/* {selectedAsset === 'DEFI' && <DEFIComponent />} */}
+            {/* {selectedAsset === 'Assets' && (
             <DEFIComponent tokenAssets={tokenAssets} navigation={navigation} />
           )}
           {selectedAsset === 'NFT' && (
             <NFTComponent navigation={navigation} tokenNFTs={tokenNFTs} />
           )} */}
+          </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
     </>
@@ -387,16 +413,22 @@ const styles = StyleSheet.create({
     color: '#7C8FAC',
   },
   itemTitleTxt: {
-    fontSize: 16,
-    flex: 0.15,
-    fontWeight: 800,
+    fontSize: 14,
+    fontWeight: 600,
     color: '#33333',
+    flex: 1,
   },
   itemSubTxt: {
     fontSize: 14,
     fontWeight: 400,
-    flex: 1,
     color: '#333333',
+  },
+  itemSubValueTxt: {
+    fontSize: 14,
+    fontWeight: 500,
+    color: '#333333',
+    flex: 0.3,
+    textAlign: 'right',
   },
   verticalView: {
     width: 25,

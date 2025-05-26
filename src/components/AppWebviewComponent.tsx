@@ -53,13 +53,13 @@ const useAnimatedBottom = (show: boolean, height: number = DEFAULT_HEIGHT) => {
 };
 
 const AppWebviewComponent = (props: PropsType) => {
-  const {link, onClosePress, visible, height = 100} = props;
+  const {link, onClosePress, visible} = props;
 
-  const bottom = useAnimatedBottom(visible, 100);
+  const bottom = useAnimatedBottom(visible);
 
   return (
     visible && (
-      <Animated.View style={[{height, bottom}, styles.topView]}>
+      <Animated.View style={[{bottom}, styles.topView]}>
         <View style={styles.titleView}>
           <TouchableOpacity style={styles.rightIcon} onPress={onClosePress}>
             <Ionicons name={'close'} size={25} color={colors.black} />

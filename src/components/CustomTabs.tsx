@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     paddingHorizontal: 5,
-    paddingVertical: 3,
+    paddingVertical: 1,
     backgroundColor: '#EFF2F5',
     borderRadius: 42,
     marginLeft: 10,

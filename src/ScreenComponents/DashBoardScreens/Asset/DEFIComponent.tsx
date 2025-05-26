@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import {colors} from '../../../utils/colors';
 
-
 const DEFIComponent = ({tokenAssets, navigation}: any) => {
   const renderItem = ({item}: any) => {
     return (
@@ -25,7 +24,7 @@ const DEFIComponent = ({tokenAssets, navigation}: any) => {
           <Image
             style={styles.itemLogo}
             source={{
-              uri: item?.tokenImage,
+              uri: item?.tokenImage !== '' ? item?.tokenImage : null,
             }}
           />
         </View>

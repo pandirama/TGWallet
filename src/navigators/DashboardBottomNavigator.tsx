@@ -53,6 +53,10 @@ import TokenComponent from '../ScreenComponents/DashBoardScreens/Asset/Token/Tok
 import SendComponent from '../ScreenComponents/DashBoardScreens/Asset/Token/SendComponent';
 import ReceiveComponent from '../ScreenComponents/DashBoardScreens/Asset/Token/ReceiveComponent';
 import BuyComponent from '../ScreenComponents/DashBoardScreens/Asset/Buy/BuyComponent';
+import MarketDetailsComponent from '../ScreenComponents/DashBoardScreens/Markets/MarketDetailsComponent';
+import TokensComponent from '../ScreenComponents/DashBoardScreens/Asset/TokensComponent';
+import TokenTypeComponent from '../ScreenComponents/DashBoardScreens/Asset/TokenTypeComponent';
+import AddTokenComponent from '../ScreenComponents/DashBoardScreens/Asset/AddTokenComponent';
 
 const WalletStack = createNativeStackNavigator<any>();
 
@@ -118,6 +122,9 @@ const AssetStackNavigator = () => {
       <AssetStack.Screen name="ADDNEWNFT" component={AddNewNFTComponent} />
       <AssetStack.Screen name="NFTs" component={NFTsComponent} />
       <AssetStack.Screen name="NFTDETAILS" component={NFTDetailsComponent} />
+      <AssetStack.Screen name="TOKENS" component={TokensComponent} />
+      <AssetStack.Screen name="TOKENSTYPE" component={TokenTypeComponent} />
+      <AssetStack.Screen name="ADDTOKENS" component={AddTokenComponent} />
     </AssetStack.Navigator>
   );
 };
@@ -130,6 +137,10 @@ const MarketsStackNavigator = () => {
       screenOptions={{headerShown: false}}
       initialRouteName="MARKETS">
       <MarketsStack.Screen name="MARKETS" component={MarketsComponent} />
+      <MarketsStack.Screen
+        name="MARKET_DETAILS"
+        component={MarketDetailsComponent}
+      />
     </MarketsStack.Navigator>
   );
 };

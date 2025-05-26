@@ -33,3 +33,24 @@ export const ADDRESS_BOOK_URLS = {
   ADDRESS_BOOK_INFO: `${BASE_URL}/editcontact`,
   UPDATE_ADDRESS_BOOK: `${BASE_URL}/updatecontact`,
 };
+
+export const MARKET_URLS = {
+  MARKET_LIST: `${BASE_URL}/markets`,
+  MARKET_INFO: `${BASE_URL}/tokeninfo`,
+  CHECK_INFO: `${BASE_URL}/showSecurity`,
+  DESCRIPTION_INFO: `${BASE_URL}/tokenonline`,
+  TRANSACTION_INFO: `${BASE_URL}/transaction`,
+  SWAP: `${BASE_URL}/swap`,
+  SWAP_DEATAIL: `${BASE_URL}/swapdetail`,
+  CONFIRM_SWAP: `${BASE_URL}/confirmswap`,
+};
+
+export const NFTS_URLS = {
+  TOKEN_LIST: `${BASE_URL}/tokenlist`,
+  ADD_TOKEN_LIST: `${BASE_URL}/addtoken`,
+  REMOVE_TOKEN_LIST: `${BASE_URL}/removetoken`,
+  MY_TOKEN_LIST: `${BASE_URL}/mytoken`,
+  HOME_TOKEN_LIST: `${BASE_URL}/hometoken`,
+  VALIDATE_TOKEN: `${BASE_URL}/validate`,
+  SAVE_TOKEN: `${BASE_URL}/savecustom`,
+};
