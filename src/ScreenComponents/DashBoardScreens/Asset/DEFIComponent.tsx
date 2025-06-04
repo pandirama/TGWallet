@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import {
@@ -21,12 +22,34 @@ const DEFIComponent = ({tokenAssets, navigation}: any) => {
           })
         }>
         <View style={styles.defiListIconView}>
-          <Image
-            style={styles.itemLogo}
-            source={{
-              uri: item?.tokenImage !== '' ? item?.tokenImage : null,
-            }}
-          />
+          {item?.tokenImage !== '' ? (
+            <Image
+              style={styles.itemLogo}
+              source={{
+                uri: item?.tokenImage !== '' ? item?.tokenImage : null,
+              }}
+            />
+          ) : (
+            <View
+              style={{
+                backgroundColor: colors.gray1,
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 40,
+                height: 40,
+                borderRadius: 100,
+              }}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 16,
+                  fontWeight: 600,
+                  color: '#333333',
+                }}>
+                {item?.tokenName?.[0]}
+              </Text>
+            </View>
+          )}
         </View>
         <View style={styles.defiListHeaderTxtView}>
           <Text style={[styles.defiListnameTxt]}>{item?.tokenName}</Text>
@@ -63,7 +86,7 @@ const styles = StyleSheet.create({
   },
   defiListIconView: {
     backgroundColor: '#F5FAFF',
-    padding: 10,
+    padding: 5,
     borderRadius: 100,
   },
   defiListHeaderTxtView: {

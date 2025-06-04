@@ -613,6 +613,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
                 placeholderTextColor="#9C9DA0"
                 value={fromAmount}
                 keyboardType="numeric"
+                returnKeyType="done"
                 onChangeText={text => {
                   setFromAmount(text);
                 }}
@@ -791,6 +792,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
                       placeholderTextColor="#9C9DA0"
                       value={customAmount}
                       keyboardType="numeric"
+                      returnKeyType="done"
                       onChangeText={text => {
                         setCustomAmount(text);
                       }}

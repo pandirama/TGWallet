@@ -109,6 +109,7 @@ const SendComponent = ({navigation}: Props) => {
         network: walletInfo?.ID,
         receive_address: inputName,
         amount: inputAmount,
+        token_address: walletInfo?.address,
       };
       const response: any = await sendWallet(params).unwrap();
       if (response?.success) {
@@ -202,6 +203,7 @@ const SendComponent = ({navigation}: Props) => {
                   placeholderTextColor="#9C9DA0"
                   value={inputAmount}
                   keyboardType="numeric"
+                  returnKeyType="done"
                   onChangeText={text => {
                     setInputAmount(text);
                   }}

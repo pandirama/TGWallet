@@ -129,7 +129,7 @@ const DescriptionComponent = ({descInfos}: any) => {
                 color: '#333333',
                 fontWeight: 400,
                 marginLeft: 5,
-                flex: 1,
+                flex: 0.5,
               }}>
               Website
             </Text>
@@ -143,6 +143,7 @@ const DescriptionComponent = ({descInfos}: any) => {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
+                flex: 1,
               }}>
               <Text
                 style={{
@@ -150,7 +151,10 @@ const DescriptionComponent = ({descInfos}: any) => {
                   color: '#7C8FAC',
                   fontWeight: 400,
                   marginRight: 5,
-                }}>
+                  flex: 1,
+                  textAlign: 'right',
+                }}
+                numberOfLines={1}>
                 {descInfos?.website}
               </Text>
               <MaterialIcons
@@ -179,7 +183,7 @@ const DescriptionComponent = ({descInfos}: any) => {
                 color: '#333333',
                 fontWeight: 400,
                 marginLeft: 5,
-                flex: 1,
+                flex: 0.5,
               }}>
               Twitter
             </Text>
@@ -193,6 +197,7 @@ const DescriptionComponent = ({descInfos}: any) => {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
+                flex: 1,
               }}>
               <Text
                 style={{
@@ -200,6 +205,8 @@ const DescriptionComponent = ({descInfos}: any) => {
                   color: '#7C8FAC',
                   fontWeight: 400,
                   marginRight: 5,
+                  flex: 1,
+                  textAlign: 'right',
                 }}
                 numberOfLines={1}>
                 {descInfos?.twitter}
@@ -230,7 +237,7 @@ const DescriptionComponent = ({descInfos}: any) => {
                 color: '#333333',
                 fontWeight: 400,
                 marginLeft: 5,
-                flex: 1,
+                flex: 0.5,
               }}>
               Telegram
             </Text>
@@ -244,6 +251,7 @@ const DescriptionComponent = ({descInfos}: any) => {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
+                flex: 1,
               }}>
               <Text
                 style={{
@@ -251,6 +259,8 @@ const DescriptionComponent = ({descInfos}: any) => {
                   color: '#7C8FAC',
                   fontWeight: 400,
                   marginRight: 5,
+                  flex: 1,
+                  textAlign: 'right',
                 }}>
                 {descInfos?.telegram}
               </Text>
@@ -280,7 +290,7 @@ const DescriptionComponent = ({descInfos}: any) => {
                 color: '#333333',
                 fontWeight: 400,
                 marginLeft: 5,
-                flex: 1,
+                flex: 0.5,
               }}>
               Facebook
             </Text>
@@ -293,6 +303,7 @@ const DescriptionComponent = ({descInfos}: any) => {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
+                flex: 1,
               }}>
               <Text
                 style={{
@@ -300,6 +311,8 @@ const DescriptionComponent = ({descInfos}: any) => {
                   color: '#7C8FAC',
                   fontWeight: 400,
                   marginRight: 5,
+                  flex: 1,
+                  textAlign: 'right',
                 }}>
                 {descInfos?.facebook}
               </Text>

@@ -52,6 +52,7 @@ const AssetComponent = ({navigation}: Props) => {
 
   const [selectedAsset, setSelectedAsset] = useState('Assets');
   const [tokenAssets, setTokenAssets] = useState([]);
+  const [ethBalance, setETHBalance] = useState([]);
   // const [tokenNFTs, setTokenNFTs] = useState([]);
   const [showWallets, setShowWallets] = useState(false);
   const [networks, setNetworks] = useState<any>([]);
@@ -62,7 +63,7 @@ const AssetComponent = ({navigation}: Props) => {
     userInfo = {},
     selectedNetwork,
   } = useSelector(({authReducer}: any) => authReducer);
-  const {wallet_name, wallet_balance, network_mode} = walletInfo ?? {};
+  const {wallet_name, network_mode} = walletInfo ?? {};
 
   const {isFetching, refetch} = useGetNetworksQuery();
 
@@ -84,6 +85,7 @@ const AssetComponent = ({navigation}: Props) => {
       };
       const response: any = await walletInfos(params).unwrap();
       if (response?.success) {
+        setETHBalance(response?.message?.ethBalance);
         setTokenAssets(response?.message?.tokenBalances);
         // setTokenNFTs(response?.message?.nfts);
       } else {
@@ -218,7 +220,7 @@ const AssetComponent = ({navigation}: Props) => {
           </TouchableOpacity>
 
           <View style={styles.amountView}>
-            <Text style={styles.menuAmountTxt}>{wallet_balance}</Text>
+            <Text style={styles.menuAmountTxt}>{ethBalance}</Text>
             <Eye width={30} height={30} />
           </View>
 

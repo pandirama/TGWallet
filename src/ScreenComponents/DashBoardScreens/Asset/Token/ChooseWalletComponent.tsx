@@ -41,6 +41,52 @@ const ChooseWalletComponent = ({
 
   const renderAssets = ({item}: any) => {
     if (selectedWalletType === 'recent') {
+      // const address = item?.type === 'in' ? item?.from : item?.to;
+      // return (
+      //   <View
+      //     style={{
+      //       backgroundColor: colors.white,
+      //       paddingLeft: 15,
+      //       paddingRight: 15,
+      //       paddingTop: 20,
+      //       paddingBottom: 20,
+      //       flexDirection: 'row',
+      //       alignItems: 'center',
+      //     }}>
+      //     <View
+      //       style={{
+      //         backgroundColor: item?.type === 'in' ? 'green' : 'red',
+      //         padding: 5,
+      //         borderRadius: 100,
+      //       }}>
+      //       <Feather
+      //         name={item?.type === 'in' ? 'arrow-down-left' : 'arrow-up-right'}
+      //         size={20}
+      //         color={'#FFFFFF'}
+      //       />
+      //     </View>
+
+      //     <View style={{flex: 1, marginLeft: 10, marginRight: 10}}>
+      //       <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      //         <Text style={styles.itemTitleTxt} numberOfLines={1}>
+      //           {address}
+      //         </Text>
+      //         <TouchableOpacity
+      //           onPress={() => {
+      //             showToast({
+      //               type: 'success',
+      //               text1: 'Address Copied Successfully',
+      //             });
+      //             Clipboard.setString(address);
+      //           }}>
+      //           <Ionicons name={'copy-outline'} size={16} color={'#7C8FAC'} />
+      //         </TouchableOpacity>
+      //       </View>
+      //       <Text style={styles.itemSubTxt}>{item?.time}</Text>
+      //     </View>
+      //     <Text style={styles.itemSubValueTxt}>{item?.value}</Text>
+      //   </View>
+      // );
       return (
         <View>
           <TouchableOpacity

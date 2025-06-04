@@ -33,6 +33,8 @@ type Props = NativeStackScreenProps<any, 'WALLET_DETAILS'>;
 const WalletDetailsComponent = ({navigation, route}: Props) => {
   const {walletDetails, networkIcon = ''} = route?.params ?? {};
 
+  console.log('walletDetails', typeof walletDetails?.wallet_type);
+
   const {showToast, toggleBackdrop} = useCommon();
 
   const [showPassword, togglePassword] = useState(true);
@@ -215,83 +217,89 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
               />
             </TouchableOpacity>
           </View>
-          <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
-            <TouchableOpacity
-              style={styles.walletTouch}
-              onPress={() => {
-                setPwdModalVisible(true);
-                setExportText('recoveryPhrase');
-              }}>
-              <Text style={styles.walletTitleTxt}>
-                Export Secret Recovery Phrase
-              </Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={22}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={styles.walletTouch}
-              onPress={() => {
-                setPwdModalVisible(true);
-                setExportText('privateKey');
-              }}>
-              <Text style={styles.walletTitleTxt}>Export Private Key</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={22}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
-            <TouchableOpacity style={styles.walletTouch}>
-              <Text style={styles.walletTitleTxt}>Add Wallet</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={22}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
-            <TouchableOpacity
-              style={styles.walletTouch}
-              onPress={() => {
-                navigation.navigate('MODIFY_PASSWORD', {
-                  walletDetails: updateWalletDetails,
-                });
-              }}>
-              <Text style={styles.walletTitleTxt}>Modify Password</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={22}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={styles.walletTouch}
-              onPress={() => {
-                navigation.navigate('RESET_PASSWORD', {
-                  walletDetails: updateWalletDetails,
-                });
-              }}>
-              <Text style={styles.walletTitleTxt}>Reset Password</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={22}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-          </View>
+          {(walletDetails?.wallet_type === '1' ||
+            walletDetails?.wallet_type === '2') && (
+            <>
+              <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
+                <TouchableOpacity
+                  style={styles.walletTouch}
+                  onPress={() => {
+                    setPwdModalVisible(true);
+                    setExportText('recoveryPhrase');
+                  }}>
+                  <Text style={styles.walletTitleTxt}>
+                    Export Secret Recovery Phrase
+                  </Text>
+                  <Ionicons
+                    name={'chevron-forward'}
+                    size={22}
+                    color={'#333333'}
+                    style={styles.icon}
+                  />
+                </TouchableOpacity>
+                <View style={styles.borderView} />
+                <TouchableOpacity
+                  style={styles.walletTouch}
+                  onPress={() => {
+                    setPwdModalVisible(true);
+                    setExportText('privateKey');
+                  }}>
+                  <Text style={styles.walletTitleTxt}>Export Private Key</Text>
+                  <Ionicons
+                    name={'chevron-forward'}
+                    size={22}
+                    color={'#333333'}
+                    style={styles.icon}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
+                <TouchableOpacity style={styles.walletTouch}>
+                  <Text style={styles.walletTitleTxt}>Add Wallet</Text>
+                  <Ionicons
+                    name={'chevron-forward'}
+                    size={22}
+                    color={'#333333'}
+                    style={styles.icon}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
+                <TouchableOpacity
+                  style={styles.walletTouch}
+                  onPress={() => {
+                    navigation.navigate('MODIFY_PASSWORD', {
+                      walletDetails: updateWalletDetails,
+                    });
+                  }}>
+                  <Text style={styles.walletTitleTxt}>Modify Password</Text>
+                  <Ionicons
+                    name={'chevron-forward'}
+                    size={22}
+                    color={'#333333'}
+                    style={styles.icon}
+                  />
+                </TouchableOpacity>
+                <View style={styles.borderView} />
+                <TouchableOpacity
+                  style={styles.walletTouch}
+                  onPress={() => {
+                    navigation.navigate('RESET_PASSWORD', {
+                      walletDetails: updateWalletDetails,
+                    });
+                  }}>
+                  <Text style={styles.walletTitleTxt}>Reset Password</Text>
+                  <Ionicons
+                    name={'chevron-forward'}
+                    size={22}
+                    color={'#333333'}
+                    style={styles.icon}
+                  />
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
+
           <TouchableOpacity style={styles.startedTouch}>
             <Text style={styles.startedBtnTxt}>Delete Wallet</Text>
           </TouchableOpacity>

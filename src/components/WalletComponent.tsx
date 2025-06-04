@@ -56,10 +56,6 @@ const WalletComponent = ({
         setWallets(response?.wallets);
       } else {
         setWallets([]);
-        showToast({
-          type: 'error',
-          text1: response?.message,
-        });
       }
     } catch (err: any) {
       showToast({

@@ -41,6 +41,12 @@ const ProfileComponent = ({navigation}: Props) => {
     toggleBackdrop(isFetching);
   }, [isFetching]);
 
+  useEffect(() => {
+    if (!showWallets) {
+      navigation?.navigate('Asset');
+    }
+  }, [showWallets]);
+
   useFocusEffect(
     useCallback(() => {
       refetch().then(response => {
