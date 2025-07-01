@@ -20,7 +20,7 @@ import AddWallet from '../../../assets/add_wallet.svg';
 import Buy from '../../../assets/buy.svg';
 import Send from '../../../assets/send.svg';
 import Eye from '../../../assets/eye.svg';
-import Transaction from '../../../assets/profile/transaction.svg';
+// import Transaction from '../../../assets/profile/transaction.svg';
 import DEFIComponent from './DEFIComponent';
 import {Feather, Ionicons, MaterialIcons} from '../../../utils/IconUtils';
 import {useSelector} from 'react-redux';
@@ -263,10 +263,10 @@ const AssetComponent = ({navigation}: Props) => {
               <Text style={styles.menuItemTxt}>Buy</Text>
             </TouchableOpacity>
             <View style={styles.horizontalBorder} />
-            <TouchableOpacity style={styles.menuItemTouch}>
+            {/* <TouchableOpacity style={styles.menuItemTouch}>
               <Transaction width={28} height={28} />
               <Text style={styles.menuItemTxt}>Swap</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </View>

@@ -26,7 +26,7 @@ import {useTokenInfoMutation} from '../../../../api/walletAPI';
 import {useFocusEffect} from '@react-navigation/native';
 import {getErrorMessage} from '../../../../utils/common';
 import Send from '../../../../assets/send.svg';
-import Transaction from '../../../../assets/profile/transaction.svg';
+// import Transaction from '../../../../assets/profile/transaction.svg';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 type Props = NativeStackScreenProps<any, 'TOKEN'>;
@@ -254,10 +254,10 @@ const TokenComponent = ({navigation, route}: Props) => {
               </TouchableOpacity>
               <View style={styles.horizontalBorder} />
               <View style={styles.horizontalBorder} />
-              <TouchableOpacity style={styles.menuItemTouch}>
+              {/* <TouchableOpacity style={styles.menuItemTouch}>
                 <Transaction width={28} height={28} />
                 <Text style={styles.menuItemTxt}>Swap</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             <View style={styles.listHeaderView}>
               <View style={styles.listView}>

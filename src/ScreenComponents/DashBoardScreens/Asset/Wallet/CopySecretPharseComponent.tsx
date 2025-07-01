@@ -144,7 +144,7 @@ const CopySecretPharseComponent = ({route}: Props) => {
                 type: 'success',
                 text1: 'Secret Phrase Copied Successfully',
               });
-              Clipboard.setString(walletInfo?.secret_pharse);
+              Clipboard.setString(walletInfo?.secret);
             }}>
             <Ionicons name={'copy-outline'} size={12} color={'#7C8FAC'} />
             <Text style={styles.copyTxt}>Copy secret recovery phase</Text>

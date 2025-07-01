@@ -19,11 +19,15 @@ import PlainTxtEye from '../../../assets/plain_txt_eye.svg';
 import CustomTabs, {RecoveryTabs} from '../../../components/CustomTabs';
 import {Ionicons} from '../../../utils/IconUtils';
 import QRCode from 'react-native-qrcode-svg';
+import Clipboard from '@react-native-clipboard/clipboard';
+import useCommon from '../../../hooks/useCommon';
 
 type Props = NativeStackScreenProps<any, 'COMPLETED_BACKUP'>;
 
 const CompletedBackupComponent = ({route, navigation}: Props) => {
   const {walletInfo} = route?.params ?? {};
+
+  const {showToast} = useCommon();
 
   const [activeTab, setActiveTab] = useState(RecoveryTabs.HandwrittenBackup);
   const [showCode, setShowCode] = useState(false);
@@ -139,10 +143,18 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
             </TouchableOpacity>
           </View>
           {showQRCode ? qRCodeView() : plainTxtView()}
-          <View style={styles.copyView}>
+          <TouchableOpacity
+            style={styles.copyView}
+            onPress={() => {
+              showToast({
+                type: 'success',
+                text1: 'Secret Recovery Phase Copied Successfully',
+              });
+              Clipboard.setString(walletInfo?.secret_phase?.join(' '));
+            }}>
             <Ionicons name={'copy-outline'} size={12} color={'#7C8FAC'} />
             <Text style={styles.copyTxt}>Copy secret recovery phase</Text>
-          </View>
+          </TouchableOpacity>
           <View style={styles.importantView}>
             <Text style={styles.impTitleTxt}>Remember:</Text>
             <Text style={styles.impSubTitleTxt}>

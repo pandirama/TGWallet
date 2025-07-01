@@ -33,7 +33,7 @@ type Props = NativeStackScreenProps<any, 'WALLET_DETAILS'>;
 const WalletDetailsComponent = ({navigation, route}: Props) => {
   const {walletDetails, networkIcon = ''} = route?.params ?? {};
 
-  console.log('walletDetails', typeof walletDetails?.wallet_type);
+  console.log('walletDetails', walletDetails?.wallet_type);
 
   const {showToast, toggleBackdrop} = useCommon();
 

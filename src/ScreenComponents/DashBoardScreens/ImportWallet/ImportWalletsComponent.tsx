@@ -161,7 +161,9 @@ const ImportWalletsComponent = ({navigation, route}: Props) => {
             }
           : {
               ...params,
-              secret_key: [recoveryPhrase],
+              secret_key: Array.isArray(recoveryPhrase)
+                ? recoveryPhrase?.join(' ')
+                : recoveryPhrase,
             };
       let response: any;
       if (activeTab === WalletTabs.PrivateKey) {

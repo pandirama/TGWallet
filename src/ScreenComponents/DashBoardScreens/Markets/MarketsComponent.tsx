@@ -228,7 +228,7 @@ const MarketsComponent = ({navigation}: Props) => {
           <Image
             style={styles.itemLogo}
             source={{
-               uri: item?.tokenImage !== '' ? item?.tokenImage : null,
+              uri: item?.tokenImage !== '' ? item?.tokenImage : null,
             }}
           />
           <Image
@@ -303,11 +303,14 @@ const MarketsComponent = ({navigation}: Props) => {
             </TouchableOpacity>
           </View>
           <View style={{justifyContent: 'center', flex: 1}}>
-            <CustomTabs
+            {/* <CustomTabs
               activeTab={activeTab}
               onSelectItem={(val: any) => setActiveTab(val)}
               titles={[MarketTabs.SwapBridge, MarketTabs.Market]}
-            />
+            /> */}
+            <Text style={styles.title}>
+              {MarketTabs.Market}
+            </Text>
           </View>
           <View style={styles.headerRightIconView}>
             <TouchableOpacity style={styles.walletIcon}>
@@ -490,6 +493,13 @@ const styles = StyleSheet.create({
     color: '#7C8FAC',
     flex: 1,
     textAlign: 'left',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 700,
+    color: '#333333',
+    letterSpacing: 0.5,
+    textAlign: 'center',
   },
 });
 
