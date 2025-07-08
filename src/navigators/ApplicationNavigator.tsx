@@ -40,6 +40,11 @@ export const NewWalletStackNavigator = () => {
       screenOptions={{headerShown: false}}
       initialRouteName="NEW_WALLET_PASSWORD">
       <NewWalletStack.Screen
+        name="SELECT_NETWORK"
+        component={SelectNetworkComponent}
+      />
+
+      <NewWalletStack.Screen
         name="NEW_WALLET_PASSWORD"
         component={WalletPasswordComponent}
       />
@@ -95,7 +100,7 @@ const WalletTypeStackNavigator = () => {
         name="WALLET_TYPE"
         component={WalletTypeComponent}
       />
-      <NewWalletStack.Screen
+      <WalletTypeStack.Screen
         name="SELECT_NETWORK"
         component={SelectNetworkComponent}
       />

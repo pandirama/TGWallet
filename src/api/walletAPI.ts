@@ -16,6 +16,22 @@ export const walletAPI = createApi({
       }),
       transformResponse: (response: {data: any}) => response,
     }),
+    walletMode: builder.mutation({
+      query: walletParams => ({
+        url: WALLET_URLS.WALLET_MODE,
+        method: 'POST',
+        body: walletParams,
+      }),
+      transformResponse: (response: {data: any}) => response,
+    }),
+    walletDelete: builder.mutation({
+      query: walletParams => ({
+        url: WALLET_URLS.WALLET_DELETE,
+        method: 'POST',
+        body: walletParams,
+      }),
+      transformResponse: (response: {data: any}) => response,
+    }),
     walletNameChange: builder.mutation({
       query: walletParams => ({
         url: WALLET_URLS.WALLET_NAME_CHANGE,
@@ -129,4 +145,6 @@ export const {
   useGetSendWalletMutation,
   useSendWalletMutation,
   useReceiveWalletMutation,
+  useWalletModeMutation,
+  useWalletDeleteMutation,
 } = walletAPI;

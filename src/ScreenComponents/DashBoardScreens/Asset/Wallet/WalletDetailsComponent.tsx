@@ -20,27 +20,38 @@ import DashBoardHeaderComponent from '../../../../components/DashBoardHeaderComp
 import {Feather, Ionicons} from '../../../../utils/IconUtils';
 import ModalComponent from '../../../../components/ModalComponent';
 import {
+  useWalletDeleteMutation,
+  useWalletModeMutation,
   useWalletNameChangeMutation,
   useWalletVerifyPwdMutation,
 } from '../../../../api/walletAPI';
 import useCommon from '../../../../hooks/useCommon';
 import {useSelector} from 'react-redux';
-import {getErrorMessage} from '../../../../utils/common';
+import {
+  getErrorMessage,
+  localStorageKey,
+  setStorage,
+} from '../../../../utils/common';
 import Clipboard from '@react-native-clipboard/clipboard';
+import {authAction} from '../../../../reducer/auth/authSlice';
+import {useAppDispatch} from '../../../../store';
 
 type Props = NativeStackScreenProps<any, 'WALLET_DETAILS'>;
 
 const WalletDetailsComponent = ({navigation, route}: Props) => {
   const {walletDetails, networkIcon = ''} = route?.params ?? {};
 
-  console.log('walletDetails', walletDetails?.wallet_type);
-
   const {showToast, toggleBackdrop} = useCommon();
+  const dispatch = useAppDispatch();
 
   const [showPassword, togglePassword] = useState(true);
   const [updateWalletDetails, setUpdateWalletDetails] = useState(walletDetails);
   const [nameModalVisible, setNameModalVisible] = useState(false);
   const [walletName, setWalletname] = useState(walletDetails?.wallet_name);
+  const [walletModes, setWalletModes] = useState('0');
+  const [deletePressed, setDeletePressed] = useState(false);
+
+  const [isDelete, setIsDelete] = useState(false);
 
   const [pwdModalVisible, setPwdModalVisible] = useState(false);
   const [exportText, setExportText] = useState('');
@@ -53,25 +64,59 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
   );
 
   const [walletNameChange, {isLoading}] = useWalletNameChangeMutation();
+  const [walletMode, {isLoading: isModeLoading}] = useWalletModeMutation();
+  const [walletDelete, {isLoading: isDeleteLoading}] =
+    useWalletDeleteMutation();
   const [walletVerifyPwd, {isLoading: verifyLoading}] =
     useWalletVerifyPwdMutation();
 
   useEffect(() => {
-    toggleBackdrop(isLoading || verifyLoading);
-  }, [isLoading || verifyLoading]);
+    toggleBackdrop(
+      isLoading || verifyLoading || isModeLoading || isDeleteLoading,
+    );
+  }, [isLoading || verifyLoading || isModeLoading || isDeleteLoading]);
 
   useFocusEffect(
     useCallback(() => {
-      // getWallets();
+      getWalletMode();
       return () => {};
     }, []),
   );
+
+  const getWalletMode = async () => {
+    try {
+      const params = {
+        network: walletInfo?.network_mode,
+        userid: userInfo?.generated_Id,
+        walletid: updateWalletDetails?.wallet_id,
+      };
+      const response: any = await walletMode(params).unwrap();
+      if (response?.status) {
+        showToast({
+          type: 'success',
+          text1: response?.message,
+        });
+        setWalletModes(response?.data?.mode);
+      } else {
+        showToast({
+          type: 'error',
+          text1: response?.message,
+        });
+      }
+    } catch (err: any) {
+      showToast({
+        type: 'error',
+        text1: getErrorMessage(err),
+      });
+    }
+  };
 
   const onDismiss = () => {
     setNameModalVisible(false);
     setPwdModalVisible(false);
     setPasswordError(false);
     setPassword('');
+    setIsDelete(false);
   };
 
   const onConfirmNameChange = async () => {
@@ -146,6 +191,73 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
     }
   };
 
+  const onConfirmDelete = async () => {
+    let params: any = {
+      network: walletInfo?.network_mode,
+      userid: userInfo?.generated_Id,
+      wallet_id: updateWalletDetails?.wallet_id,
+    };
+    setIsDelete(false);
+    if (walletModes === '1') {
+      if (password === '') {
+        setPasswordError(true);
+        setPasswordErrorTxt('Password is Missing');
+        return;
+      }
+      setPwdModalVisible(false);
+      setDeletePressed(false);
+      params = {
+        ...params,
+        password: password,
+      };
+    }
+
+    try {
+      const response: any = await walletDelete(params).unwrap();
+      setPassword('');
+      console.log(response);
+      if (response?.success) {
+        dispatch(authAction.setWalletInfo(response?.message?.walletinfo));
+        await setStorage(
+          localStorageKey.walletInfo,
+          JSON.stringify(response?.message?.walletinfo),
+        );
+        navigation.goBack();
+      } else {
+        if (response?.redirect === 'nowallet') {
+          dispatch(authAction.setHomeNewWallet(true));
+          navigation.goBack();
+          navigation.navigate('WALLET_STACK', {
+            screen: 'NEW_WALLET',
+            params: {
+              screen: 'SELECT_NETWORK',
+              params: {},
+            },
+          });
+        } else {
+          showToast({
+            type: 'error',
+            text1: response?.message,
+          });
+        }
+      }
+    } catch (err: any) {
+      showToast({
+        type: 'error',
+        text1: getErrorMessage(err),
+      });
+    }
+  };
+
+  const onDeleteWallet = () => {
+    if (walletModes === '1') {
+      setDeletePressed(true);
+      setPwdModalVisible(true);
+    } else {
+      setIsDelete(true);
+    }
+  };
+
   return (
     <>
       <StatusBar
@@ -171,7 +283,7 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
               <Image
                 style={styles.itemLogo}
                 source={{
-                  uri: networkIcon,
+                  uri: networkIcon !== '' ? networkIcon : null,
                 }}
               />
             </View>
@@ -300,7 +412,11 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
             </>
           )}
 
-          <TouchableOpacity style={styles.startedTouch}>
+          <TouchableOpacity
+            style={styles.startedTouch}
+            onPress={() => {
+              onDeleteWallet();
+            }}>
             <Text style={styles.startedBtnTxt}>Delete Wallet</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -324,7 +440,13 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
         <ModalComponent
           visibility={pwdModalVisible}
           onDismiss={onDismiss}
-          onConfirm={onConfirmExportKeys}
+          onConfirm={() => {
+            if (deletePressed) {
+              onConfirmDelete();
+            } else {
+              onConfirmExportKeys();
+            }
+          }}
           titleTxt={'Verify Password'}>
           <>
             <View style={styles.searchContainer}>
@@ -354,6 +476,19 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
             {passwordErrorTxt && passwordError && (
               <Text style={styles.errorTxt}>{passwordErrorTxt}</Text>
             )}
+          </>
+        </ModalComponent>
+        <ModalComponent
+          visibility={isDelete}
+          onDismiss={onDismiss}
+          onConfirm={() => {
+            onConfirmDelete();
+          }}
+          titleTxt={''}>
+          <>
+            <Text style={styles.deleteTxt}>
+              Do You Want to Delete the Wallet?
+            </Text>
           </>
         </ModalComponent>
       </SafeAreaView>
@@ -460,6 +595,13 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginTop: 2,
     marginBottom: 2,
+  },
+  deleteTxt: {
+    fontSize: 16,
+    fontWeight: 400,
+    color: '#333333',
+    textAlign: 'center',
+    marginTop: 15,
   },
   startedTouch: {
     marginTop: 50,

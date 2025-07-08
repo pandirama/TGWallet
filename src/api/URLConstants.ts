@@ -14,6 +14,8 @@ export const NEW_WALLET_URLS = {
 export const WALLET_URLS = {
   WALLET_LIST: `${BASE_URL}/wallets`,
   WALLET_NAME_CHANGE: `${BASE_URL}/walletname_change`,
+  WALLET_MODE: `${BASE_URL}/mode`,
+  WALLET_DELETE: `${BASE_URL}/delete`,
   WALLET_CHANGE_PWD: `${BASE_URL}/changepwd`,
   WALLET_RESET_PWD: `${BASE_URL}/resetpwd`,
   WALLET_VERIFY_PWD: `${BASE_URL}/verifypwd`,
