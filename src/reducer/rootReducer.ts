@@ -9,6 +9,7 @@ import {walletAPI} from '../api/walletAPI';
 import {addressBookAPI} from '../api/addressBookAPI';
 import { marketAPI } from '../api/marketAPI';
 import { tokenAPI } from '../api/tokenAPI';
+import { profileAPI } from '../api/profileAPI';
 
 export const rootPersistConfig = {
   key: 'root',
@@ -30,6 +31,7 @@ export const combinedReducer = combineReducers({
   [addressBookAPI.reducerPath]: addressBookAPI.reducer,
   [marketAPI.reducerPath]: marketAPI.reducer,
   [tokenAPI.reducerPath]: tokenAPI.reducer,
+  [profileAPI.reducerPath]: profileAPI.reducer,
 });
 
 export const rootReducer: Reducer<RootState> = (state, action) => {

@@ -215,7 +215,6 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
     try {
       const response: any = await walletDelete(params).unwrap();
       setPassword('');
-      console.log(response);
       if (response?.success) {
         dispatch(authAction.setWalletInfo(response?.message?.walletinfo));
         await setStorage(

@@ -16,7 +16,8 @@ import {ActionSheetRef} from 'react-native-actions-sheet';
 import ActionsSheets from '../../../../components/ActionsSheets';
 import LinearGradient from 'react-native-linear-gradient';
 import {Switch} from 'react-native-paper';
-import { Ionicons } from '../../../../utils/IconUtils';
+import {Ionicons} from '../../../../utils/IconUtils';
+import {useSelector} from 'react-redux';
 
 type Props = NativeStackScreenProps<any, 'SETTINGS_LIST'>;
 
@@ -26,6 +27,9 @@ const SettingsComponent = ({navigation}: Props) => {
   const [isTransactionsOn, setIsTransactionsOn] = useState(false);
   const [isPermitOn, setIsPermitOn] = useState(false);
   const cacheActionSheetRef = useRef<ActionSheetRef>(null);
+
+  const {timeZone = ''} = useSelector(({authReducer}: any) => authReducer);
+
   return (
     <>
       <StatusBar
@@ -127,7 +131,7 @@ const SettingsComponent = ({navigation}: Props) => {
               style={[styles.walletTouch]}
               onPress={() => navigation.navigate('CHANGE_BASIS')}>
               <Text style={styles.titleTxt}>Change Basis</Text>
-              <Text style={styles.redirectTxt}>UTC+5</Text>
+              <Text style={styles.redirectTxt}>{timeZone?.name}</Text>
               <Ionicons
                 name={'chevron-forward'}
                 size={25}

@@ -9,6 +9,7 @@ const initialState = {
   walletType: null,
   isHomeNewWallet: false,
   selectedNetwork: null,
+  timeZone: null,
 };
 
 const slice = createSlice({
@@ -46,6 +47,9 @@ const slice = createSlice({
     },
     setSelectedNetwork: (state, action) => {
       state.selectedNetwork = action.payload;
+    },
+    setTimeZone: (state, action) => {
+      state.timeZone = action.payload;
     },
   },
 });

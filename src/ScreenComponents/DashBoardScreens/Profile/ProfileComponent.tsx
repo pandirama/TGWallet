@@ -30,6 +30,7 @@ const ProfileComponent = ({navigation}: Props) => {
   const {showToast, toggleBackdrop} = useCommon();
 
   const {walletInfo = {}} = useSelector(({authReducer}: any) => authReducer);
+
   const {network_mode} = walletInfo ?? {};
 
   const [showWallets, setShowWallets] = useState(false);

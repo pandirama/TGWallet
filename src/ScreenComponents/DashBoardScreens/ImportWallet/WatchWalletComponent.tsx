@@ -120,8 +120,6 @@ const WatchWalletComponent = ({navigation, route}: Props) => {
       };
       const response: any = await watchAddress(params).unwrap();
 
-      console.log('response', response);
-
       if (response?.success) {
         dispatch(authAction.setWalletInfo(response?.walletinfo));
         await setStorage(

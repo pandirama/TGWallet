@@ -56,3 +56,8 @@ export const NFTS_URLS = {
   VALIDATE_TOKEN: `${BASE_URL}/validate`,
   SAVE_TOKEN: `${BASE_URL}/savecustom`,
 };
+
+export const PROFILE_URLS = {
+  CHANGE_BASIS_LIST: `${BASE_URL}/timezone`,
+  UPDATE_TIME_ZONE: `${BASE_URL}/updatetime`,
+};

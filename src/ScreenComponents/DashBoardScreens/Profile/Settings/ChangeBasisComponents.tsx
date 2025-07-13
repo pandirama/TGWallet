@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   FlatList,
@@ -13,82 +14,97 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../../utils/appStyles';
 import {colors} from '../../../../utils/colors';
 import {Ionicons} from '../../../../utils/IconUtils';
+import {
+  useBasisListMutation,
+  useUpdateTimeZoneMutation,
+} from '../../../../api/profileAPI';
+import {useFocusEffect} from '@react-navigation/native';
+import useCommon from '../../../../hooks/useCommon';
+import {getErrorMessage} from '../../../../utils/common';
+import {useSelector} from 'react-redux';
+import {authAction} from '../../../../reducer/auth/authSlice';
+import {useAppDispatch} from '../../../../store';
 
 type Props = NativeStackScreenProps<any, 'CHANGE_BASIS'>;
 
-const languageList = [
-  {
-    id: 0,
-    label: 'Last 24 hours (Device time zone)',
-  },
-  {
-    id: 1,
-    label: 'UTC+12, 00:00',
-  },
-  {
-    id: 2,
-    label: 'UTC+11, 00:00',
-  },
-  {
-    id: 3,
-    label: 'UTC+10, 00:00',
-  },
-  {
-    id: 4,
-    label: 'UTC+09, 00:00',
-  },
-  {
-    id: 5,
-    label: 'UTC+08, 00:00',
-  },
-  {
-    id: 6,
-    label: 'UTC+07, 00:00',
-  },
-  {
-    id: 7,
-    label: 'UTC+06, 00:00',
-  },
-  {
-    id: 8,
-    label: 'UTC+05, 00:00',
-  },
-  {
-    id: 9,
-    label: 'UTC+11, 00:00',
-  },
-  {
-    id: 10,
-    label: 'UTC+04, 00:00',
-  },
-  {
-    id: 11,
-    label: 'UTC+03, 00:00',
-  },
-  {
-    id: 12,
-    label: 'UTC+02, 00:00',
-  },
-  {
-    id: 13,
-    label: 'UTC+01, 00:00',
-  },
-  {
-    id: 14,
-    label: 'UTC-1, 00:00',
-  },
-];
-
 const ChangeBasisComponents = ({navigation}: Props) => {
-  const [selectedLanguage, setSelectedlanguage] = useState(null);
+  const {showToast, toggleBackdrop} = useCommon();
+  const dispatch = useAppDispatch();
+
+  const [basisLists, setBasisLists] = useState(null);
+  const [selectedTime, setSelectedTime] = useState<any>({});
+
+  const [basisList, {isLoading}] = useBasisListMutation();
+  const [updateTimeZone, {isLoading: isTimeLoading}] =
+    useUpdateTimeZoneMutation();
+
+  const {userInfo = {}, timeZone = ''} = useSelector(
+    ({authReducer}: any) => authReducer,
+  );
+
+  useEffect(() => {
+    toggleBackdrop(isLoading || isTimeLoading);
+  }, [isLoading, isTimeLoading]);
+
+  const getBasisList = async () => {
+    try {
+      const response: any = await basisList().unwrap();
+      if (response?.status) {
+        setBasisLists(response?.data);
+        showToast({
+          type: 'success',
+          text1: response?.message,
+        });
+      }
+    } catch (err: any) {
+      showToast({
+        type: 'error',
+        text1: getErrorMessage(err),
+      });
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      getBasisList();
+      return () => {};
+    }, []),
+  );
+
+  const updateTimeZones = async () => {
+    try {
+      const params = {
+        userid: userInfo?.generated_Id,
+        id: selectedTime?.id,
+      };
+      const response: any = await updateTimeZone(params).unwrap();
+      if (response?.status) {
+        dispatch(authAction.setTimeZone(selectedTime));
+        showToast({
+          type: 'success',
+          text1: response?.message,
+        });
+        setTimeout(() => {
+          navigation.goBack();
+        }, 800);
+      }
+    } catch (err: any) {
+      showToast({
+        type: 'error',
+        text1: getErrorMessage(err),
+      });
+    }
+  };
 
   const renderItem = ({item}: any) => {
     return (
       <TouchableOpacity
         style={styles.walletTouch}
-        onPress={() => setSelectedlanguage(item?.id)}>
-        <Text style={styles.titleTxt}>{item?.label}</Text>
-        {selectedLanguage === item?.id && (
+        onPress={() => {
+          setSelectedTime(item);
+        }}>
+        <Text style={styles.titleTxt}>{item?.name}</Text>
+        {(selectedTime?.id ?? timeZone?.id) === item?.id && (
           <Ionicons
             name={'checkmark'}
             size={20}
@@ -117,7 +133,10 @@ const ChangeBasisComponents = ({navigation}: Props) => {
           </TouchableOpacity>
 
           <Text style={styles.headerTxt}>Change Basis</Text>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              updateTimeZones();
+            }}>
             <Text style={styles.headerRightTxt}>Save</Text>
           </TouchableOpacity>
         </View>
@@ -131,7 +150,7 @@ const ChangeBasisComponents = ({navigation}: Props) => {
           (%). This change will not apply to candlesticks.
         </Text>
         <FlatList
-          data={languageList}
+          data={basisLists}
           renderItem={renderItem}
           ItemSeparatorComponent={() => {
             return <View style={styles.borderView} />;
