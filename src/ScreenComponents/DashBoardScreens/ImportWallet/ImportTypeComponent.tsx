@@ -12,12 +12,12 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../utils/appStyles';
 import RecoveryPhrase from '../../../assets/recovery_phrase.svg';
 import PrivateKey from '../../../assets/private_key.svg';
-import ColdWallet from '../../../assets/cold_wallet.svg';
 import WatchWallet from '../../../assets/watch_wallet.svg';
 import {colors} from '../../../utils/colors';
 import DashBoardHeaderComponent from '../../../components/DashBoardHeaderComponent';
 import {Ionicons} from '../../../utils/IconUtils';
 import {WalletTabs} from '../../../components/CustomTabs';
+import { moderateScale, scale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'IMPORT_TYPE'>;
 
@@ -46,8 +46,8 @@ const ImportTypeComponent = ({navigation, route}: Props) => {
                   });
                 }}>
                 <RecoveryPhrase
-                  width={20}
-                  height={20}
+                  width={scale(22)}
+                  height={scale(22)}
                   style={styles.walletIcon}
                 />
                 <View style={styles.txtContainer}>
@@ -58,7 +58,7 @@ const ImportTypeComponent = ({navigation, route}: Props) => {
                 </View>
                 <Ionicons
                   name={'chevron-forward'}
-                  size={25}
+                  size={scale(15)}
                   color={colors.black}
                   style={styles.icon}
                 />
@@ -72,7 +72,7 @@ const ImportTypeComponent = ({navigation, route}: Props) => {
                     walletNetwork,
                   });
                 }}>
-                <PrivateKey width={20} height={20} style={styles.walletIcon} />
+                <PrivateKey width={scale(22)} height={scale(22)} style={styles.walletIcon} />
                 <View style={styles.txtContainer}>
                   <Text style={styles.walletTitleTxt}>Private Key</Text>
                   <Text style={styles.walletSubTitleTxt}>
@@ -81,7 +81,7 @@ const ImportTypeComponent = ({navigation, route}: Props) => {
                 </View>
                 <Ionicons
                   name={'chevron-forward'}
-                  size={25}
+                  size={scale(15)}
                   color={colors.black}
                   style={styles.icon}
                 />
@@ -93,22 +93,6 @@ const ImportTypeComponent = ({navigation, route}: Props) => {
                 styles.walletSubContainer,
                 styles.walletSubContainer1,
               ]}>
-              <TouchableOpacity style={styles.walletTouch}>
-                <ColdWallet width={20} height={20} style={styles.walletIcon} />
-                <View style={styles.txtContainer}>
-                  <Text style={styles.walletTitleTxt}>Cold Wallet</Text>
-                  <Text style={styles.walletSubTitleTxt}>
-                    Import wallet offline and isolate from network
-                  </Text>
-                </View>
-                <Ionicons
-                  name={'chevron-forward'}
-                  size={25}
-                  color={colors.black}
-                  style={styles.icon}
-                />
-              </TouchableOpacity>
-              <View style={styles.borderView} />
               <TouchableOpacity
                 style={styles.walletTouch}
                 onPress={() => {
@@ -116,7 +100,7 @@ const ImportTypeComponent = ({navigation, route}: Props) => {
                     walletNetwork,
                   });
                 }}>
-                <WatchWallet width={20} height={20} style={styles.walletIcon} />
+                <WatchWallet width={scale(22)} height={scale(22)} style={styles.walletIcon} />
                 <View style={styles.txtContainer}>
                   <Text style={styles.walletTitleTxt}>Watch Wallet</Text>
                   <Text style={styles.walletSubTitleTxt}>
@@ -125,7 +109,7 @@ const ImportTypeComponent = ({navigation, route}: Props) => {
                 </View>
                 <Ionicons
                   name={'chevron-forward'}
-                  size={25}
+                  size={scale(15)}
                   color={colors.black}
                   style={styles.icon}
                 />
@@ -157,12 +141,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   walletTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
   },
   walletSubTitleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
   },
@@ -176,8 +160,8 @@ const styles = StyleSheet.create({
   },
   walletTouch: {
     flexDirection: 'row',
-    paddingTop: 15,
-    paddingBottom: 15,
+    paddingTop: moderateScale(12),
+    paddingBottom: moderateScale(12),
     justifyContent: 'center',
     alignItems: 'center',
   },

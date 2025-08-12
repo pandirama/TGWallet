@@ -345,7 +345,7 @@ const DashboardBottomNavigator = () => {
       })}>
       <Tab.Screen name="Asset" component={AssetStackNavigator} />
       <Tab.Screen name="Markets" component={MarketsStackNavigator} />
-      <Tab.Screen name="Discover" component={DiscoverStackNavigator} />
+      {/* <Tab.Screen name="Discover" component={DiscoverStackNavigator} /> */}
       <Tab.Screen name="Profile" component={ProfileStackNavigator} />
     </Tab.Navigator>
   );

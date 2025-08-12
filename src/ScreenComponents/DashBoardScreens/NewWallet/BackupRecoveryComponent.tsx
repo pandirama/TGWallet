@@ -21,6 +21,7 @@ import {getErrorMessage} from '../../../utils/common';
 import {useSelector} from 'react-redux';
 import {Ionicons} from '../../../utils/IconUtils';
 import RecoveryPharseComponent from '../../../components/RecoveryPharseComponent';
+import { moderateScale, scale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'BACKUP_RECOVERY'>;
 
@@ -92,7 +93,7 @@ const BackupRecoveryComponent = ({navigation, route}: Props) => {
                 style={styles.checkIcon}>
                 <Ionicons
                   name={accept1 ? 'checkbox-outline' : 'square-outline'}
-                  size={18}
+                  size={scale(16)}
                   color={accept1 ? '#0054A6' : '#E0E0E0'}
                 />
               </TouchableOpacity>
@@ -106,8 +107,8 @@ const BackupRecoveryComponent = ({navigation, route}: Props) => {
                 style={styles.checkIcon}>
                 <Ionicons
                   name={accept2 ? 'checkbox-outline' : 'square-outline'}
-                  size={18}
-                  color={accept2 ? '##0054A6' : '#E0E0E0'}
+                  size={scale(16)}
+                  color={accept2 ? '#0054A6' : '#E0E0E0'}
                 />
               </TouchableOpacity>
               <Text style={styles.readAgreeTxt}>
@@ -120,8 +121,8 @@ const BackupRecoveryComponent = ({navigation, route}: Props) => {
                 style={styles.checkIcon}>
                 <Ionicons
                   name={accept3 ? 'checkbox-outline' : 'square-outline'}
-                  size={18}
-                  color={accept3 ? '##0054A6' : '#E0E0E0'}
+                  size={scale(16)}
+                  color={accept3 ? '#0054A6' : '#E0E0E0'}
                 />
               </TouchableOpacity>
               <Text style={styles.readAgreeTxt}>
@@ -141,9 +142,6 @@ const BackupRecoveryComponent = ({navigation, route}: Props) => {
               style={styles.startedBtn}>
               <Text style={styles.startedBtnTxt}>Generate Mnemonic</Text>
             </LinearGradient>
-          </TouchableOpacity>
-          <TouchableOpacity style={[appStyles.boxShadow, styles.advancedTouch]}>
-            <Text style={styles.advancedTxt}>Advanced Settings</Text>
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
@@ -170,7 +168,7 @@ const styles = StyleSheet.create({
     borderColor: colors.gray1,
   },
   errorTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#F04438',
     marginLeft: 5,
@@ -183,21 +181,21 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   titleTxt: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 600,
     color: '#333333',
     marginLeft: 25,
     marginBottom: 5,
   },
   subTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#7C8FAC',
     marginLeft: 25,
     marginBottom: 25,
   },
   inputTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginBottom: 1,
@@ -220,7 +218,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -233,14 +231,14 @@ const styles = StyleSheet.create({
   },
   recoverTitleTxt: {
     color: '#333333',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     marginTop: 20,
     marginRight: 20,
   },
   recoversubTitleTxt: {
     color: '#7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     marginTop: 3,
     marginBottom: 3,
@@ -253,46 +251,11 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     marginTop: 20,
   },
-  impTitleTxt: {
-    color: '#D32F2F',
-    fontSize: 14,
-    fontWeight: 600,
-    marginLeft: 5,
-    marginRight: 20,
-  },
-  impSubTitleTxt: {
-    color: '#D32F2F',
-    fontSize: 12,
-    fontWeight: 400,
-    marginLeft: 5,
-    marginTop: 3,
-    marginRight: 20,
-  },
-  suggestTitleTxt: {
-    color: '#333333',
-    fontSize: 14,
-    fontWeight: 600,
-    marginTop: 15,
-    marginBottom: 3,
-    marginRight: 20,
-  },
-  suggestTxt: {
-    color: '#7C8FAC',
-    fontSize: 12,
-    fontWeight: 400,
-    marginTop: 3,
-    marginRight: 20,
-  },
   readAgreeTxt: {
     color: '#333333',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     marginLeft: 10,
-  },
-  agreeTxt: {
-    color: '#ED1C24',
-    fontSize: 14,
-    fontWeight: 400,
   },
   touchOpacity: {
     opacity: 0.5,
@@ -306,7 +269,7 @@ const styles = StyleSheet.create({
   },
   advancedTxt: {
     color: '#333333',
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,

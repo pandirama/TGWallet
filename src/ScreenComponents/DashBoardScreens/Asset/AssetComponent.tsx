@@ -3,7 +3,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
-  Dimensions,
   FlatList,
   Image,
   StatusBar,
@@ -15,12 +14,9 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
-import Scan from '../../../assets/scan.svg';
-import AddWallet from '../../../assets/add_wallet.svg';
 import Buy from '../../../assets/buy.svg';
 import Send from '../../../assets/send.svg';
 import Eye from '../../../assets/eye.svg';
-// import Transaction from '../../../assets/profile/transaction.svg';
 import DEFIComponent from './DEFIComponent';
 import {Feather, Ionicons, MaterialIcons} from '../../../utils/IconUtils';
 import {useSelector} from 'react-redux';
@@ -32,6 +28,7 @@ import {getErrorMessage} from '../../../utils/common';
 import {useGetNetworksQuery} from '../../../api/auth/authAPI';
 import {authAction} from '../../../reducer/auth/authSlice';
 import {useAppDispatch} from '../../../store';
+import {moderateScale, verticalScale} from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'ASSET'>;
 
@@ -40,10 +37,6 @@ const assets = [
     id: 0,
     assetName: 'Assets',
   },
-  // {
-  //   id: 1,
-  //   assetName: 'NFT',
-  // },
 ];
 
 const AssetComponent = ({navigation}: Props) => {
@@ -53,7 +46,6 @@ const AssetComponent = ({navigation}: Props) => {
   const [selectedAsset, setSelectedAsset] = useState('Assets');
   const [tokenAssets, setTokenAssets] = useState([]);
   const [ethBalance, setETHBalance] = useState([]);
-  // const [tokenNFTs, setTokenNFTs] = useState([]);
   const [showWallets, setShowWallets] = useState(false);
   const [networks, setNetworks] = useState<any>([]);
   const [walletIcon, setWalletIcon] = useState<any>(null);
@@ -181,47 +173,41 @@ const AssetComponent = ({navigation}: Props) => {
             </View>
           </View>
         </TouchableOpacity>
-        <View style={styles.headerRightIconView}>
-          <TouchableOpacity style={styles.walletIcon}>
-            <AddWallet width={28} height={28} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Scan width={28} height={28} />
-          </TouchableOpacity>
-        </View>
       </View>
       <View style={[appStyles.boxShadow, styles.headerContainer]}>
         <Image
           source={require('../../../assets/Wallet_BG.png')}
           style={{
-            width: Dimensions.get('window').width / 1.1,
-            height: 182,
+            width: '100%',
+            height: verticalScale(182),
             borderRadius: 10,
           }}
         />
         <View style={styles.walletView}>
-          <TouchableOpacity
-            style={styles.walletNameView}
-            onPress={() => {
-              navigation.navigate('WALLET_STACK', {
-                screen: 'WALLET_DETAILS',
-                params: {
-                  walletDetails: walletInfo,
-                  networkIcon: walletInfo?.Wallet_icon,
-                },
-              });
-            }}>
-            <Text style={styles.walletNameTxt}>{wallet_name}</Text>
-            <MaterialIcons
-              name={'keyboard-arrow-right'}
-              size={26}
-              color={'#FFFFFF'}
-            />
-          </TouchableOpacity>
+          <View style={{flex: 1}}>
+            <TouchableOpacity
+              style={styles.walletNameView}
+              onPress={() => {
+                navigation.navigate('WALLET_STACK', {
+                  screen: 'WALLET_DETAILS',
+                  params: {
+                    walletDetails: walletInfo,
+                    networkIcon: walletInfo?.Wallet_icon,
+                  },
+                });
+              }}>
+              <Text style={styles.walletNameTxt}>{wallet_name}</Text>
+              <MaterialIcons
+                name={'keyboard-arrow-right'}
+                size={26}
+                color={'#FFFFFF'}
+              />
+            </TouchableOpacity>
 
-          <View style={styles.amountView}>
-            <Text style={styles.menuAmountTxt}>{ethBalance}</Text>
-            <Eye width={30} height={30} />
+            <View style={styles.amountView}>
+              <Text style={styles.menuAmountTxt}>{ethBalance}</Text>
+              <Eye width={30} height={30} />
+            </View>
           </View>
 
           <View style={[appStyles.boxShadow, styles.headerSubContainer]}>
@@ -263,10 +249,6 @@ const AssetComponent = ({navigation}: Props) => {
               <Text style={styles.menuItemTxt}>Buy</Text>
             </TouchableOpacity>
             <View style={styles.horizontalBorder} />
-            {/* <TouchableOpacity style={styles.menuItemTouch}>
-              <Transaction width={28} height={28} />
-              <Text style={styles.menuItemTxt}>Swap</Text>
-            </TouchableOpacity> */}
           </View>
         </View>
       </View>
@@ -290,9 +272,6 @@ const AssetComponent = ({navigation}: Props) => {
       {selectedAsset === 'Assets' && (
         <DEFIComponent tokenAssets={tokenAssets} navigation={navigation} />
       )}
-      {/* {selectedAsset === 'NFT' && (
-        <NFTComponent navigation={navigation} tokenNFTs={tokenNFTs} />
-      )} */}
       <WalletListComponent
         navigation={navigation}
         showWallets={showWallets}
@@ -318,9 +297,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     width: '100%',
+    bottom: 0,
+    top: 0,
   },
   headerTxt: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 600,
     color: '#333333',
     textAlign: 'center',
@@ -332,7 +313,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   headerRightTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
@@ -391,7 +372,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   menuItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
@@ -404,7 +385,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   walletNameTxt: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 400,
     color: '#FFFFFF',
   },
@@ -425,12 +406,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   selectedAssetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   assetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#7C8FAC',
   },
@@ -474,7 +455,7 @@ const styles = StyleSheet.create({
   },
   actionTitleTxt: {
     flex: 1,
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#333333',
     textAlign: 'center',
     fontWeight: 600,
@@ -489,7 +470,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   walletListNameTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     flex: 1,
@@ -501,7 +482,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   walletAddressTxt: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: 400,
     color: '#7C8FAC',
     textAlignVertical: 'center',
@@ -510,7 +491,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   walletBalanceTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#333333',
     flex: 1,
@@ -566,7 +547,7 @@ const styles = StyleSheet.create({
   selectedWalletTxt: {
     width: '85%',
     marginLeft: 12,
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
   },
@@ -581,7 +562,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   actionsheetTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
@@ -595,7 +576,7 @@ const styles = StyleSheet.create({
     borderColor: colors.gray1,
   },
   cancelTxt: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: 600,
     color: '#333333',
     textAlign: 'center',
@@ -618,7 +599,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   titleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#333333',
     flex: 1,
     textAlign: 'center',

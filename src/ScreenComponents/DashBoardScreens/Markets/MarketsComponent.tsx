@@ -15,7 +15,7 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
-import CustomTabs, {MarketTabs} from '../../../components/CustomTabs';
+import {MarketTabs} from '../../../components/CustomTabs';
 import {Ionicons} from '../../../utils/IconUtils';
 import {useSelector} from 'react-redux';
 import {useGetNetworksQuery} from '../../../api/auth/authAPI';
@@ -25,7 +25,6 @@ import useCommon from '../../../hooks/useCommon';
 import {useAppDispatch} from '../../../store';
 import {getErrorMessage} from '../../../utils/common';
 import {useMarketListMutation} from '../../../api/marketAPI';
-import SwapBridgeComponent from './Swap&Bridge/Swap&BridgeComponent';
 import WalletListComponent from '../../../components/WalletListComponent';
 
 type Props = NativeStackScreenProps<any, 'MARKETS'>;
@@ -34,7 +33,6 @@ const MarketsComponent = ({navigation}: Props) => {
   const {showToast, toggleBackdrop} = useCommon();
   const dispatch = useAppDispatch();
 
-  const [activeTab, setActiveTab] = useState(MarketTabs.Market);
   const [walletIcon, setWalletIcon] = useState<any>(null);
   const [marketLists, setMarketLists] = useState<any>([]);
   const [networks, setNetworks] = useState<any>([]);
@@ -117,67 +115,57 @@ const MarketsComponent = ({navigation}: Props) => {
   );
 
   const tabsView = () => {
-    if (activeTab === MarketTabs.Market) {
-      return (
-        <>
+    return (
+      <>
+        <View style={styles.listHeaderView}>
+          <FlatList
+            data={marketLists?.tabs}
+            renderItem={({item}) => renderItem(item, 'mode')}
+            removeClippedSubviews={false}
+            keyExtractor={(item, index) => 'key' + index}
+            horizontal={true}
+            style={{borderBottomWidth: 1, borderBottomColor: colors.gray1}}
+          />
+        </View>
+        {marketLists?.sub_tabs?.length > 0 && (
           <View style={styles.listHeaderView}>
             <FlatList
-              data={marketLists?.tabs}
-              renderItem={({item}) => renderItem(item, 'mode')}
+              data={marketLists?.sub_tabs}
+              renderItem={({item}) => renderItem(item, 'submode')}
               removeClippedSubviews={false}
               keyExtractor={(item, index) => 'key' + index}
               horizontal={true}
               style={{borderBottomWidth: 1, borderBottomColor: colors.gray1}}
             />
           </View>
-          {marketLists?.sub_tabs?.length > 0 && (
-            <View style={styles.listHeaderView}>
-              <FlatList
-                data={marketLists?.sub_tabs}
-                renderItem={({item}) => renderItem(item, 'submode')}
-                removeClippedSubviews={false}
-                keyExtractor={(item, index) => 'key' + index}
-                horizontal={true}
-                style={{borderBottomWidth: 1, borderBottomColor: colors.gray1}}
-              />
-            </View>
-          )}
-          <View
-            style={{
-              flexDirection: 'row',
-              borderBottomWidth: 1,
-              borderBottomColor: '#E0E0E0',
-              paddingBottom: 10,
-              paddingTop: 5,
-              paddingLeft: 20,
-              backgroundColor: colors.white,
-            }}>
-            <Text style={[styles.listItemTitleTxt]}>Name</Text>
-            <View style={{flex: 1}} />
-            <View style={{flex: 1}} />
-            <Text style={[styles.listItemTitleTxt]}>Last Price</Text>
-            <Text style={[styles.listItemTitleTxt]}>Change(%)</Text>
-          </View>
-          <FlatList
-            data={marketLists?.market_datas}
-            renderItem={renderMarketItem}
-            removeClippedSubviews={false}
-            keyExtractor={(item, index) => 'key' + index}
-            showsVerticalScrollIndicator={false}
-            ItemSeparatorComponent={() => {
-              return <View style={styles.borderView} />;
-            }}
-          />
-        </>
-      );
-    }
-    return (
-      <SwapBridgeComponent
-        networks={networks}
-        navigation={navigation}
-        setShowWallets={setShowWallets}
-        walletInfo={walletInfo}
-      />
+        )}
+        <View
+          style={{
+            flexDirection: 'row',
+            borderBottomWidth: 1,
+            borderBottomColor: '#E0E0E0',
+            paddingBottom: 10,
+            paddingTop: 5,
+            paddingLeft: 20,
+            backgroundColor: colors.white,
+          }}>
+          <Text style={[styles.listItemTitleTxt]}>Name</Text>
+          <View style={{flex: 1}} />
+          <View style={{flex: 1}} />
+          <Text style={[styles.listItemTitleTxt]}>Last Price</Text>
+          <Text style={[styles.listItemTitleTxt]}>Change(%)</Text>
+        </View>
+        <FlatList
+          data={marketLists?.market_datas}
+          renderItem={renderMarketItem}
+          removeClippedSubviews={false}
+          keyExtractor={(item, index) => 'key' + index}
+          showsVerticalScrollIndicator={false}
+          ItemSeparatorComponent={() => {
+            return <View style={styles.borderView} />;
+          }}
+        />
+      </>
     );
   };
 
@@ -303,19 +291,10 @@ const MarketsComponent = ({navigation}: Props) => {
             </TouchableOpacity>
           </View>
           <View style={{justifyContent: 'center', flex: 1}}>
-            {/* <CustomTabs
-              activeTab={activeTab}
-              onSelectItem={(val: any) => setActiveTab(val)}
-              titles={[MarketTabs.SwapBridge, MarketTabs.Market]}
-            /> */}
-            <Text style={styles.title}>
-              {MarketTabs.Market}
-            </Text>
+            <Text style={styles.title}>{MarketTabs.Market}</Text>
           </View>
           <View style={styles.headerRightIconView}>
-            <TouchableOpacity style={styles.walletIcon}>
-              <Ionicons name={'search'} size={25} color={'#000'} />
-            </TouchableOpacity>
+            <TouchableOpacity style={styles.walletIcon} />
           </View>
         </View>
         {tabsView()}

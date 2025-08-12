@@ -254,10 +254,6 @@ const TokenComponent = ({navigation, route}: Props) => {
               </TouchableOpacity>
               <View style={styles.horizontalBorder} />
               <View style={styles.horizontalBorder} />
-              {/* <TouchableOpacity style={styles.menuItemTouch}>
-                <Transaction width={28} height={28} />
-                <Text style={styles.menuItemTxt}>Swap</Text>
-              </TouchableOpacity> */}
             </View>
             <View style={styles.listHeaderView}>
               <View style={styles.listView}>
@@ -270,10 +266,6 @@ const TokenComponent = ({navigation, route}: Props) => {
                   horizontal={true}
                 />
               </View>
-
-              <TouchableOpacity style={styles.addIcon}>
-                <Feather name={'filter'} size={20} color={'#333333'} />
-              </TouchableOpacity>
             </View>
             <FlatList
               data={getData()}
@@ -286,13 +278,6 @@ const TokenComponent = ({navigation, route}: Props) => {
                 return <View style={styles.borderView} />;
               }}
             />
-            {/* {selectedAsset === 'DEFI' && <DEFIComponent />} */}
-            {/* {selectedAsset === 'Assets' && (
-            <DEFIComponent tokenAssets={tokenAssets} navigation={navigation} />
-          )}
-          {selectedAsset === 'NFT' && (
-            <NFTComponent navigation={navigation} tokenNFTs={tokenNFTs} />
-          )} */}
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>

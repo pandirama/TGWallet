@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { TEXTS } from '../constants/texts';
 import Modal from 'react-native-modal';
 import {colors} from '../utils/colors';
 import {Ionicons} from '../utils/IconUtils';
@@ -28,10 +29,10 @@ const ModalComponent = (props: any) => {
         {children}
         <View style={styles.btnView}>
           <TouchableOpacity style={styles.cancelTouch} onPress={onDismiss}>
-            <Text style={styles.cancelTxt}>Cancel</Text>
+            <Text style={styles.cancelTxt}>{TEXTS.CANCEL}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.confirmTouch} onPress={onConfirm}>
-            <Text style={styles.confirmTxt}>Confim</Text>
+            <Text style={styles.confirmTxt}>{TEXTS.CONFIRM}</Text>
           </TouchableOpacity>
         </View>
       </View>

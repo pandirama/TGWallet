@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+// import { TEXTS } from '../constants/texts';
+import { TEXTS } from '../constants/texts';
 import {useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import Modal from 'react-native-modal';
@@ -191,7 +193,7 @@ const WalletComponent = ({
         useNativeDriver={true}>
         <View style={styles.container}>
           <View style={styles.actionTitleView}>
-            <Text style={styles.titleTxt}>Add Wallet</Text>
+            <Text style={styles.titleTxt}>{TEXTS.ADD_WALLET}</Text>
             <TouchableOpacity onPress={onDismiss} style={styles.closeTouch}>
               <Ionicons name={'close'} size={20} color={'#9C9DA0'} />
             </TouchableOpacity>
@@ -211,7 +213,7 @@ const WalletComponent = ({
                   },
                 });
               }}>
-              <Text style={styles.actionsheetTxt}>Create Wallet</Text>
+              <Text style={styles.actionsheetTxt}>{TEXTS.CREATE_WALLET}</Text>
             </TouchableOpacity>
             <View style={styles.actionSheetBorder} />
             <TouchableOpacity
@@ -228,13 +230,13 @@ const WalletComponent = ({
                   },
                 });
               }}>
-              <Text style={styles.actionsheetTxt}>Import Wallet</Text>
+              <Text style={styles.actionsheetTxt}>{TEXTS.IMPORT_WALLET}</Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity
             style={[appStyles.boxShadow, styles.cancelTouch]}
             onPress={() => setAddWalletVisible(false)}>
-            <Text style={styles.cancelTxt}>Cancel</Text>
+            <Text style={styles.cancelTxt}>{TEXTS.CANCEL}</Text>
           </TouchableOpacity>
         </View>
       </Modal>

@@ -24,6 +24,7 @@ import useCommon from '../../../hooks/useCommon';
 import {getErrorMessage} from '../../../utils/common';
 import {useSelector} from 'react-redux';
 import {Feather, Ionicons} from '../../../utils/IconUtils';
+import {moderateScale, scale} from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'NEW_WALLET_PASSWORD'>;
 
@@ -240,8 +241,8 @@ const WalletPasswordComponent = ({route, navigation}: Props) => {
               <TouchableOpacity onPress={() => toggleAccept(a => !a)}>
                 <Ionicons
                   name={accept ? 'checkbox-outline' : 'square-outline'}
-                  size={18}
-                  color={accept ? '##0054A6' : '#E0E0E0'}
+                  size={scale(14)}
+                  color={accept ? '#0054A6' : '#E0E0E0'}
                 />
               </TouchableOpacity>
               <Text style={styles.readAgreeTxt}>I have read and agree </Text>
@@ -283,7 +284,7 @@ const styles = StyleSheet.create({
     borderColor: colors.gray1,
   },
   errorTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#F04438',
     marginLeft: 5,
@@ -292,29 +293,29 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    paddingVertical: 13,
+    paddingVertical: moderateScale(11),
     color: colors.black,
+    fontSize: moderateScale(12),
   },
   titleTxt: {
-    fontSize: 20,
+    fontSize: moderateScale(18),
     fontWeight: 600,
     color: '#333333',
     marginBottom: 5,
   },
   subTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     marginBottom: 25,
   },
   inputTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginBottom: 1,
     marginTop: 20,
     marginLeft: 5,
-    lineHeight: 20,
   },
   startedTouch: {
     width: '100%',
@@ -328,7 +329,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -337,16 +338,17 @@ const styles = StyleSheet.create({
   readAgreeView: {
     flexDirection: 'row',
     marginLeft: 25,
+    alignItems: 'center',
   },
   readAgreeTxt: {
     color: '#7C8FAC',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     marginLeft: 3,
   },
   agreeTxt: {
     color: '#ED1C24',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
   },
   touchOpacity: {

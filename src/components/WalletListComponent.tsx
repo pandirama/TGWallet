@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { TEXTS } from '../constants/texts';
 import ActionSheet, {ActionSheetRef} from 'react-native-actions-sheet';
 import {Ionicons} from '../utils/IconUtils';
 import {colors} from '../utils/colors';
@@ -41,7 +42,7 @@ const WalletListComponent = ({
             }}>
             <Ionicons name={'search'} size={20} color={'#333333'} />
           </TouchableOpacity>
-          <Text style={styles.actionTitleTxt}>Wallet List</Text>
+          <Text style={styles.actionTitleTxt}>{TEXTS.WALLET_LIST || 'Wallet List'}</Text>
           <TouchableOpacity
             onPress={() => {
               actionSheetRef?.current?.hide();

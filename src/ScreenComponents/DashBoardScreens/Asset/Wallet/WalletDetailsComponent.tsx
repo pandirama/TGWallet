@@ -365,17 +365,6 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
                 </TouchableOpacity>
               </View>
               <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
-                <TouchableOpacity style={styles.walletTouch}>
-                  <Text style={styles.walletTitleTxt}>Add Wallet</Text>
-                  <Ionicons
-                    name={'chevron-forward'}
-                    size={22}
-                    color={'#333333'}
-                    style={styles.icon}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
                 <TouchableOpacity
                   style={styles.walletTouch}
                   onPress={() => {

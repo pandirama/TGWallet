@@ -22,6 +22,7 @@ import Carousel from 'react-native-reanimated-carousel';
 import _ from 'lodash';
 import useCommon from '../../../hooks/useCommon';
 import {Ionicons} from '../../../utils/IconUtils';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'WALLET_TYPE'>;
 
@@ -86,7 +87,7 @@ const WalletTypeComponent = ({navigation}: Props) => {
           <View style={styles.caroselContainer}>
             <Carousel
               width={width}
-              height={450}
+              height={verticalScale(400)}
               loop={false}
               data={slideContent}
               scrollAnimationDuration={1000}
@@ -122,7 +123,7 @@ const WalletTypeComponent = ({navigation}: Props) => {
                   fromImport: true,
                 })
               }>
-              <ImportWallet width={45} height={45} />
+              <ImportWallet width={scale(40)} height={scale(40)} />
               <View style={styles.txtContainer}>
                 <Text style={styles.walletTitleTxt}>
                   Import Existing Wallet
@@ -133,7 +134,7 @@ const WalletTypeComponent = ({navigation}: Props) => {
               </View>
               <Ionicons
                 name={'chevron-forward'}
-                size={25}
+                size={scale(15)}
                 color={colors.black}
                 style={styles.icon}
               />
@@ -142,7 +143,7 @@ const WalletTypeComponent = ({navigation}: Props) => {
             <TouchableOpacity
               style={[appStyles.boxShadow, styles.walletSubContainer]}
               onPress={() => navigation.navigate('SELECT_NETWORK')}>
-              <CreateWallet width={45} height={45} />
+              <CreateWallet width={scale(40)} height={scale(40)} />
               <View style={styles.txtContainer}>
                 <Text style={styles.walletTitleTxt}>Create New Wallet</Text>
                 <Text style={styles.walletSubTitleTxt}>
@@ -151,7 +152,7 @@ const WalletTypeComponent = ({navigation}: Props) => {
               </View>
               <Ionicons
                 name={'chevron-forward'}
-                size={25}
+                size={scale(15)}
                 color={colors.black}
                 style={styles.icon}
               />
@@ -186,30 +187,30 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(13),
     fontWeight: 400,
     color: '#7C8FAC',
     marginTop: 15,
   },
   titleTxt: {
-    fontSize: 20,
-    fontWeight: 600,
+    fontSize: moderateScale(26),
+    fontWeight: 700,
     color: '#333333',
     textAlign: 'center',
   },
   subTitleTxt: {
-    fontSize: 16,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     textAlign: 'center',
   },
   walletTitleTxt: {
-    fontSize: 16,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   walletSubTitleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
   },

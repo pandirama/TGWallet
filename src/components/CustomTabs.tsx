@@ -1,6 +1,7 @@
 import React from 'react';
 import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {colors} from '../utils/colors';
+import { moderateScale } from 'react-native-size-matters';
 
 export const WalletTabs = {
   RecoveryPhrase: 'Recovery Phrase',
@@ -89,12 +90,12 @@ const styles = StyleSheet.create({
   pillContainer: {
     alignItems: 'center',
     borderRadius: 42,
-    paddingVertical: 9,
+    paddingVertical: moderateScale(10),
     paddingHorizontal: 8,
     flex: 1,
   },
   title: {
-    fontSize: 13,
+    fontSize: moderateScale(13),
     fontWeight: 500,
     color: '#7C8FAC',
     letterSpacing: 0.5,

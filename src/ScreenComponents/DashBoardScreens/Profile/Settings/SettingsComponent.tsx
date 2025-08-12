@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   ScrollView,
@@ -11,21 +11,15 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../../utils/appStyles';
 import {colors} from '../../../../utils/colors';
-import Market from '../../../../assets/market_setting.svg';
 import {ActionSheetRef} from 'react-native-actions-sheet';
 import ActionsSheets from '../../../../components/ActionsSheets';
 import LinearGradient from 'react-native-linear-gradient';
-import {Switch} from 'react-native-paper';
 import {Ionicons} from '../../../../utils/IconUtils';
 import {useSelector} from 'react-redux';
 
 type Props = NativeStackScreenProps<any, 'SETTINGS_LIST'>;
 
 const SettingsComponent = ({navigation}: Props) => {
-  const [isDevelopModeOn, setIsDevelopModeOn] = useState(false);
-  const [isNostOn, setIsNostOn] = useState(false);
-  const [isTransactionsOn, setIsTransactionsOn] = useState(false);
-  const [isPermitOn, setIsPermitOn] = useState(false);
   const cacheActionSheetRef = useRef<ActionSheetRef>(null);
 
   const {timeZone = ''} = useSelector(({authReducer}: any) => authReducer);
@@ -54,166 +48,9 @@ const SettingsComponent = ({navigation}: Props) => {
           <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
             <TouchableOpacity
               style={[styles.walletTouch]}
-              onPress={() => navigation.navigate('NOTIFICATION')}>
-              <Text style={styles.titleTxt}>Notifications</Text>
-              <Text style={styles.redirectTxt}>Enabled</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-          </View>
-
-          <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={styles.walletTouch}
-              onPress={() => navigation.navigate('LANGUAGE')}>
-              <Text style={styles.titleTxt}>Language</Text>
-              <Text style={styles.redirectTxt}>English</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={styles.borderView} />
-            <TouchableOpacity style={styles.walletTouch}>
-              <Text style={styles.titleTxt}>Node Setting</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-          </View>
-
-          <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={styles.walletTouch}
-              onPress={() => navigation.navigate('CURRENCY_UNIT')}>
-              <Text style={styles.titleTxt}>Currency Unit</Text>
-              <Text style={styles.redirectTxt}>USD</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={styles.walletTouch}
-              onPress={() => navigation.navigate('MARKET_SETTINGS')}>
-              <View style={styles.titleView}>
-                <Text style={[styles.titleTxt, styles.subTitleFlex]}>
-                  Market Settings
-                </Text>
-                <Text style={[styles.subTtitleTxt, styles.subTitleFlex]}>
-                  Asset market data on homepage is not available
-                </Text>
-              </View>
-              <Market />
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={[styles.walletTouch]}
               onPress={() => navigation.navigate('CHANGE_BASIS')}>
               <Text style={styles.titleTxt}>Change Basis</Text>
               <Text style={styles.redirectTxt}>{timeZone?.name}</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={[styles.walletTouch]}
-              onPress={() => navigation.navigate('NUMBER_DISPLAY')}>
-              <Text style={styles.titleTxt}>Number Display</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-          </View>
-
-          <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
-            <View style={styles.borderView} />
-            <View style={styles.walletTouch}>
-              <Text style={styles.titleTxt}>Enable Nost</Text>
-              <Switch
-                color="#00C9A7"
-                value={isNostOn}
-                onValueChange={val => setIsNostOn(val)}
-              />
-            </View>
-            <View style={styles.borderView} />
-            <View style={styles.walletTouch}>
-              <Text style={styles.titleTxt}>Show Transactions</Text>
-              <Switch
-                color="#00C9A7"
-                value={isTransactionsOn}
-                onValueChange={val => setIsTransactionsOn(val)}
-              />
-            </View>
-          </View>
-
-          <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={[
-                styles.walletTouch,
-                styles.walletColor,
-                styles.walletPaddingTop,
-              ]}>
-              <Text style={styles.titleTxt}>NetWork Statue</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={styles.borderView} />
-            <View style={styles.walletTouch}>
-              <Text style={styles.titleTxt}>Disable Permit</Text>
-              <Switch
-                color="#00C9A7"
-                value={isPermitOn}
-                onValueChange={val => setIsPermitOn(val)}
-              />
-            </View>
-            <View style={styles.borderView} />
-            <View style={[styles.walletTouch]}>
-              <Text style={styles.titleTxt}>Development Mode</Text>
-              <Switch
-                color="#00C9A7"
-                value={isDevelopModeOn}
-                onValueChange={val => setIsDevelopModeOn(val)}
-              />
-            </View>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={[styles.walletTouch]}
-              onPress={() => cacheActionSheetRef?.current?.show()}>
-              <Text style={styles.titleTxt}>Clear Cache</Text>
-              <Text style={styles.redirectTxt}>93.15MB</Text>
               <Ionicons
                 name={'chevron-forward'}
                 size={25}

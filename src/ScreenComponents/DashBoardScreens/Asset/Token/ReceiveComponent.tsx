@@ -132,10 +132,6 @@ const ReceiveComponent = ({}: Props) => {
               <Ionicons name={'copy-outline'} size={20} color={'#7C8FAC'} />
               <Text style={styles.shareTxt}>Copy</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.shareTouch}>
-              <Ionicons name={'share-outline'} size={20} color={'#7C8FAC'} />
-              <Text style={styles.shareTxt}>Share</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </SafeAreaView>

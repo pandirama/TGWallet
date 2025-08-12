@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-shadow */
 import React, {useEffect, useState} from 'react';
@@ -11,6 +12,7 @@ import {
   Text,
   ImageBackground,
 } from 'react-native';
+import { TEXTS } from '../../constants/texts';
 import {colors} from '../../utils/colors';
 import Carousel from 'react-native-reanimated-carousel';
 import {useAppDispatch} from '../../store';
@@ -24,8 +26,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useRegisterMutation} from '../../api/auth/authAPI';
 import useCommon from '../../hooks/useCommon';
 import {getErrorMessage} from '../../utils/common';
-import {getBaseOs, getDeviceId, getUniqueId} from 'react-native-device-info';
-import {axiosAPI} from '../../axios/axiosAPI';
+import {getBaseOs, getUniqueId} from 'react-native-device-info';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'INTRO'>;
 
@@ -46,14 +48,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   titleTxt: {
-    fontSize: 28,
+    fontSize: moderateScale(26),
     color: '#231F20',
     fontWeight: 700,
     fontFamily: fontFamily.inter_bold,
     textAlign: 'center',
   },
   subTitleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     color: '#7C8FAC',
     fontWeight: 400,
     fontFamily: fontFamily.inter_regular,
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     fontFamily: fontFamily.inter_semi_bold,
@@ -255,7 +257,7 @@ const IntroComponent = ({}: Props) => {
             <LinearGradient
               colors={['#6B121C', '#ED1C24']}
               style={styles.startedBtn}>
-              <Text style={styles.startedBtnTxt}>Get Started</Text>
+              <Text style={styles.startedBtnTxt}>{TEXTS.GET_STARTED}</Text>
             </LinearGradient>
           </TouchableOpacity>
         </ImageBackground>

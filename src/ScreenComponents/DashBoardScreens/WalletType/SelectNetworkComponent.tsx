@@ -26,6 +26,8 @@ import {getErrorMessage} from '../../../utils/common';
 import {Ionicons} from '../../../utils/IconUtils';
 import {useAppDispatch} from '../../../store';
 import {authAction} from '../../../reducer/auth/authSlice';
+import FuzzySearch from 'fuzzy-search';
+import { moderateScale, scale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'SELECT_NETWORK'>;
 
@@ -88,13 +90,20 @@ const SelectNetworkComponent = ({navigation, route}: Props) => {
         <Text style={styles.walletTitleTxt}>{item?.Wallet_network}</Text>
         <Ionicons
           name={'chevron-forward'}
-          size={22}
+          size={scale(15)}
           color={colors.black}
           style={styles.icon}
         />
       </TouchableOpacity>
     );
   };
+
+  const fuzzySearch = (query: string, list: any) => {
+    const searcher = new FuzzySearch(list, ['Wallet_network']);
+    return searcher.search(query);
+  };
+
+  const networkLists = fuzzySearch(searchTerm, networks);
 
   return (
     <>
@@ -137,35 +146,11 @@ const SelectNetworkComponent = ({navigation, route}: Props) => {
                     });
                   }
                 }}>
-                <WalletNew width={22} height={21} />
+                <WalletNew width={scale(21)} height={scale(20)} />
                 <Text style={styles.walletTitleTxt}>HD Wallet</Text>
                 <Ionicons
                   name={'chevron-forward'}
-                  size={22}
-                  color={colors.black}
-                  style={styles.icon}
-                />
-              </TouchableOpacity>
-              <View style={styles.borderView} />
-              <TouchableOpacity
-                style={styles.walletTouch}>
-                <WalletNew width={22} height={21} />
-                <Text style={styles.walletTitleTxt}>MultiSig Wallet</Text>
-                <Ionicons
-                  name={'chevron-forward'}
-                  size={22}
-                  color={colors.black}
-                  style={styles.icon}
-                />
-              </TouchableOpacity>
-              <View style={styles.borderView} />
-              <TouchableOpacity
-                style={styles.walletTouch}>
-                <WalletNew width={22} height={21} />
-                <Text style={styles.walletTitleTxt}>Hardware</Text>
-                <Ionicons
-                  name={'chevron-forward'}
-                  size={22}
+                  size={scale(15)}
                   color={colors.black}
                   style={styles.icon}
                 />
@@ -181,7 +166,7 @@ const SelectNetworkComponent = ({navigation, route}: Props) => {
             ]}>
             <FlatList
               nestedScrollEnabled
-              data={networks}
+              data={networkLists}
               renderItem={renderItem}
               ItemSeparatorComponent={() => {
                 return <View style={styles.borderView} />;
@@ -191,7 +176,7 @@ const SelectNetworkComponent = ({navigation, route}: Props) => {
               ListHeaderComponent={
                 <View style={styles.searchView}>
                   <View style={styles.searchContainer}>
-                    <Search width={25} height={25} />
+                    <Search width={scale(20)} height={scale(20)} />
                     <TextInput
                       style={styles.input}
                       placeholder="Search"
@@ -225,7 +210,7 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   walletTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     flex: 1,
@@ -233,7 +218,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   networkTxt: {
-    fontSize: 15,
+    fontSize: moderateScale(15),
     fontWeight: 600,
     color: '#333333',
     textAlignVertical: 'center',
@@ -241,7 +226,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   networkTitleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#333333',
     flex: 1,
@@ -277,19 +262,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.bgColor,
     borderRadius: 25, // Adjust the value to change the roundness
-    paddingHorizontal: 10,
+    paddingHorizontal: moderateScale(10),
     marginBottom: 12,
     borderWidth: 1,
     borderColor: colors.gray1,
   },
   input: {
     flex: 1,
-    paddingVertical: 13,
+    paddingVertical: moderateScale(10),
     color: colors.black,
+    fontSize: moderateScale(14),
   },
   addWalletTxt: {
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: moderateScale(18),
   },
   deleteDialogContentAction: {
     alignItems: 'center',
@@ -302,7 +288,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   actionsheetTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
@@ -316,7 +302,7 @@ const styles = StyleSheet.create({
     borderColor: colors.gray1,
   },
   cancelTxt: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: 600,
     color: '#333333',
     textAlign: 'center',
@@ -330,8 +316,8 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   itemLogo: {
-    width: 30,
-    height: 30,
+    width: scale(25),
+    height: scale(25),
   },
 });
 

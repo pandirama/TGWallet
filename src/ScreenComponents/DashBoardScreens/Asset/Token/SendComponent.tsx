@@ -26,7 +26,6 @@ import {
 } from '../../../../api/walletAPI';
 import {getErrorMessage} from '../../../../utils/common';
 import LinearGradient from 'react-native-linear-gradient';
-import Scan from '../../../../assets/scan.svg';
 import ChooseWalletComponent from './ChooseWalletComponent';
 import {useFocusEffect} from '@react-navigation/native';
 import {useGetNetworksQuery} from '../../../../api/auth/authAPI';
@@ -180,9 +179,6 @@ const SendComponent = ({navigation}: Props) => {
                   setInputName(text);
                 }}
               />
-              <TouchableOpacity>
-                <Scan width={24} height={24} />
-              </TouchableOpacity>
             </View>
 
             <Text

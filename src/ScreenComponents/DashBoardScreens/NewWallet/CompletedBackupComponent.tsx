@@ -21,6 +21,7 @@ import {Ionicons} from '../../../utils/IconUtils';
 import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-clipboard/clipboard';
 import useCommon from '../../../hooks/useCommon';
+import { moderateScale, scale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'COMPLETED_BACKUP'>;
 
@@ -60,7 +61,7 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
     if (showQR) {
       return (
         <View style={styles.QRView}>
-          <QRCode value={'https://www.google.co.in/'} size={170} />
+          <QRCode value={''} size={170} />
         </View>
       );
     }
@@ -71,7 +72,7 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
           setShowQR(true);
         }}>
         <View style={[styles.QRView, styles.QROpacityView]}>
-          <QRCode value={'https://www.google.co.in/'} size={170} />
+          <QRCode value={''} size={170} />
         </View>
         <View style={[appStyles.boxShadow, styles.qrEyeView]}>
           <PlainTxtEye style={styles.plainEye} />
@@ -126,21 +127,6 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
               style={styles.plainTouch}>
               <Text style={styles.plainTxt}>Plain text (12 words)</Text>
             </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => {
-                setShowQRCode(true);
-                setShowQR(false);
-              }}
-              style={styles.qrTouch}>
-              <Ionicons
-                name={'qr-code-outline'}
-                size={16}
-                color={'#7C8FAC'}
-                style={styles.icon}
-              />
-              <Text style={styles.QRcodeTxt}>Show QR Code</Text>
-            </TouchableOpacity>
           </View>
           {showQRCode ? qRCodeView() : plainTxtView()}
           <TouchableOpacity
@@ -152,7 +138,7 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
               });
               Clipboard.setString(walletInfo?.secret_phase?.join(' '));
             }}>
-            <Ionicons name={'copy-outline'} size={12} color={'#7C8FAC'} />
+            <Ionicons name={'copy-outline'} size={scale(15)} color={'#7C8FAC'} />
             <Text style={styles.copyTxt}>Copy secret recovery phase</Text>
           </TouchableOpacity>
           <View style={styles.importantView}>
@@ -192,10 +178,7 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
           <CustomTabs
             activeTab={activeTab}
             onSelectItem={(val: any) => setActiveTab(val)}
-            titles={[
-              RecoveryTabs.HandwrittenBackup,
-              RecoveryTabs.KeypalCardBackup,
-            ]}
+            titles={[RecoveryTabs.HandwrittenBackup]}
           />
         </View>
         <ScrollView>
@@ -230,7 +213,7 @@ const styles = StyleSheet.create({
   },
   titleTxt: {
     color: '#7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
   },
   plainTxtView: {
@@ -239,7 +222,7 @@ const styles = StyleSheet.create({
   },
   plainTxt: {
     color: '#333333',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     flex: 1,
   },
@@ -248,12 +231,12 @@ const styles = StyleSheet.create({
   },
   QRcodeTxt: {
     color: '##7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(2),
     fontWeight: 400,
   },
   tabTxt: {
     color: '#333333',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     textAlign: 'center',
     fontWeight: 400,
     paddingTop: 15,
@@ -261,7 +244,7 @@ const styles = StyleSheet.create({
   },
   copyTxt: {
     color: '#7C8FAC',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     marginLeft: 5,
   },
@@ -277,7 +260,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -334,14 +317,14 @@ const styles = StyleSheet.create({
   },
   impTitleTxt: {
     color: '#D32F2F',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     marginLeft: 5,
     marginRight: 20,
   },
   impSubTitleTxt: {
     color: '#D32F2F',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     marginLeft: 10,
     marginTop: 3,
@@ -365,13 +348,13 @@ const styles = StyleSheet.create({
   },
   itemIndexTxt: {
     color: '#7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     marginLeft: 5,
   },
   itemTxt: {
     color: '#333333',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     textAlign: 'center',
     flex: 1,

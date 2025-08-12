@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../utils/appStyles';
-import Scan from '../../../assets/scan.svg';
 import {colors} from '../../../utils/colors';
 import DashBoardHeaderComponent from '../../../components/DashBoardHeaderComponent';
 import LinearGradient from 'react-native-linear-gradient';
@@ -23,12 +22,11 @@ import {
   localStorageKey,
   setStorage,
 } from '../../../utils/common';
-import {
-  useWatchAddressMutation,
-} from '../../../api/walletAPI';
+import {useWatchAddressMutation} from '../../../api/walletAPI';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {useAppDispatch} from '../../../store';
 import {authAction} from '../../../reducer/auth/authSlice';
+import {moderateScale, scale} from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'WATCH_WALLET'>;
 
@@ -158,17 +156,15 @@ const WatchWalletComponent = ({navigation, route}: Props) => {
         animated
       />
       <SafeAreaView style={appStyles.container}>
-        <DashBoardHeaderComponent
-          title={'Watch Wallet'}
-          rightIcon={<Scan width={24} height={24} style={styles.scanIcon} />}
-        />
+        <DashBoardHeaderComponent title={'Watch Wallet'} />
         {tabsView()}
         <View style={styles.bottomView}>
           <View style={styles.readAgreeView}>
-            <TouchableOpacity onPress={() => toggleAccept(a => !a)}>
+            <TouchableOpacity
+              onPress={() => toggleAccept(a => !a)}>
               <Ionicons
                 name={accept ? 'checkbox-outline' : 'square-outline'}
-                size={18}
+                size={scale(14)}
                 color={'#0054A6'}
               />
             </TouchableOpacity>
@@ -201,14 +197,14 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   titleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#333333',
     marginTop: 10,
     marginLeft: 5,
   },
   inputTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginBottom: 1,
@@ -233,21 +229,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.gray1,
     marginTop: 20,
-    height: 130,
+    height: moderateScale(120),
   },
   input: {
     flex: 1,
-    paddingVertical: 13,
+    paddingVertical: moderateScale(11),
     color: colors.black,
+    fontSize: moderateScale(12),
   },
   multiLineInput: {
-    height: 90,
+    height: moderateScale(85),
     marginBottom: 10,
     color: colors.black,
     textAlignVertical: 'top',
+    fontSize: moderateScale(14),
   },
   pasteCard: {
-    height: 30,
+    height: moderateScale(30),
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
@@ -256,13 +254,13 @@ const styles = StyleSheet.create({
   },
   pasteTxt: {
     color: '#0054A6',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     marginRight: 10,
   },
   modeTxt: {
     color: '#7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
   },
   containerView: {
@@ -273,16 +271,17 @@ const styles = StyleSheet.create({
   readAgreeView: {
     flexDirection: 'row',
     marginLeft: 25,
+    alignItems: 'center',
   },
   readAgreeTxt: {
     color: '#7C8FAC',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     marginLeft: 3,
   },
   agreeTxt: {
     color: '#0054A6',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
   },
   touchOpacity: {
@@ -300,7 +299,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -310,7 +309,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   errorTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#F04438',
     marginLeft: 5,
