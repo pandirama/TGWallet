@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   Platform,
@@ -31,11 +32,12 @@ import {
 import Clipboard from '@react-native-clipboard/clipboard';
 import {useAppDispatch} from '../../../store';
 import {authAction} from '../../../reducer/auth/authSlice';
-import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'IMPORT_WALLET'>;
 
 const ImportWalletsComponent = ({navigation, route}: Props) => {
+  const {t} = useTranslation();
   const {walletTabs, walletNetwork} = route?.params ?? {};
 
   const {showToast, toggleBackdrop} = useCommon();
@@ -64,11 +66,11 @@ const ImportWalletsComponent = ({navigation, route}: Props) => {
   const recoveryPhraseTab = activeTab === WalletTabs.RecoveryPhrase;
 
   const placeHolderTxt = recoveryPhraseTab
-    ? 'Please enter the Recovery Phrase in order and separate them with spaces'
-    : 'Please enter private key or scan its QR code';
+    ? t('RECOVERY_PHRASE_PLACE_HOLDER')
+    : t('PRIVATE_KEY_PLACE_HOLDER');
   const titleTxt = recoveryPhraseTab
-    ? 'Please use cold wallet in disconnected environment. The cold wallet must be used in conjunction with watch wallet. You can create you new wallet offline here, please back it up well.'
-    : 'Please use cold wallet in disconnected environment. The cold wallet must be used in conjunction with watch wallet. You can create you new wallet offline here, please back it up well.';
+    ? t('RECOVERY_PHRASE_TITLE')
+    : t('RECOVERY_PHRASE_TITLE');
 
   const fetchCopiedKey = async () => {
     const text = await Clipboard.getString();
@@ -92,28 +94,28 @@ const ImportWalletsComponent = ({navigation, route}: Props) => {
           />
           <View style={styles.pasteCard}>
             <TouchableOpacity>
-              <Text style={styles.pasteTxt}>KeyPal Card</Text>
+              <Text style={styles.pasteTxt}>{t('KEYPAL_CARD')}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => fetchCopiedKey()}>
-              <Text style={styles.pasteTxt}>Paste</Text>
+              <Text style={styles.pasteTxt}>{t('PASTE')}</Text>
             </TouchableOpacity>
           </View>
         </View>
-        <Text style={styles.inputTitleTxt}>Wallet Name</Text>
+        <Text style={styles.inputTitleTxt}>{t('WALLET_NAME')}</Text>
         <View style={styles.searchContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Enter Wallet Name"
+            placeholder={t('WALLET_NAME_PLACE_HOLDER')}
             placeholderTextColor="#9C9DA0"
             value={walletName}
             onChangeText={text => setWalletName(text)}
           />
         </View>
-        <Text style={styles.inputTitleTxt}>Password</Text>
+        <Text style={styles.inputTitleTxt}>{t('PASSWORD')}</Text>
         <View style={styles.searchContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Min. 8 characters"
+            placeholder={t('PASSWORD_PLACE_HOLDER')}
             placeholderTextColor="#9C9DA0"
             value={password}
             secureTextEntry={showPassword}
@@ -203,10 +205,8 @@ const ImportWalletsComponent = ({navigation, route}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
-        <DashBoardHeaderComponent
-          title={'Import Wallets'}
-        />
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
+        <DashBoardHeaderComponent title={t('IMPORT_WALLETS')} />
         <View style={styles.tabsView}>
           <CustomTabs
             activeTab={activeTab}
@@ -224,8 +224,10 @@ const ImportWalletsComponent = ({navigation, route}: Props) => {
                 color={'#0054A6'}
               />
             </TouchableOpacity>
-            <Text style={styles.readAgreeTxt}>I have read and agree </Text>
-            <Text style={styles.agreeTxt}>Terms of Service</Text>
+            <Text style={styles.readAgreeTxt}>
+              {t('I_HAVE_READ_AND_AGREE')}
+            </Text>
+            <Text style={styles.agreeTxt}>{t('TERMS_OF_SERVICE')}</Text>
           </View>
           <TouchableOpacity
             style={[styles.startedTouch, !accept && styles.touchOpacity]}
@@ -236,7 +238,7 @@ const ImportWalletsComponent = ({navigation, route}: Props) => {
             <LinearGradient
               colors={['#6B121C', '#ED1C24']}
               style={styles.startedBtn}>
-              <Text style={styles.startedBtnTxt}>Confirm</Text>
+              <Text style={styles.startedBtnTxt}>{t('CONFIRM')}</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>

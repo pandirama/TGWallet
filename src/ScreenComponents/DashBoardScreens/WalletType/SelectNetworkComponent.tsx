@@ -28,10 +28,12 @@ import {useAppDispatch} from '../../../store';
 import {authAction} from '../../../reducer/auth/authSlice';
 import FuzzySearch from 'fuzzy-search';
 import { moderateScale, scale } from 'react-native-size-matters';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<any, 'SELECT_NETWORK'>;
 
 const SelectNetworkComponent = ({navigation, route}: Props) => {
+  const {t} = useTranslation();
   const {fromImport} = route?.params ?? {};
   const {showToast, toggleBackdrop} = useCommon();
   const dispatch = useAppDispatch();
@@ -113,8 +115,8 @@ const SelectNetworkComponent = ({navigation, route}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
-        <DashBoardHeaderComponent title={'Select Network'} />
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
+        <DashBoardHeaderComponent title={t('SELECT_NETWORK')} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={appStyles.scrollContainer}>
@@ -147,7 +149,7 @@ const SelectNetworkComponent = ({navigation, route}: Props) => {
                   }
                 }}>
                 <WalletNew width={scale(21)} height={scale(20)} />
-                <Text style={styles.walletTitleTxt}>HD Wallet</Text>
+                <Text style={styles.walletTitleTxt}>{t('HD_WALLET')}</Text>
                 <Ionicons
                   name={'chevron-forward'}
                   size={scale(15)}
@@ -157,7 +159,7 @@ const SelectNetworkComponent = ({navigation, route}: Props) => {
               </TouchableOpacity>
             </View>
           </View>
-          <Text style={styles.networkTxt}>Single Network</Text>
+          <Text style={styles.networkTxt}>{t('SINGLE_NETWORK')}</Text>
           <View
             style={[
               appStyles.boxShadow,
@@ -179,7 +181,7 @@ const SelectNetworkComponent = ({navigation, route}: Props) => {
                     <Search width={scale(20)} height={scale(20)} />
                     <TextInput
                       style={styles.input}
-                      placeholder="Search"
+                      placeholder={t('SEARCH')}
                       placeholderTextColor="#A9A9A9"
                       value={searchTerm}
                       onChangeText={text => setSearchTerm(text)}

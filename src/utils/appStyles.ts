@@ -1,5 +1,6 @@
 import {Platform, StyleSheet} from 'react-native';
 import {colors} from './colors';
+import { moderateScale } from 'react-native-size-matters';
 
 export const fontFamily = {
   inter_thin: 'InterThin', //100
@@ -21,7 +22,7 @@ const appStyles = StyleSheet.create({
     paddingBottom: 30,
   },
   titleTxt: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     color: colors.inputBorder,
     fontFamily: fontFamily.inter_bold,
   },

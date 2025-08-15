@@ -1,3 +1,4 @@
+import { moderateScale } from 'react-native-size-matters';
 import React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
@@ -29,7 +30,7 @@ const InviteFriendsComponent = ({navigation}: Props) => {
         backgroundColor={'#6B121C'}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
         <InviteFriends width={width} height={height} style={styles.imageBg} />
         <View style={styles.headerView}>
           <TouchableOpacity
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   headerTxt: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 600,
     color: colors.white,
     flex: 1,
@@ -105,14 +106,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   titleTxt: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 400,
     color: colors.white,
     textAlign: 'center',
     marginTop: 10,
   },
   subTitileTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: colors.white,
     textAlign: 'center',
@@ -125,14 +126,14 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   tgWalletTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 800,
     color: '#333333',
     textAlign: 'center',
     marginLeft: 5,
   },
   scanTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#7C8FAC',
     textAlign: 'center',
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   shareTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginLeft: 10,

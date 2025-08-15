@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   FlatList,
@@ -14,7 +15,7 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
-import Buy from '../../../assets/buy.svg';
+// import Buy from '../../../assets/buy.svg';
 import Send from '../../../assets/send.svg';
 import Eye from '../../../assets/eye.svg';
 import DEFIComponent from './DEFIComponent';
@@ -35,15 +36,16 @@ type Props = NativeStackScreenProps<any, 'ASSET'>;
 const assets = [
   {
     id: 0,
-    assetName: 'Assets',
+    assetName: 'ASSETS',
   },
 ];
 
 const AssetComponent = ({navigation}: Props) => {
+  const {t} = useTranslation();
   const {showToast, toggleBackdrop} = useCommon();
   const dispatch = useAppDispatch();
 
-  const [selectedAsset, setSelectedAsset] = useState('Assets');
+  const [selectedAsset, setSelectedAsset] = useState('ASSETS');
   const [tokenAssets, setTokenAssets] = useState([]);
   const [ethBalance, setETHBalance] = useState([]);
   const [showWallets, setShowWallets] = useState(false);
@@ -133,7 +135,7 @@ const AssetComponent = ({navigation}: Props) => {
             style={
               findAsset ? styles.selectedAssetItemTxt : styles.assetItemTxt
             }>
-            {item?.assetName}
+            {t(item?.assetName)}
           </Text>
         </TouchableOpacity>
         {findAsset && <View style={styles.verticalView} />}
@@ -217,7 +219,7 @@ const AssetComponent = ({navigation}: Props) => {
                 navigation.navigate('SEND');
               }}>
               <Send width={28} height={28} />
-              <Text style={styles.menuItemTxt}>Send</Text>
+              <Text style={styles.menuItemTxt}>{t('SEND')}</Text>
             </TouchableOpacity>
             <View style={styles.horizontalBorder} />
             <TouchableOpacity
@@ -230,9 +232,9 @@ const AssetComponent = ({navigation}: Props) => {
                 size={26}
                 color={'#333333'}
               />
-              <Text style={styles.menuItemTxt}>Receive</Text>
+              <Text style={styles.menuItemTxt}>{t('RECEIVE')}</Text>
             </TouchableOpacity>
-            <View style={styles.horizontalBorder} />
+            {/* <View style={styles.horizontalBorder} />
             <TouchableOpacity
               style={styles.menuItemTouch}
               onPress={() => {
@@ -246,9 +248,9 @@ const AssetComponent = ({navigation}: Props) => {
                 });
               }}>
               <Buy width={28} height={28} />
-              <Text style={styles.menuItemTxt}>Buy</Text>
+              <Text style={styles.menuItemTxt}>{t('BUY')}</Text>
             </TouchableOpacity>
-            <View style={styles.horizontalBorder} />
+            <View style={styles.horizontalBorder} /> */}
           </View>
         </View>
       </View>
@@ -269,7 +271,7 @@ const AssetComponent = ({navigation}: Props) => {
           <Feather name={'plus'} size={20} color={'#333333'} />
         </TouchableOpacity>
       </View>
-      {selectedAsset === 'Assets' && (
+      {selectedAsset === 'ASSETS' && (
         <DEFIComponent tokenAssets={tokenAssets} navigation={navigation} />
       )}
       <WalletListComponent
@@ -378,7 +380,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   menuAmountTxt: {
-    fontSize: 28,
+    fontSize: moderateScale(28),
     fontWeight: 700,
     color: '#FFFFFF',
     marginRight: 5,

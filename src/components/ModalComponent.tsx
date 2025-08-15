@@ -5,13 +5,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { TEXTS } from '../constants/texts';
+import { useTranslation } from 'react-i18next';
 import Modal from 'react-native-modal';
 import {colors} from '../utils/colors';
 import {Ionicons} from '../utils/IconUtils';
+import { moderateScale } from 'react-native-size-matters';
 
 const ModalComponent = (props: any) => {
   const {visibility, onDismiss, onConfirm, titleTxt, children} = props;
+  const { t } = useTranslation();
   return (
     <Modal
       isVisible={visibility}
@@ -29,10 +31,10 @@ const ModalComponent = (props: any) => {
         {children}
         <View style={styles.btnView}>
           <TouchableOpacity style={styles.cancelTouch} onPress={onDismiss}>
-            <Text style={styles.cancelTxt}>{TEXTS.CANCEL}</Text>
+            <Text style={styles.cancelTxt}>{t('CANCEL')}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.confirmTouch} onPress={onConfirm}>
-            <Text style={styles.confirmTxt}>{TEXTS.CONFIRM}</Text>
+            <Text style={styles.confirmTxt}>{t('CONFIRM')}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   titleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#333333',
     flex: 1,
     textAlign: 'center',
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
   cancelTxt: {
     textAlign: 'center',
     fontWeight: 500,
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#9C9DA0',
   },
   confirmTouch: {
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
   confirmTxt: {
     textAlign: 'center',
     fontWeight: 500,
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#0054A6',
   },
   actionTitleView: {

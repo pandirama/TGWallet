@@ -1,38 +1,24 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import { TEXTS } from '../constants/texts';
+import { useTranslation } from 'react-i18next';
 import Recover from '../assets/recover_Pharse.svg';
 import { moderateScale } from 'react-native-size-matters';
 
 const RecoveryPharseComponent = ({}: any) => {
+  const { t } = useTranslation();
   return (
     <View>
       <Recover width={'100%'} />
-  <Text style={styles.recoverTitleTxt}>{TEXTS.BACKUP_RECOVERY_PHRASE}</Text>
-      <Text style={styles.recoversubTitleTxt}>
-        Recovery Phrase is the credientials to recover the wallet, and it is
-        only saved in your device. Please make sure to make a backup so that you
-        can recover it in the future
-      </Text>
+      <Text style={styles.recoverTitleTxt}>{t('BACKUP_RECOVERY_PHRASE')}</Text>
+      <Text style={styles.recoversubTitleTxt}>{t('RECOVERY_PHRASE_SUBTITLE')}</Text>
       <View style={styles.importantView}>
-  <Text style={styles.impTitleTxt}>{TEXTS.IMPORTANT}</Text>
-        <Text style={styles.impSubTitleTxt}>
-          Anyone who has the mnemonic can take control of your wallets.
-        </Text>
+        <Text style={styles.impTitleTxt}>{t('IMPORTANT')}</Text>
+        <Text style={styles.impSubTitleTxt}>{t('MNEMONIC_WARNING')}</Text>
       </View>
-  <Text style={styles.suggestTitleTxt}>{TEXTS.SUGGESTED_BACKUP_METHOD}</Text>
-      <Text style={styles.suggestTxt}>
-        {'\u25CF'}
-        {'   '} Using pen and paper, write Recovery Phrase correctly in order
-      </Text>
-      <Text style={styles.suggestTxt}>
-        {'\u25CF'}
-        {'   '} Keep Recovery Phrase in a safe place
-      </Text>
-      <Text style={styles.suggestTxt}>
-        {'\u25CF'}
-        {'   '} Do not save or send Recovery Phrase on the internet
-      </Text>
+      <Text style={styles.suggestTitleTxt}>{t('SUGGESTED_BACKUP_METHOD')}</Text>
+      <Text style={styles.suggestTxt}>{'\u25CF'}{'   '}{t('BACKUP_METHOD_PAPER')}</Text>
+      <Text style={styles.suggestTxt}>{'\u25CF'}{'   '}{t('BACKUP_METHOD_SAFE_PLACE')}</Text>
+      <Text style={styles.suggestTxt}>{'\u25CF'}{'   '}{t('BACKUP_METHOD_NO_INTERNET')}</Text>
     </View>
   );
 };

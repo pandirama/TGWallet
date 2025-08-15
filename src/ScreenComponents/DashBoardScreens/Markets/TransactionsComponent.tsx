@@ -14,6 +14,7 @@ import {colors} from '../../../utils/colors';
 import useCommon from '../../../hooks/useCommon';
 import {useTransactionInfoMutation} from '../../../api/marketAPI';
 import {getErrorMessage} from '../../../utils/common';
+import { moderateScale } from 'react-native-size-matters';
 
 const titles = ['All', 'Buy', 'Sell'];
 
@@ -118,10 +119,10 @@ const TransactionsComponent = ({marketDetails, transactions}: any) => {
                   borderRadius: 5,
                   paddingLeft: 10,
                 }}>
-                <Text style={{fontSize: 12, fontWeight: 500, color: '#7C8FAC'}}>
+                <Text style={{fontSize: moderateScale(12), fontWeight: 500, color: '#7C8FAC'}}>
                   24H Vol
                 </Text>
-                <Text style={{fontSize: 12, fontWeight: 500, color: '#333333'}}>
+                <Text style={{fontSize: moderateScale(12), fontWeight: 500, color: '#333333'}}>
                   {transactions?.summary?.volume_24h}
                 </Text>
               </View>
@@ -135,10 +136,10 @@ const TransactionsComponent = ({marketDetails, transactions}: any) => {
                   borderRadius: 5,
                   paddingLeft: 10,
                 }}>
-                <Text style={{fontSize: 12, fontWeight: 500, color: '#7C8FAC'}}>
+                <Text style={{fontSize: moderateScale(12), fontWeight: 500, color: '#7C8FAC'}}>
                   24H Txn Addresses
                 </Text>
-                <Text style={{fontSize: 12, fontWeight: 500, color: '#333333'}}>
+                <Text style={{fontSize: moderateScale(12), fontWeight: 500, color: '#333333'}}>
                   {transactions?.summary?.addresscount}
                 </Text>
               </View>
@@ -153,10 +154,10 @@ const TransactionsComponent = ({marketDetails, transactions}: any) => {
                 paddingLeft: 10,
                 marginTop: 15,
               }}>
-              <Text style={{fontSize: 12, fontWeight: 500, color: '#7C8FAC'}}>
+              <Text style={{fontSize: moderateScale(12), fontWeight: 500, color: '#7C8FAC'}}>
                 24H Txns
               </Text>
-              <Text style={{fontSize: 12, fontWeight: 500, color: '#333333'}}>
+              <Text style={{fontSize: moderateScale(12), fontWeight: 500, color: '#333333'}}>
                 {transactions?.summary?.totaltrade}
               </Text>
               <View style={{flexDirection: 'row', marginTop: 8}}>
@@ -183,7 +184,7 @@ const TransactionsComponent = ({marketDetails, transactions}: any) => {
               <View style={{flexDirection: 'row'}}>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 500,
                     color: '#167E8D',
                     flex: 1,
@@ -192,7 +193,7 @@ const TransactionsComponent = ({marketDetails, transactions}: any) => {
                 </Text>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 500,
                     color: '#D32F2F',
                     flex: 1,
@@ -269,21 +270,21 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   listItemTitleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     flex: 1,
     textAlign: 'left',
   },
   listItemTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     flex: 1,
     textAlign: 'left',
   },
   titleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 500,
     color: '#333333',
     marginTop: 10,
@@ -318,7 +319,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 13,
+    fontSize: moderateScale(13),
     fontWeight: 500,
     color: '#7C8FAC',
     letterSpacing: 0.5,

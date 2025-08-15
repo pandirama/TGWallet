@@ -1,14 +1,17 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StatusBar, StyleSheet, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'DISCOVER'>;
 
 const DiscoverComponent = ({}: Props) => {
+  const {t} = useTranslation();
   return (
     <>
       <StatusBar
@@ -17,12 +20,14 @@ const DiscoverComponent = ({}: Props) => {
         backgroundColor={colors.background}
         animated
       />
+
       <SafeAreaView
         style={[
           appStyles.container,
           {alignItems: 'center', justifyContent: 'center'},
-        ]}>
-        <Text style={styles.headerRightTxt}>Coming Soon...</Text>
+        ]}
+        edges={['right', 'left', 'top']}>
+        <Text style={styles.headerRightTxt}>{t('COMING_SOON')}</Text>
       </SafeAreaView>
     </>
   );
@@ -48,7 +53,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   errorTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#F04438',
     marginLeft: 5,
@@ -61,19 +66,19 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   titleTxt: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 600,
     color: '#333333',
     marginBottom: 5,
   },
   subTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#7C8FAC',
     marginBottom: 25,
   },
   inputTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginBottom: 1,
@@ -93,7 +98,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -105,20 +110,20 @@ const styles = StyleSheet.create({
   },
   readAgreeTxt: {
     color: '#7C8FAC',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     marginLeft: 3,
   },
   agreeTxt: {
     color: '#ED1C24',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
   },
   touchOpacity: {
     opacity: 0.5,
   },
   headerRightTxt: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: 900,
     color: '#333333',
   },

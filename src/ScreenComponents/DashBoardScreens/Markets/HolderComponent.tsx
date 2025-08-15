@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   FlatList,
   Platform,
@@ -10,10 +11,12 @@ import {
   View,
 } from 'react-native';
 import {colors} from '../../../utils/colors';
+import { moderateScale } from 'react-native-size-matters';
 
 const titles = ['Top10', 'Top20', 'Top50', 'Top100'];
 
 const HolderComponent = ({holders}: any) => {
+  const {t} = useTranslation();
   const [activeTab, setActiveTab] = useState('Top10');
   const [itemsToShow, setItemsToShow] = useState(10);
 
@@ -80,11 +83,13 @@ const HolderComponent = ({holders}: any) => {
           <View>
             <Text
               style={{
-                fontSize: 12,
+                fontSize: moderateScale(12),
                 fontWeight: 500,
                 color: '#333333',
                 marginBottom: 8,
-              }}>{`Holder (Total: ${holders?.holder_count})`}</Text>
+              }}>
+              {t('HOLDER_TOTAL', {count: holders?.holder_count})}
+            </Text>
             {holders?.top_summary?.map((summary: any, index: number) => {
               let color: string = '';
               if (index === 0) {
@@ -119,7 +124,7 @@ const HolderComponent = ({holders}: any) => {
                       />
                       <Text
                         style={{
-                          fontSize: 12,
+                          fontSize: moderateScale(12),
                           fontWeight: 400,
                           color: '#7C8FAC',
 
@@ -131,7 +136,7 @@ const HolderComponent = ({holders}: any) => {
 
                     <Text
                       style={{
-                        fontSize: 12,
+                        fontSize: moderateScale(12),
                         fontWeight: 400,
                         color: '#7C8FAC',
                         textAlign: 'left',
@@ -141,7 +146,7 @@ const HolderComponent = ({holders}: any) => {
                     </Text>
                     <Text
                       style={{
-                        fontSize: 12,
+                        fontSize: moderateScale(12),
                         fontWeight: 400,
                         color: '#7C8FAC',
                         flex: 1,
@@ -151,7 +156,7 @@ const HolderComponent = ({holders}: any) => {
                     </Text>
                     <Text
                       style={{
-                        fontSize: 12,
+                        fontSize: moderateScale(12),
                         fontWeight: 400,
                         color: '#7C8FAC',
                         flex: 1,
@@ -173,7 +178,7 @@ const HolderComponent = ({holders}: any) => {
                 borderBottomColor: colors.gray1,
                 paddingBottom: 10,
               }}>
-              <Text style={styles.titleTxt}>Trading Data</Text>
+              <Text style={styles.titleTxt}>{t('TRADING_DATA')}</Text>
               <View style={styles.tabContainer}>
                 {titles?.map((title: string) => {
                   return (
@@ -202,11 +207,11 @@ const HolderComponent = ({holders}: any) => {
                 borderBottomWidth: 1,
                 borderBottomColor: '#E0E0E0',
               }}>
-              <Text style={[styles.listItemTitleTxt]}>#</Text>
-              <Text style={[styles.listItemTitleTxt]}>Ratio</Text>
-              <Text style={[styles.listItemTitleTxt]}>Position(BNB)</Text>
-              <Text style={[styles.listItemTitleTxt]}>24H Chg</Text>
-              <Text style={[styles.listItemTitleTxt]}>Address</Text>
+              <Text style={[styles.listItemTitleTxt]}>{t('RANK')}</Text>
+              <Text style={[styles.listItemTitleTxt]}>{t('RATIO')}</Text>
+              <Text style={[styles.listItemTitleTxt]}>{t('POSITION_BNB')}</Text>
+              <Text style={[styles.listItemTitleTxt]}>{t('CHG_24H')}</Text>
+              <Text style={[styles.listItemTitleTxt]}>{t('ADDRESS')}</Text>
             </View>
           </View>
         }
@@ -217,7 +222,7 @@ const HolderComponent = ({holders}: any) => {
 
 const styles = StyleSheet.create({
   titleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 500,
     color: '#333333',
     marginTop: 10,
@@ -252,7 +257,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 13,
+    fontSize: moderateScale(13),
     fontWeight: 500,
     color: '#7C8FAC',
     letterSpacing: 0.5,
@@ -266,14 +271,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   listItemTitleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     flex: 1,
     textAlign: 'left',
   },
   listItemTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     flex: 1,

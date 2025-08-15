@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   Image,
@@ -10,8 +11,10 @@ import {
   View,
 } from 'react-native';
 import {colors} from '../../../utils/colors';
+import { moderateScale, scale } from 'react-native-size-matters';
 
 const DEFIComponent = ({tokenAssets, navigation}: any) => {
+  const { t } = useTranslation();
   const renderItem = ({item}: any) => {
     return (
       <TouchableOpacity
@@ -42,7 +45,7 @@ const DEFIComponent = ({tokenAssets, navigation}: any) => {
               <Text
                 style={{
                   textAlign: 'center',
-                  fontSize: 16,
+                  fontSize: moderateScale(16),
                   fontWeight: 600,
                   color: '#333333',
                 }}>
@@ -56,7 +59,7 @@ const DEFIComponent = ({tokenAssets, navigation}: any) => {
           <View style={styles.defiListTxtView}>
             <Text style={styles.defiListNameTxt}>{item?.balance}</Text>
             <Text style={[styles.defiListamountTxt]}>
-              {`$${item?.balanceInUSD}`}
+              {`${t('VALUE_USD')}: $${item?.balanceInUSD}`}
             </Text>
           </View>
         </View>
@@ -99,20 +102,20 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   defiListnameTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
     alignSelf: 'center',
     flex: 1,
   },
   defiListNameTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
     textAlign: 'right',
   },
   defiListamountTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#7C8FAC',
     textAlign: 'right',
@@ -142,8 +145,8 @@ const styles = StyleSheet.create({
     borderColor: '#D32F2F',
   },
   itemLogo: {
-    width: 30,
-    height: 30,
+    width: scale(30),
+    height: scale(30),
   },
 });
 

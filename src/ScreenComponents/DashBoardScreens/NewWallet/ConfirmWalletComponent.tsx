@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect} from 'react';
+import { useTranslation } from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   Image,
@@ -28,6 +29,7 @@ import {moderateScale, scale} from 'react-native-size-matters';
 type Props = NativeStackScreenProps<any, 'CONFIRM_WALLET'>;
 
 const ConfirmWalletComponent = ({route, navigation}: Props) => {
+  const { t } = useTranslation();
   const {walletInfo} = route?.params ?? {};
 
   const {showToast, toggleBackdrop} = useCommon();
@@ -75,53 +77,35 @@ const ConfirmWalletComponent = ({route, navigation}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
-        <DashBoardHeaderComponent title={'Create Wallet'} />
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
+  <DashBoardHeaderComponent title={t('CREATE_WALLET')} />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.container}>
             <Image source={require('../../../assets/tg_approve_wallet.png')} />
           </View>
-          <Text style={styles.titleTxt}>
-            Read the following carefully and remember these important safety
-            tips.
-          </Text>
+          <Text style={styles.titleTxt}>{t('CONFIRM_WALLET_TITLE')}</Text>
           <View style={styles.instructionView}>
             <Instruction1 width={scale(40)} height={scale(40)} />
-            <Text style={styles.instructionTxt}>
-              Your assets are secured by Private Keys and the Recovery Phrase.
-              If exposed, others may gain control of your assets! Never share
-              your Private Keys or Recovery Phrase with anyone, not even with
-              us!
-            </Text>
+            <Text style={styles.instructionTxt}>{t('CONFIRM_WALLET_INSTRUCTION_1')}</Text>
           </View>
           <View style={styles.instructionView}>
             <Instruction2 width={scale(40)} height={scale(40)} />
-            <Text style={styles.instructionTxt}>
-              Carefully write down your Recovery Phrase and keep it stored
-              safely offline. Never send or save it through any online platform!
-            </Text>
+            <Text style={styles.instructionTxt}>{t('CONFIRM_WALLET_INSTRUCTION_2')}</Text>
           </View>
           <View style={styles.instructionView}>
             <Instruction3 width={scale(40)} height={scale(40)} />
-            <Text style={styles.instructionTxt}>
-              The Wallet Password is used solely to encrypt and decrypt the
-              Private Key and Recovery Phrase. It is stored only on your mobile
-              device. If forgotten, it cannot be recovered!
-            </Text>
+            <Text style={styles.instructionTxt}>{t('CONFIRM_WALLET_INSTRUCTION_3')}</Text>
           </View>
           <View style={styles.instructionView}>
             <Instruction4 width={scale(40)} height={scale(40)} />
-            <Text style={styles.instructionTxt}>
-              Avoid taking screenshots of your Private Keys or Recovery Phrase,
-              as they may be intercepted by malicious software!
-            </Text>
+            <Text style={styles.instructionTxt}>{t('CONFIRM_WALLET_INSTRUCTION_4')}</Text>
           </View>
         </ScrollView>
         <TouchableOpacity style={styles.startedTouch} onPress={approveWallet}>
           <LinearGradient
             colors={['#6B121C', '#ED1C24']}
             style={styles.startedBtn}>
-            <Text style={styles.startedBtnTxt}>Understood</Text>
+            <Text style={styles.startedBtnTxt}>{t('UNDERSTOOD')}</Text>
           </LinearGradient>
         </TouchableOpacity>
       </SafeAreaView>

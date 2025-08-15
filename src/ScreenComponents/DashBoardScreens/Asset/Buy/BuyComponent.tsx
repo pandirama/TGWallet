@@ -17,6 +17,7 @@ import WebView from 'react-native-webview';
 import {Ionicons} from '../../../../utils/IconUtils';
 import {useSelector} from 'react-redux';
 import WalletListComponent from '../../../../components/WalletListComponent';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'BUY'>;
 
@@ -118,14 +119,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   walletTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
     flex: 1,
     marginLeft: 8,
   },
   networkTxt: {
-    fontSize: 15,
+    fontSize: moderateScale(15),
     fontWeight: 600,
     color: '#333333',
     textAlignVertical: 'center',
@@ -171,12 +172,12 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   nftNameTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 500,
     color: '#333333',
   },
   nftValueTxt: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: 400,
     color: '#7C8FAC',
   },
@@ -201,23 +202,23 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   selectedAssetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   assetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#7C8FAC',
   },
   itemTitleTxt: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     flex: 0.15,
     fontWeight: 800,
     color: '#33333',
   },
   itemSubTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     flex: 1,
     color: '#333333',
@@ -244,7 +245,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   menuItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
@@ -261,25 +262,25 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   balanceTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     marginTop: 2,
   },
   balanceValTxt: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 600,
     color: '#333333',
     marginTop: 2,
   },
   balanceUSDTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#7C8FAC',
     marginTop: 2,
   },
   inputTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginBottom: 1,
@@ -299,7 +300,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -313,7 +314,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width / 1.5,
   },
   walletCopyTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#333333',
     marginRight: 5,

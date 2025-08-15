@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
 import React, {useState} from 'react';
+import { useTranslation } from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   FlatList,
@@ -20,6 +21,7 @@ import Search from '../../../assets/search.svg';
 import {colors} from '../../../utils/colors';
 import DashBoardHeaderComponent from '../../../components/DashBoardHeaderComponent';
 import {EvilIcons, Ionicons} from '../../../utils/IconUtils';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'ADDNFT'>;
 
@@ -83,6 +85,7 @@ const NFTs = [
 
 const AddNFTComponent = ({navigation}: Props) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const { t } = useTranslation();
 
   const renderItem = ({item}: any) => {
     return (
@@ -117,17 +120,17 @@ const AddNFTComponent = ({navigation}: Props) => {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{flex: 1}}>
-          <DashBoardHeaderComponent title={'NFT'} />
+          <DashBoardHeaderComponent title={t('NFT')} />
           <View style={styles.walletContainer}>
             <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
               <TouchableOpacity
                 style={styles.walletTouch}
                 onPress={() =>
                   navigation.navigate('NFTs', {
-                    title: 'My NFT',
+                    title: t('MY_NFT'),
                   })
                 }>
-                <Text style={styles.walletTitleTxt}>My NFT</Text>
+                <Text style={styles.walletTitleTxt}>{t('MY_NFT')}</Text>
                 <Ionicons
                   name={'chevron-forward'}
                   size={25}
@@ -140,10 +143,10 @@ const AddNFTComponent = ({navigation}: Props) => {
                 style={styles.walletTouch}
                 onPress={() =>
                   navigation.navigate('NFTs', {
-                    title: 'All NFT',
+                    title: t('ALL_NFT'),
                   })
                 }>
-                <Text style={styles.walletTitleTxt}>All NFT</Text>
+                <Text style={styles.walletTitleTxt}>{t('ALL_NFT')}</Text>
                 <Ionicons
                   name={'chevron-forward'}
                   size={25}
@@ -155,7 +158,7 @@ const AddNFTComponent = ({navigation}: Props) => {
               <TouchableOpacity
                 style={styles.walletTouch}
                 onPress={() => navigation.navigate('ADDNEWNFT')}>
-                <Text style={styles.walletTitleTxt}>Custom NFT</Text>
+                <Text style={styles.walletTitleTxt}>{t('CUSTOM_NFT')}</Text>
                 <Ionicons
                   name={'chevron-forward'}
                   size={25}
@@ -165,7 +168,7 @@ const AddNFTComponent = ({navigation}: Props) => {
               </TouchableOpacity>
             </View>
           </View>
-          <Text style={styles.networkTxt}>Hot NFT</Text>
+          <Text style={styles.networkTxt}>{t('HOT_NFT')}</Text>
           <View
             style={[
               appStyles.boxShadow,
@@ -185,7 +188,7 @@ const AddNFTComponent = ({navigation}: Props) => {
                     <Search width={25} height={25} />
                     <TextInput
                       style={styles.input}
-                      placeholder="Search"
+                      placeholder={t('SEARCH')}
                       placeholderTextColor="#A9A9A9"
                       value={searchTerm}
                       onChangeText={text => setSearchTerm(text)}
@@ -220,7 +223,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   walletTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     flex: 1,
@@ -228,7 +231,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   networkTxt: {
-    fontSize: 15,
+    fontSize: moderateScale(15),
     fontWeight: 600,
     color: '#333333',
     textAlignVertical: 'center',
@@ -274,12 +277,12 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   nftNameTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 500,
     color: '#333333',
   },
   nftValueTxt: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: 400,
     color: '#7C8FAC',
   },

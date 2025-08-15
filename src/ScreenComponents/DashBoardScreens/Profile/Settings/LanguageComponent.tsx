@@ -1,3 +1,4 @@
+import { moderateScale } from 'react-native-size-matters';
 /* eslint-disable react/no-unstable-nested-components */
 import React, {useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -60,7 +61,7 @@ const LanguageComponent = ({navigation}: Props) => {
         backgroundColor={colors.white}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
         <View style={styles.headerView}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   headerTxt: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 600,
     color: '#333333',
     textAlign: 'center',
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   headerRightTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   titleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlignVertical: 'center',

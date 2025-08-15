@@ -1,5 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StatusBar, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -10,10 +11,12 @@ import NFTNotFound from '../../../assets/nftnotfound.svg';
 import Ethereum from '../../../assets/ethereum.svg';
 import BinanceIcon from '../../../assets/binance_icon.svg';
 import {Ionicons} from '../../../utils/IconUtils';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'NFTDETAILS'>;
 
 const NFTDetailsComponent = ({}: Props) => {
+  const { t } = useTranslation();
   return (
     <>
       <StatusBar
@@ -25,7 +28,7 @@ const NFTDetailsComponent = ({}: Props) => {
       <SafeAreaView
         style={appStyles.container}
         edges={['right', 'left', 'top']}>
-        <DashBoardHeaderComponent title={'NFT Details'} />
+        <DashBoardHeaderComponent title={t('NFT_DETAILS')} />
         <View style={styles.walletContainer}>
           <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
             <View style={{flexDirection: 'row', padding: 15}}>
@@ -35,11 +38,11 @@ const NFTDetailsComponent = ({}: Props) => {
               <View style={{marginLeft: 10, justifyContent: 'center'}}>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 400,
                     color: '#333333',
                   }}>
-                  StarryNift
+                  {t('STARRYNIFT')}
                 </Text>
                 <View
                   style={{
@@ -53,20 +56,20 @@ const NFTDetailsComponent = ({}: Props) => {
                       borderColor: colors.gray1,
                       padding: 2,
                       borderRadius: 5,
-                      fontSize: 10,
+                      fontSize: moderateScale(10),
                       fontWeight: 400,
                       color: '#7C8FAC',
                     }}>
-                    ERC721
+                    {t('ERC721')}
                   </Text>
                   <Text
                     style={{
                       marginLeft: 5,
-                      fontSize: 12,
+                      fontSize: moderateScale(12),
                       fontWeight: 400,
                       color: '#7C8FAC',
                     }}>
-                    IJIiodsoewUI83234HJ
+                    {t('NFT_ID_SAMPLE')}
                   </Text>
                   <Ionicons
                     name={'copy-outline'}
@@ -84,7 +87,7 @@ const NFTDetailsComponent = ({}: Props) => {
                   <BinanceIcon width={20} height={20} />
                   <Text
                     style={{
-                      fontSize: 12,
+                      fontSize: moderateScale(12),
                       fontWeight: 400,
                       color: '#333333',
                       marginLeft: 5,
@@ -94,12 +97,12 @@ const NFTDetailsComponent = ({}: Props) => {
                 </View>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 400,
                     color: '#7C8FAC',
                     marginTop: 5,
                   }}>
-                  Floor Price
+                  {t('FLOOR_PRICE')}
                 </Text>
               </View>
               <View style={{flex: 1, alignItems: 'center', padding: 20}}>
@@ -107,7 +110,7 @@ const NFTDetailsComponent = ({}: Props) => {
                   <BinanceIcon width={20} height={20} />
                   <Text
                     style={{
-                      fontSize: 12,
+                      fontSize: moderateScale(12),
                       fontWeight: 400,
                       color: '#333333',
                       marginLeft: 5,
@@ -117,12 +120,12 @@ const NFTDetailsComponent = ({}: Props) => {
                 </View>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 400,
                     color: '#7C8FAC',
                     marginTop: 5,
                   }}>
-                  25H Avg Price
+                  {t('AVG_PRICE_24H')}
                 </Text>
               </View>
               <View style={{flex: 1, alignItems: 'center', padding: 20}}>
@@ -130,7 +133,7 @@ const NFTDetailsComponent = ({}: Props) => {
                   <BinanceIcon width={20} height={20} />
                   <Text
                     style={{
-                      fontSize: 12,
+                      fontSize: moderateScale(12),
                       fontWeight: 400,
                       color: '#333333',
                       marginLeft: 5,
@@ -140,17 +143,17 @@ const NFTDetailsComponent = ({}: Props) => {
                 </View>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 400,
                     color: '#7C8FAC',
                     marginTop: 5,
                   }}>
-                  24H Volume
+                  {t('VOLUME_24H')}
                 </Text>
               </View>
             </View>
           </View>
-          <Text style={styles.networkTxt}>Hot NFT</Text>
+          <Text style={styles.networkTxt}>{t('HOT_NFT')}</Text>
           <View
             style={{
               alignItems: 'center',
@@ -158,7 +161,7 @@ const NFTDetailsComponent = ({}: Props) => {
               flex: 1,
             }}>
             <NFTNotFound />
-            <Text style={styles.noTxt}>No NFT Found</Text>
+            <Text style={styles.noTxt}>{t('NO_NFT_FOUND')}</Text>
           </View>
         </View>
       </SafeAreaView>
@@ -178,14 +181,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   walletTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlignVertical: 'center',
     marginLeft: 8,
   },
   networkTxt: {
-    fontSize: 15,
+    fontSize: moderateScale(15),
     fontWeight: 600,
     color: '#333333',
     marginLeft: 5,
@@ -210,22 +213,22 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   nftNameTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 500,
     color: '#333333',
   },
   nftValueTxt: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: 400,
     color: '#7C8FAC',
   },
   nftBalanceTxt: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: 400,
     color: '#333333',
   },
   noTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#7C8FAC',
     marginTop: 15,

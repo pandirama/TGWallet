@@ -1,5 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   FlatList,
   ScrollView,
@@ -16,6 +17,7 @@ import PoolsComponent from './PoolsComponent';
 import HolderComponent from './HolderComponent';
 import WebView from 'react-native-webview';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { moderateScale } from 'react-native-size-matters';
 
 const marketItems = [
   {
@@ -37,6 +39,7 @@ const marketItems = [
 ];
 
 const TradingComponent = ({marketInfos, marketDetails}: any) => {
+  const { t } = useTranslation();
   const [selectedMarket, setSelectedMarket] = useState('Txns');
 
   const renderItem = ({item}: any) => {
@@ -81,19 +84,19 @@ const TradingComponent = ({marketInfos, marketDetails}: any) => {
         <View style={{flexDirection: 'row', marginTop: 15}}>
           <View style={{flex: 1, marginRight: 10}}>
             <View style={{flexDirection: 'row'}}>
-              <Text style={styles.rowTitleTxt}>Liquidty</Text>
+              <Text style={styles.rowTitleTxt}>{t('LIQUIDITY')}</Text>
               <Text style={styles.rowValueTxt}>
                 {marketInfos?.generalinfo?.liquidity}
               </Text>
             </View>
             <View style={{flexDirection: 'row'}}>
-              <Text style={styles.rowTitleTxt}>24H Vol</Text>
+              <Text style={styles.rowTitleTxt}>{t('VOL_24H')}</Text>
               <Text style={styles.rowValueTxt}>
                 {marketInfos?.generalinfo?.['24h_volume']}
               </Text>
             </View>
             <View style={{flexDirection: 'row'}}>
-              <Text style={styles.rowTitleTxt}>24H Txns</Text>
+              <Text style={styles.rowTitleTxt}>{t('TXNS_24H')}</Text>
               <Text style={styles.rowValueTxt}>
                 {marketInfos?.generalinfo?.['24h_trade']}
               </Text>
@@ -109,19 +112,19 @@ const TradingComponent = ({marketInfos, marketDetails}: any) => {
           />
           <View style={{flex: 1, marginLeft: 10}}>
             <View style={{flexDirection: 'row'}}>
-              <Text style={styles.rowTitleTxt}>Mkt Cap</Text>
+              <Text style={styles.rowTitleTxt}>{t('MKT_CAP')}</Text>
               <Text style={styles.rowValueTxt}>
                 {marketInfos?.generalinfo?.['24h_traders']}
               </Text>
             </View>
             <View style={{flexDirection: 'row'}}>
-              <Text style={styles.rowTitleTxt}>Tptal Supply</Text>
+              <Text style={styles.rowTitleTxt}>{t('TOTAL_SUPPLY')}</Text>
               <Text style={styles.rowValueTxt}>
                 {marketInfos?.generalinfo?.price}
               </Text>
             </View>
             <View style={{flexDirection: 'row'}}>
-              <Text style={styles.rowTitleTxt}>Holders </Text>
+              <Text style={styles.rowTitleTxt}>{t('HOLDERS')}</Text>
               <Text style={styles.rowValueTxt}>
                 {marketInfos?.generalinfo?.holders}
               </Text>
@@ -169,7 +172,7 @@ const TradingComponent = ({marketInfos, marketDetails}: any) => {
 
 const styles = StyleSheet.create({
   amountTxt: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 600,
     color: '#167E8D',
     flex: 1,
@@ -185,18 +188,18 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   addressTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#9C9DA0',
   },
   rowTitleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     flex: 1,
   },
   rowValueTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#333333',
     flex: 1,
@@ -206,12 +209,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   selectedAssetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   assetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
     opacity: 0.3,

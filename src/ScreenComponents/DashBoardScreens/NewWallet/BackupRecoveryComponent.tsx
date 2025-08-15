@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   Dimensions,
@@ -21,13 +22,14 @@ import {getErrorMessage} from '../../../utils/common';
 import {useSelector} from 'react-redux';
 import {Ionicons} from '../../../utils/IconUtils';
 import RecoveryPharseComponent from '../../../components/RecoveryPharseComponent';
-import { moderateScale, scale } from 'react-native-size-matters';
+import {moderateScale, scale} from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'BACKUP_RECOVERY'>;
 
 const windowHeight = Dimensions.get('window').height;
 
 const BackupRecoveryComponent = ({navigation, route}: Props) => {
+  const {t} = useTranslation();
   const {walletInfo} = route?.params ?? {};
 
   const {showToast, toggleBackdrop} = useCommon();
@@ -79,8 +81,8 @@ const BackupRecoveryComponent = ({navigation, route}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
-        <DashBoardHeaderComponent title={'Backup Secret Recovery Phrase'} />
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
+        <DashBoardHeaderComponent title={t('BACKUP_SECRET_RECOVERY_PHRASE')} />
 
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -98,7 +100,7 @@ const BackupRecoveryComponent = ({navigation, route}: Props) => {
                 />
               </TouchableOpacity>
               <Text style={styles.readAgreeTxt}>
-                If I lost my secrest recovery phrase, my assets will be gone.
+                {t('IF_LOST_SECRET_RECOVERY_PHRASE')}
               </Text>
             </View>
             <View style={styles.readAgreeView}>
@@ -112,7 +114,7 @@ const BackupRecoveryComponent = ({navigation, route}: Props) => {
                 />
               </TouchableOpacity>
               <Text style={styles.readAgreeTxt}>
-                If I share my secret recovery Phrase, my assets will be stolen.
+                {t('IF_SHARE_SECRET_RECOVERY_PHRASE')}
               </Text>
             </View>
             <View style={styles.readAgreeView}>
@@ -126,7 +128,7 @@ const BackupRecoveryComponent = ({navigation, route}: Props) => {
                 />
               </TouchableOpacity>
               <Text style={styles.readAgreeTxt}>
-                It is my responsibility to keep my secret recovery phrase safe.
+                {t('RESPONSIBILITY_KEEP_SECRET_RECOVERY_PHRASE')}
               </Text>
             </View>
           </View>
@@ -140,7 +142,7 @@ const BackupRecoveryComponent = ({navigation, route}: Props) => {
             <LinearGradient
               colors={['#6B121C', '#ED1C24']}
               style={styles.startedBtn}>
-              <Text style={styles.startedBtnTxt}>Generate Mnemonic</Text>
+              <Text style={styles.startedBtnTxt}>{t('GENERATE_MNEMONIC')}</Text>
             </LinearGradient>
           </TouchableOpacity>
         </ScrollView>

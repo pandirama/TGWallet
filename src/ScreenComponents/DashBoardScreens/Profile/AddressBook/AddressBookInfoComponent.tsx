@@ -1,3 +1,4 @@
+import { moderateScale } from 'react-native-size-matters';
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback, useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -73,7 +74,7 @@ const AddressBookInfoComponent = ({navigation, route}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent
           title={'Address Information'}
           rightIcon={
@@ -157,12 +158,12 @@ const styles = StyleSheet.create({
   },
   modeTxt: {
     color: '#7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
   },
   informationTxt: {
     color: '#7C8FAC',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     marginTop: 15,
   },
@@ -183,7 +184,7 @@ const styles = StyleSheet.create({
   },
   advancedTxt: {
     color: '#333333',
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -211,12 +212,12 @@ const styles = StyleSheet.create({
   inputTxt: {
     flex: 1,
     paddingVertical: 13,
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
   },
   inputTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginBottom: 1,
@@ -225,7 +226,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   editTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
   },

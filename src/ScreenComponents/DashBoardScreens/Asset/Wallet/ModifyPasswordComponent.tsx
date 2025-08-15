@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {useTranslation} from 'react-i18next';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
@@ -20,10 +21,12 @@ import {colors} from '../../../../utils/colors';
 import {getErrorMessage} from '../../../../utils/common';
 import {Feather} from '../../../../utils/IconUtils';
 import {useWalletChangePwdMutation} from '../../../../api/walletAPI';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'MODIFY_PASSWORD'>;
 
 const ModifyPasswordComponent = ({route, navigation}: Props) => {
+  const {t} = useTranslation();
   const {walletDetails} = route?.params ?? {};
 
   const {showToast, toggleBackdrop} = useCommon();
@@ -116,13 +119,13 @@ const ModifyPasswordComponent = ({route, navigation}: Props) => {
       <SafeAreaView
         style={appStyles.container}
         edges={['right', 'left', 'top']}>
-        <DashBoardHeaderComponent title={'Modify Password'} />
+        <DashBoardHeaderComponent title={t('MODIFY_PASSWORD_TITLE')} />
         <View style={styles.topView}>
-          <Text style={styles.inputTitleTxt}>Current Password</Text>
+          <Text style={styles.inputTitleTxt}>{t('CURRENT_PASSWORD')}</Text>
           <View style={styles.searchContainer}>
             <TextInput
               style={styles.input}
-              placeholder="Old Password"
+              placeholder={t('OLD_PASSWORD')}
               placeholderTextColor="#9C9DA0"
               value={oldPassword}
               secureTextEntry={showOldPassword}
@@ -140,11 +143,11 @@ const ModifyPasswordComponent = ({route, navigation}: Props) => {
               />
             </TouchableOpacity>
           </View>
-          <Text style={styles.inputTitleTxt}>New Password</Text>
+          <Text style={styles.inputTitleTxt}>{t('NEW_PASSWORD')}</Text>
           <View style={styles.searchContainer}>
             <TextInput
               style={styles.input}
-              placeholder="New Password"
+              placeholder={t('NEW_PASSWORD')}
               placeholderTextColor="#9C9DA0"
               value={password}
               secureTextEntry={showPassword}
@@ -170,11 +173,11 @@ const ModifyPasswordComponent = ({route, navigation}: Props) => {
           {passwordErrorTxt && passwordError && (
             <Text style={styles.errorTxt}>{passwordErrorTxt}</Text>
           )}
-          <Text style={styles.inputTitleTxt}>Repeat New password</Text>
+          <Text style={styles.inputTitleTxt}>{t('REPEAT_NEW_PASSWORD')}</Text>
           <View style={styles.searchContainer}>
             <TextInput
               style={styles.input}
-              placeholder="Repeat password"
+              placeholder={t('REPEAT_PASSWORD')}
               placeholderTextColor="#9C9DA0"
               value={confirmPassword}
               secureTextEntry={showConfirmPassword}
@@ -194,7 +197,9 @@ const ModifyPasswordComponent = ({route, navigation}: Props) => {
             </TouchableOpacity>
           </View>
           {confirmPasswordError && (
-            <Text style={styles.errorTxt}>The password is not match</Text>
+            <Text style={styles.errorTxt}>
+              {t('THE_PASSWORD_IS_NOT_MATCH')}
+            </Text>
           )}
         </View>
         <View style={styles.bottomView}>
@@ -205,7 +210,7 @@ const ModifyPasswordComponent = ({route, navigation}: Props) => {
             <LinearGradient
               colors={['#6B121C', '#ED1C24']}
               style={styles.startedBtn}>
-              <Text style={styles.startedBtnTxt}>Confirm</Text>
+              <Text style={styles.startedBtnTxt}>{t('CONFIRM')}</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -233,7 +238,7 @@ const styles = StyleSheet.create({
     borderColor: colors.gray1,
   },
   errorTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#F04438',
     marginLeft: 5,
@@ -246,19 +251,19 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   titleTxt: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 600,
     color: '#333333',
     marginBottom: 5,
   },
   subTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#7C8FAC',
     marginBottom: 25,
   },
   inputTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginBottom: 1,
@@ -278,7 +283,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -290,13 +295,13 @@ const styles = StyleSheet.create({
   },
   readAgreeTxt: {
     color: '#7C8FAC',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     marginLeft: 3,
   },
   agreeTxt: {
     color: '#ED1C24',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
   },
   touchOpacity: {

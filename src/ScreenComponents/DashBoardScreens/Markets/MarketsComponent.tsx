@@ -2,6 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   FlatList,
@@ -26,10 +27,12 @@ import {useAppDispatch} from '../../../store';
 import {getErrorMessage} from '../../../utils/common';
 import {useMarketListMutation} from '../../../api/marketAPI';
 import WalletListComponent from '../../../components/WalletListComponent';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'MARKETS'>;
 
 const MarketsComponent = ({navigation}: Props) => {
+  const {t} = useTranslation();
   const {showToast, toggleBackdrop} = useCommon();
   const dispatch = useAppDispatch();
 
@@ -149,11 +152,11 @@ const MarketsComponent = ({navigation}: Props) => {
             paddingLeft: 20,
             backgroundColor: colors.white,
           }}>
-          <Text style={[styles.listItemTitleTxt]}>Name</Text>
+          <Text style={[styles.listItemTitleTxt]}>{t('NAME')}</Text>
           <View style={{flex: 1}} />
           <View style={{flex: 1}} />
-          <Text style={[styles.listItemTitleTxt]}>Last Price</Text>
-          <Text style={[styles.listItemTitleTxt]}>Change(%)</Text>
+          <Text style={[styles.listItemTitleTxt]}>{t('LAST_PRICE')}</Text>
+          <Text style={[styles.listItemTitleTxt]}>{t('CHANGE_PERCENT')}</Text>
         </View>
         <FlatList
           data={marketLists?.market_datas}
@@ -263,7 +266,7 @@ const MarketsComponent = ({navigation}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
         <View style={styles.tabsView}>
           <View style={styles.headerView}>
             <TouchableOpacity
@@ -365,12 +368,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   selectedAssetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   assetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#7C8FAC',
   },
@@ -426,17 +429,17 @@ const styles = StyleSheet.create({
     borderColor: '#D32F2F',
   },
   defiListnameTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   defiListVolumeTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
   },
   defiListNameTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     textAlign: 'right',
   },
@@ -447,7 +450,7 @@ const styles = StyleSheet.create({
     color: '#D32F2F',
   },
   defiListamountTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#7C8FAC',
     textAlign: 'right',
@@ -467,14 +470,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#9C9DA0',
   },
   listItemTitleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     flex: 1,
     textAlign: 'left',
   },
   title: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 700,
     color: '#333333',
     letterSpacing: 0.5,

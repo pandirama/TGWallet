@@ -20,6 +20,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {getErrorMessage} from '../../../utils/common';
 import useCommon from '../../../hooks/useCommon';
 import {useSelector} from 'react-redux';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'PROFILE'>;
 
@@ -70,7 +71,7 @@ const ProfileComponent = ({navigation}: Props) => {
         backgroundColor={colors.white}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
         <View style={styles.headerView}>
           <Text style={styles.headerTxt}>Profile</Text>
         </View>
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   headerTxt: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 600,
     color: '#333333',
     flex: 1,
@@ -175,7 +176,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   walletTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlignVertical: 'center',

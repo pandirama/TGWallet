@@ -12,7 +12,6 @@ import {
   Text,
   ImageBackground,
 } from 'react-native';
-import { TEXTS } from '../../constants/texts';
 import {colors} from '../../utils/colors';
 import Carousel from 'react-native-reanimated-carousel';
 import {useAppDispatch} from '../../store';
@@ -27,7 +26,8 @@ import {useRegisterMutation} from '../../api/auth/authAPI';
 import useCommon from '../../hooks/useCommon';
 import {getErrorMessage} from '../../utils/common';
 import {getBaseOs, getUniqueId} from 'react-native-device-info';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
+import {useTranslation} from 'react-i18next';
 
 type Props = NativeStackScreenProps<any, 'INTRO'>;
 
@@ -129,21 +129,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const slideContent: any = [
-  {
-    img: <Intro1 width={350} height={350} style={styles.imageContainer} />,
-    title: 'Secure Your Assets Easily',
-    subTitle:
-      'Protect your assets with advanced encryption and stay in control of your secure crypto wallet.',
-  },
-  {
-    img: <Intro2 width={350} height={350} style={styles.imageContainer} />,
-    title: 'Simplified Your Crypto',
-    subTitle:
-      'Effortlessly manage and track your tokens with TGwallet, keeping your crypto organized and accessible anytime."',
-  },
-];
-
 const PaginationDots = (props: PaginateProp) => {
   return (
     <View style={styles.dotContainer}>
@@ -163,6 +148,7 @@ const PaginationDots = (props: PaginateProp) => {
 };
 
 const IntroComponent = ({}: Props) => {
+  const {t} = useTranslation();
   const {showToast, toggleBackdrop} = useCommon();
   const [activeDot, setActiveDot] = useState(1);
   const [deviceID, setDeviceID] = useState('');
@@ -170,6 +156,19 @@ const IntroComponent = ({}: Props) => {
   const dispatch = useAppDispatch();
 
   const [register, {isLoading}] = useRegisterMutation();
+
+  const slideContent: any = [
+    {
+      img: <Intro1 width={350} height={350} style={styles.imageContainer} />,
+      title: t('INTRO_TITLE_1'),
+      subTitle: t('INTRO_SUBTITLE_1'),
+    },
+    {
+      img: <Intro2 width={350} height={350} style={styles.imageContainer} />,
+      title: t('INTRO_TITLE_2'),
+      subTitle: t('INTRO_SUBTITLE_2'),
+    },
+  ];
 
   useEffect(() => {
     toggleBackdrop(isLoading);
@@ -216,7 +215,7 @@ const IntroComponent = ({}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
         <ImageBackground
           source={require('../../assets/background.png')}
           style={styles.container}>
@@ -257,7 +256,7 @@ const IntroComponent = ({}: Props) => {
             <LinearGradient
               colors={['#6B121C', '#ED1C24']}
               style={styles.startedBtn}>
-              <Text style={styles.startedBtnTxt}>{TEXTS.GET_STARTED}</Text>
+              <Text style={styles.startedBtnTxt}>{t('GET_STARTED')}</Text>
             </LinearGradient>
           </TouchableOpacity>
         </ImageBackground>

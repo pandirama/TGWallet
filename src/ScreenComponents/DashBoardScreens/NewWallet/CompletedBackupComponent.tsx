@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
@@ -26,6 +27,7 @@ import { moderateScale, scale } from 'react-native-size-matters';
 type Props = NativeStackScreenProps<any, 'COMPLETED_BACKUP'>;
 
 const CompletedBackupComponent = ({route, navigation}: Props) => {
+  const { t } = useTranslation();
   const {walletInfo} = route?.params ?? {};
 
   const {showToast} = useCommon();
@@ -76,7 +78,7 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
         </View>
         <View style={[appStyles.boxShadow, styles.qrEyeView]}>
           <PlainTxtEye style={styles.plainEye} />
-          <Text style={styles.tabTxt}>Tap to display recovery phrase</Text>
+          <Text style={styles.tabTxt}>{t('TAP_TO_DISPLAY_RECOVERY_PHRASE')}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -105,7 +107,7 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
         <PlainTxt style={styles.plain} />
         <View style={[appStyles.boxShadow, styles.plainEyeView]}>
           <PlainTxtEye style={styles.plainEye} />
-          <Text style={styles.tabTxt}>Tap to display recovery phrase</Text>
+          <Text style={styles.tabTxt}>{t('TAP_TO_DISPLAY_RECOVERY_PHRASE')}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -115,9 +117,7 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
     if (activeTab === RecoveryTabs.HandwrittenBackup) {
       return (
         <View style={styles.containerView}>
-          <Text style={styles.titleTxt}>
-            Please write down the mnemonic in correct order on a piece of paper.
-          </Text>
+          <Text style={styles.titleTxt}>{t('PLEASE_WRITE_MNEMONIC')}</Text>
           <View style={styles.plainTxtView}>
             <TouchableOpacity
               onPress={() => {
@@ -125,7 +125,7 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
                 setShowCode(false);
               }}
               style={styles.plainTouch}>
-              <Text style={styles.plainTxt}>Plain text (12 words)</Text>
+              <Text style={styles.plainTxt}>{t('PLAIN_TEXT_12')}</Text>
             </TouchableOpacity>
           </View>
           {showQRCode ? qRCodeView() : plainTxtView()}
@@ -139,24 +139,14 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
               Clipboard.setString(walletInfo?.secret_phase?.join(' '));
             }}>
             <Ionicons name={'copy-outline'} size={scale(15)} color={'#7C8FAC'} />
-            <Text style={styles.copyTxt}>Copy secret recovery phase</Text>
+            <Text style={styles.copyTxt}>{t('COPY_SECRET_RECOVERY_PHRASE')}</Text>
           </TouchableOpacity>
           <View style={styles.importantView}>
-            <Text style={styles.impTitleTxt}>Remember:</Text>
-            <Text style={styles.impSubTitleTxt}>
-              {'\u25CF'} Don’t disclose recovery phase to anyone
-            </Text>
-            <Text style={styles.impSubTitleTxt}>
-              {'\u25CF'} Once the recovery phase is lost, asset cannot be
-              recovery
-            </Text>
-            <Text style={styles.impSubTitleTxt}>
-              {'\u25CF'} Don’t disclose recovery phase to anyone
-            </Text>
-            <Text style={styles.impSubTitleTxt}>
-              {'\u25CF'} Once the secret recovery phase is lost, asset cannot be
-              recovery
-            </Text>
+            <Text style={styles.impTitleTxt}>{t('REMEMBER')}</Text>
+            <Text style={styles.impSubTitleTxt}>{'\u25CF'} {t('DONT_DISCLOSE_RECOVERY_PHASE')}</Text>
+            <Text style={styles.impSubTitleTxt}>{'\u25CF'} {t('ONCE_RECOVERY_PHASE_LOST')}</Text>
+            <Text style={styles.impSubTitleTxt}>{'\u25CF'} {t('DONT_DISCLOSE_RECOVERY_PHASE')}</Text>
+            <Text style={styles.impSubTitleTxt}>{'\u25CF'} {t('ONCE_SECRET_RECOVERY_PHASE_LOST')}</Text>
           </View>
         </View>
       );
@@ -172,8 +162,8 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
-        <DashBoardHeaderComponent title={'Backup Secret Recovery Phrase'} />
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
+        <DashBoardHeaderComponent title={t('BACKUP_SECRET_RECOVERY_PHRASE')} />
         <View style={styles.tabsView}>
           <CustomTabs
             activeTab={activeTab}
@@ -189,7 +179,7 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
             colors={['#6B121C', '#ED1C24']}
             style={styles.startedBtn}>
             <Text style={styles.startedBtnTxt}>
-              Completed Backup & Verify It
+              {t('COMPLETED_BACKUP_VERIFY')}
             </Text>
           </LinearGradient>
         </TouchableOpacity>

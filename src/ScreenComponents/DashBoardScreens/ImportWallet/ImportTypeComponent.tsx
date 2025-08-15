@@ -15,13 +15,15 @@ import PrivateKey from '../../../assets/private_key.svg';
 import WatchWallet from '../../../assets/watch_wallet.svg';
 import {colors} from '../../../utils/colors';
 import DashBoardHeaderComponent from '../../../components/DashBoardHeaderComponent';
+import {useTranslation} from 'react-i18next';
 import {Ionicons} from '../../../utils/IconUtils';
 import {WalletTabs} from '../../../components/CustomTabs';
-import { moderateScale, scale } from 'react-native-size-matters';
+import {moderateScale, scale} from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'IMPORT_TYPE'>;
 
 const ImportTypeComponent = ({navigation, route}: Props) => {
+  const {t} = useTranslation();
   const {walletNetwork} = route?.params ?? {};
 
   return (
@@ -32,8 +34,8 @@ const ImportTypeComponent = ({navigation, route}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
-        <DashBoardHeaderComponent title={'Import Wallets'} />
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
+        <DashBoardHeaderComponent title={t('IMPORT_WALLETS')} />
         <ScrollView>
           <View style={styles.walletContainer}>
             <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
@@ -51,9 +53,11 @@ const ImportTypeComponent = ({navigation, route}: Props) => {
                   style={styles.walletIcon}
                 />
                 <View style={styles.txtContainer}>
-                  <Text style={styles.walletTitleTxt}>Recovery Phrase</Text>
+                  <Text style={styles.walletTitleTxt}>
+                    {t('RECOVERY_PHRASE')}
+                  </Text>
                   <Text style={styles.walletSubTitleTxt}>
-                    Restore wallet through Recovery Phrase
+                    {t('RESTORE_WALLET_RECOVERY_PHRASE')}
                   </Text>
                 </View>
                 <Ionicons
@@ -72,11 +76,15 @@ const ImportTypeComponent = ({navigation, route}: Props) => {
                     walletNetwork,
                   });
                 }}>
-                <PrivateKey width={scale(22)} height={scale(22)} style={styles.walletIcon} />
+                <PrivateKey
+                  width={scale(22)}
+                  height={scale(22)}
+                  style={styles.walletIcon}
+                />
                 <View style={styles.txtContainer}>
-                  <Text style={styles.walletTitleTxt}>Private Key</Text>
+                  <Text style={styles.walletTitleTxt}>{t('PRIVATE_KEY')}</Text>
                   <Text style={styles.walletSubTitleTxt}>
-                    Restore wallet through Private Key
+                    {t('RESTORE_WALLET_PRIVATE_KEY')}
                   </Text>
                 </View>
                 <Ionicons
@@ -100,11 +108,15 @@ const ImportTypeComponent = ({navigation, route}: Props) => {
                     walletNetwork,
                   });
                 }}>
-                <WatchWallet width={scale(22)} height={scale(22)} style={styles.walletIcon} />
+                <WatchWallet
+                  width={scale(22)}
+                  height={scale(22)}
+                  style={styles.walletIcon}
+                />
                 <View style={styles.txtContainer}>
-                  <Text style={styles.walletTitleTxt}>Watch Wallet</Text>
+                  <Text style={styles.walletTitleTxt}>{t('WATCH_WALLET')}</Text>
                   <Text style={styles.walletSubTitleTxt}>
-                    Import Address only, works with Cold Wallet
+                    {t('IMPORT_ADDRESS_ONLY')}
                   </Text>
                 </View>
                 <Ionicons

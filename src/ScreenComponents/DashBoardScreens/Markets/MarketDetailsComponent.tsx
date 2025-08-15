@@ -26,6 +26,7 @@ import {
   useDescriptionInfoMutation,
   useTradingInfoMutation,
 } from '../../../api/marketAPI';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'MARKET_DETAILS'>;
 
@@ -164,7 +165,7 @@ const MarketDetailsComponent = ({navigation, route}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
         <View style={styles.backContainer}>
           <TouchableOpacity
             style={styles.backTouch}
@@ -276,12 +277,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   selectedAssetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   assetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
     opacity: 0.3,
@@ -337,17 +338,17 @@ const styles = StyleSheet.create({
     borderColor: '#D32F2F',
   },
   defiListnameTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   defiListVolumeTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
   },
   defiListNameTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     textAlign: 'right',
   },
@@ -358,7 +359,7 @@ const styles = StyleSheet.create({
     color: '#D32F2F',
   },
   defiListamountTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#7C8FAC',
     textAlign: 'right',
@@ -388,7 +389,7 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
   },
   titleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#333333',
     fontWeight: 600,
     flex: 1,

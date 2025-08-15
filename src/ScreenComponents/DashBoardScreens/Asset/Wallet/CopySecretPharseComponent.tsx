@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   FlatList,
@@ -20,10 +21,12 @@ import DashBoardHeaderComponent from '../../../../components/DashBoardHeaderComp
 import Clipboard from '@react-native-clipboard/clipboard';
 import useCommon from '../../../../hooks/useCommon';
 import QRCode from 'react-native-qrcode-svg';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'COPY_SECRET_PHARSE'>;
 
 const CopySecretPharseComponent = ({route}: Props) => {
+  const {t} = useTranslation();
   const {walletInfo} = route?.params ?? {};
   const {showToast} = useCommon();
 
@@ -69,7 +72,9 @@ const CopySecretPharseComponent = ({route}: Props) => {
         </View>
         <View style={[appStyles.boxShadow, styles.qrEyeView]}>
           <PlainTxtEye style={styles.plainEye} />
-          <Text style={styles.tabTxt}>Tap to display recovery phrase</Text>
+          <Text style={styles.tabTxt}>
+            {t('TAP_TO_DISPLAY_RECOVERY_PHRASE')}
+          </Text>
         </View>
       </TouchableOpacity>
     );
@@ -98,7 +103,9 @@ const CopySecretPharseComponent = ({route}: Props) => {
         <PlainTxt style={styles.plain} />
         <View style={[appStyles.boxShadow, styles.plainEyeView]}>
           <PlainTxtEye style={styles.plainEye} />
-          <Text style={styles.tabTxt}>Tap to display recovery phrase</Text>
+          <Text style={styles.tabTxt}>
+            {t('TAP_TO_DISPLAY_RECOVERY_PHRASE')}
+          </Text>
         </View>
       </TouchableOpacity>
     );
@@ -108,9 +115,7 @@ const CopySecretPharseComponent = ({route}: Props) => {
     if (activeTab === RecoveryTabs.HandwrittenBackup) {
       return (
         <View style={styles.containerView}>
-          <Text style={styles.titleTxt}>
-            Please write down the mnemonic in correct order on a piece of paper.
-          </Text>
+          <Text style={styles.titleTxt}>{t('PLEASE_WRITE_MNEMONIC')}</Text>
           <View style={styles.plainTxtView}>
             <TouchableOpacity
               onPress={() => {
@@ -118,7 +123,7 @@ const CopySecretPharseComponent = ({route}: Props) => {
                 setShowCode(false);
               }}
               style={styles.plainTouch}>
-              <Text style={styles.plainTxt}>Plain text (12 words)</Text>
+              <Text style={styles.plainTxt}>{t('PLAIN_TEXT_12')}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -133,7 +138,7 @@ const CopySecretPharseComponent = ({route}: Props) => {
                 color={'#7C8FAC'}
                 style={styles.icon}
               />
-              <Text style={styles.QRcodeTxt}>Show QR Code</Text>
+              <Text style={styles.QRcodeTxt}>{t('SHOW_QR_CODE')}</Text>
             </TouchableOpacity>
           </View>
           {showQRCode ? qRCodeView() : plainTxtView()}
@@ -142,12 +147,14 @@ const CopySecretPharseComponent = ({route}: Props) => {
             onPress={() => {
               showToast({
                 type: 'success',
-                text1: 'Secret Phrase Copied Successfully',
+                text1: t('SECRET_RECOVERY_PHASE_COPIED'),
               });
               Clipboard.setString(walletInfo?.secret);
             }}>
             <Ionicons name={'copy-outline'} size={12} color={'#7C8FAC'} />
-            <Text style={styles.copyTxt}>Copy secret recovery phase</Text>
+            <Text style={styles.copyTxt}>
+              {t('COPY_SECRET_RECOVERY_PHRASE')}
+            </Text>
           </TouchableOpacity>
         </View>
       );
@@ -166,7 +173,7 @@ const CopySecretPharseComponent = ({route}: Props) => {
       <SafeAreaView
         style={appStyles.container}
         edges={['right', 'left', 'top']}>
-        <DashBoardHeaderComponent title={'Backup Secret Recovery Phrase'} />
+        <DashBoardHeaderComponent title={t('BACKUP_SECRET_RECOVERY_PHRASE')} />
         <View style={styles.tabsView}>
           <CustomTabs
             activeTab={activeTab}
@@ -200,7 +207,7 @@ const styles = StyleSheet.create({
   },
   titleTxt: {
     color: '#7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
   },
   plainTxtView: {
@@ -209,7 +216,7 @@ const styles = StyleSheet.create({
   },
   plainTxt: {
     color: '#333333',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     flex: 1,
   },
@@ -218,12 +225,12 @@ const styles = StyleSheet.create({
   },
   QRcodeTxt: {
     color: '##7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
   },
   tabTxt: {
     color: '#333333',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     textAlign: 'center',
     fontWeight: 400,
     paddingTop: 15,
@@ -231,7 +238,7 @@ const styles = StyleSheet.create({
   },
   copyTxt: {
     color: '#7C8FAC',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     marginLeft: 5,
   },
@@ -247,7 +254,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -304,14 +311,14 @@ const styles = StyleSheet.create({
   },
   impTitleTxt: {
     color: '#D32F2F',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     marginLeft: 5,
     marginRight: 20,
   },
   impSubTitleTxt: {
     color: '#D32F2F',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     marginLeft: 10,
     marginTop: 3,
@@ -335,13 +342,13 @@ const styles = StyleSheet.create({
   },
   itemIndexTxt: {
     color: '#7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     marginLeft: 5,
   },
   itemTxt: {
     color: '#333333',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     textAlign: 'center',
     flex: 1,

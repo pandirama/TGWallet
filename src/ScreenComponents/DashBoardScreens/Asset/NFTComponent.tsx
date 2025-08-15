@@ -1,10 +1,12 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {colors} from '../../../utils/colors';
 import NFTNotFound from '../../../assets/nftnotfound.svg';
 import appStyles from '../../../utils/appStyles';
 import NFTName from '../../../assets/NFT_name.svg';
+import { moderateScale } from 'react-native-size-matters';
 
 const NFTs = [
   {
@@ -67,6 +69,7 @@ const NFTs = [
 const NFTComponent = ({navigation, tokenNFTs}: any) => {
   const [showNFTs, setShowNFTs] = useState(false);
 
+  const {t} = useTranslation();
   const renderItem = ({item}: any) => {
     return (
       <TouchableOpacity
@@ -99,11 +102,11 @@ const NFTComponent = ({navigation, tokenNFTs}: any) => {
       ) : (
         <>
           <NFTNotFound />
-          <Text style={styles.noTxt}>No NFT Found</Text>
+          <Text style={styles.noTxt}>{t('NO_NFT_FOUND')}</Text>
           <TouchableOpacity
             style={[appStyles.boxShadow, styles.nftTouch]}
             onPress={() => navigation.navigate('ADDNFT')}>
-            <Text style={styles.addTxt}>Add NFT</Text>
+            <Text style={styles.addTxt}>{t('ADD_NFT')}</Text>
           </TouchableOpacity>
         </>
       )}
@@ -131,13 +134,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   addTxt: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: 600,
     color: '#333333',
     textAlign: 'center',
   },
   noTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#7C8FAC',
     textAlign: 'center',
@@ -148,7 +151,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   nftNameTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 500,
     color: '#333333',
   },

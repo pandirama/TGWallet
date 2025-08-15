@@ -19,6 +19,7 @@ import GitHub from '../../../../assets/profile/git_hub.svg';
 import Email from '../../../../assets/profile/email.svg';
 import FeedBack from '../../../../assets/profile/feed_back.svg';
 import {AntDesign, Ionicons} from '../../../../utils/IconUtils';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'ABOUT_US'>;
 
@@ -31,7 +32,7 @@ const AboutUsComponent = ({navigation}: Props) => {
         backgroundColor={colors.white}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
         <View style={styles.headerView}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
@@ -134,7 +135,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   headerTxt: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 600,
     color: '#333333',
     flex: 1,
@@ -154,20 +155,20 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
   logoTxt: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 600,
     color: '#333333',
     textAlign: 'center',
     marginTop: 5,
   },
   versionTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     textAlign: 'center',
   },
   walletTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlignVertical: 'center',
@@ -199,7 +200,7 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   channelsTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
     marginTop: 25,
@@ -216,7 +217,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   channelTxt: {
-    fontSize: 11,
+    fontSize: moderateScale(11),
     fontWeight: 500,
     color: '#333333',
     textAlign: 'center',
