@@ -17,7 +17,6 @@ import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
 // import Buy from '../../../assets/buy.svg';
 import Send from '../../../assets/send.svg';
-import Eye from '../../../assets/eye.svg';
 import DEFIComponent from './DEFIComponent';
 import {Feather, Ionicons, MaterialIcons} from '../../../utils/IconUtils';
 import {useSelector} from 'react-redux';
@@ -51,6 +50,7 @@ const AssetComponent = ({navigation}: Props) => {
   const [showWallets, setShowWallets] = useState(false);
   const [networks, setNetworks] = useState<any>([]);
   const [walletIcon, setWalletIcon] = useState<any>(null);
+  const [showAmount, toggleAmount] = useState(false);
 
   const {
     walletInfo = {},
@@ -207,8 +207,24 @@ const AssetComponent = ({navigation}: Props) => {
             </TouchableOpacity>
 
             <View style={styles.amountView}>
-              <Text style={styles.menuAmountTxt}>{ethBalance}</Text>
-              <Eye width={30} height={30} />
+              <Text
+                style={[
+                  styles.menuAmountTxt,
+                  !showAmount && {fontFamily: 'Menlo'},
+                ]}>
+                {showAmount
+                  ? ethBalance
+                  : String(ethBalance).length > 0
+                  ? '*'.repeat(String(ethBalance).length)
+                  : '****'}
+              </Text>
+              <TouchableOpacity onPress={() => toggleAmount(p => !p)}>
+                <Feather
+                  name={showAmount ? 'eye-off' : 'eye'}
+                  size={25}
+                  color={'#FFFFFF'}
+                />
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -272,7 +288,11 @@ const AssetComponent = ({navigation}: Props) => {
         </TouchableOpacity>
       </View>
       {selectedAsset === 'ASSETS' && (
-        <DEFIComponent tokenAssets={tokenAssets} navigation={navigation} />
+        <DEFIComponent
+          tokenAssets={tokenAssets}
+          navigation={navigation}
+          showAmount={showAmount}
+        />
       )}
       <WalletListComponent
         navigation={navigation}
@@ -384,7 +404,7 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     color: '#FFFFFF',
     marginRight: 5,
-    marginLeft: 5,
+    textAlign: 'right',
   },
   walletNameTxt: {
     fontSize: moderateScale(20),

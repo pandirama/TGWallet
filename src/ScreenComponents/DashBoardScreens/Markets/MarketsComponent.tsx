@@ -21,20 +21,17 @@ import {Ionicons} from '../../../utils/IconUtils';
 import {useSelector} from 'react-redux';
 import {useGetNetworksQuery} from '../../../api/auth/authAPI';
 import {useFocusEffect} from '@react-navigation/native';
-import {authAction} from '../../../reducer/auth/authSlice';
 import useCommon from '../../../hooks/useCommon';
-import {useAppDispatch} from '../../../store';
 import {getErrorMessage} from '../../../utils/common';
 import {useMarketListMutation} from '../../../api/marketAPI';
 import WalletListComponent from '../../../components/WalletListComponent';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'MARKETS'>;
 
 const MarketsComponent = ({navigation}: Props) => {
   const {t} = useTranslation();
   const {showToast, toggleBackdrop} = useCommon();
-  const dispatch = useAppDispatch();
 
   const [walletIcon, setWalletIcon] = useState<any>(null);
   const [marketLists, setMarketLists] = useState<any>([]);
@@ -99,13 +96,7 @@ const MarketsComponent = ({navigation}: Props) => {
       refetch().then(response => {
         const {isSuccess, isError, data, error} = response;
         if (isSuccess) {
-          const networkData = data?.networks?.filter((network: any) => {
-            return network?.ID === walletInfo?.network_mode;
-          })?.[0];
           setNetworks(data?.networks);
-          dispatch(authAction.setSelectedNetwork(networkData));
-          const networkIcon = networkData?.Wallet_icon;
-          setWalletIcon(networkIcon);
         } else if (isError) {
           showToast({
             type: 'error',
@@ -266,7 +257,9 @@ const MarketsComponent = ({navigation}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <View style={styles.tabsView}>
           <View style={styles.headerView}>
             <TouchableOpacity

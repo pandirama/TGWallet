@@ -142,6 +142,10 @@ const MarketsStackNavigator = () => {
       initialRouteName="MARKETS">
       <MarketsStack.Screen name="MARKETS" component={MarketsComponent} />
       <MarketsStack.Screen
+        name="WALLET_STACK"
+        component={WalletStackNavigator}
+      />
+      <MarketsStack.Screen
         name="MARKET_DETAILS"
         component={MarketDetailsComponent}
       />

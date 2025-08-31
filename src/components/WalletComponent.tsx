@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import Modal from 'react-native-modal';
@@ -22,7 +22,7 @@ import {useWalletListMutation} from '../api/walletAPI';
 import useCommon from '../hooks/useCommon';
 import {colors} from '../utils/colors';
 import {getErrorMessage, localStorageKey, setStorage} from '../utils/common';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
 
 const WalletComponent = ({
   navigation,
@@ -30,7 +30,6 @@ const WalletComponent = ({
   networkMode = '',
   networks,
 }: any) => {
-
   const {showToast} = useCommon();
   const dispatch = useAppDispatch();
 
@@ -39,7 +38,9 @@ const WalletComponent = ({
 
   const [addWalletVisible, setAddWalletVisible] = useState(false);
 
-  const {userInfo = {}, selectedNetwork} = useSelector(({authReducer}: any) => authReducer);
+  const {userInfo = {}, selectedNetwork} = useSelector(
+    ({authReducer}: any) => authReducer,
+  );
 
   const [walletCreate, {isLoading}] = useWalletListMutation();
 
@@ -90,6 +91,13 @@ const WalletComponent = ({
           dispatch(authAction.setSelectedNetwork(selectedNetworks));
           await setStorage(localStorageKey.walletInfo, JSON.stringify(wallet));
           setShowWallets(false);
+          navigation.navigate('WALLET_STACK', {
+            screen: 'WALLET_DETAILS',
+            params: {
+              walletDetails: wallet,
+              networkIcon: wallet?.Wallet_icon,
+            },
+          });
         }}>
         <View style={styles.walletListLabelTopView}>
           <Text style={styles.walletListNameTxt}>{item?.wallet_name}</Text>
@@ -107,7 +115,9 @@ const WalletComponent = ({
               });
               Clipboard.setString(item?.wallet_address);
             }}>
-            <Text style={styles.walletAddressTxt}>{item?.wallet_address}</Text>
+            <Text numberOfLines={1} style={styles.walletAddressTxt}>
+              {item?.wallet_address}
+            </Text>
             <Ionicons name={'copy-outline'} size={16} color={'#7C8FAC'} />
           </TouchableOpacity>
         )}
@@ -121,7 +131,7 @@ const WalletComponent = ({
       <TouchableOpacity
         style={[
           styles.networkListTouch,
-          selectedNetworks?.ID === item?.ID.toString() && {
+          selectedNetworks?.ID?.toString() === item?.ID.toString() && {
             backgroundColor: colors.white,
           },
         ]}
@@ -143,7 +153,7 @@ const WalletComponent = ({
     setAddWalletVisible(false);
   };
 
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   return (
     <View>
       <View style={styles.walletListView}>
@@ -160,7 +170,7 @@ const WalletComponent = ({
 
         {isLoading ? (
           <View style={styles.loadingView}>
-            <ActivityIndicator size="large" color={'#6B121C'} />
+            <ActivityIndicator color={'#6B121C'} />
           </View>
         ) : (
           <View style={styles.walletListTitleView}>
@@ -429,6 +439,7 @@ const styles = StyleSheet.create({
     marginRight: 15,
     paddingTop: 10,
     paddingBottom: 10,
+    paddingRight: 10,
   },
   walletListNameTxt: {
     fontSize: moderateScale(14),
@@ -462,6 +473,8 @@ const styles = StyleSheet.create({
   addressView: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginRight: 10,
+    paddingVertical: 10,
   },
   walletAddressTxt: {
     fontSize: moderateScale(10),
@@ -470,7 +483,8 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     marginLeft: 12,
     marginTop: 3,
-    marginRight: 5,
+    marginRight: 10,
+    flex: 1,
   },
   walletBalanceTxt: {
     fontSize: moderateScale(12),
