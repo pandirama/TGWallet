@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   Dimensions,
   StatusBar,
@@ -25,6 +26,7 @@ import {
 import {useSelector} from 'react-redux';
 import useCommon from '../../../hooks/useCommon';
 import {getErrorMessage} from '../../../utils/common';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'ADDTOKENS'>;
 
@@ -32,6 +34,7 @@ const {height} = Dimensions.get('window');
 
 const AddTokenComponent = ({navigation}: Props) => {
   const {showToast, toggleBackdrop} = useCommon();
+  const {t} = useTranslation();
 
   const [contractAddress, setContractAddress] = useState('');
   const [tokenName, setTokenName] = useState('');
@@ -131,17 +134,17 @@ const AddTokenComponent = ({navigation}: Props) => {
         style={appStyles.container}
         edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent
-          title={'Add Token'}
+          title={t('ADD_TOKEN')}
           //   rightIcon={<Scan width={24} height={24} style={styles.scanIcon} />}
         />
-        <Text style={styles.addNFTHeaderTxt}>Add Token</Text>
+        <Text style={styles.addNFTHeaderTxt}>{t('ADD_TOKEN')}</Text>
         <Text style={styles.addNFTSubHeaderTxt}>
-          Enter the Token contract you want to add
+          {t('ENTER_TOKEN_CONTRACT_TO_ADD')}
         </Text>
         <View style={styles.multiLineContainer}>
           <TextInput
             style={styles.multiLineInput}
-            placeholder="Enter contract address"
+            placeholder={t('ENTER_CONTRACT_ADDRESS')}
             placeholderTextColor="#9C9DA0"
             value={contractAddress}
             multiline={true}
@@ -151,7 +154,7 @@ const AddTokenComponent = ({navigation}: Props) => {
           />
           <View style={styles.pasteCard}>
             <TouchableOpacity onPress={() => fetchCopiedKey()}>
-              <Text style={styles.pasteTxt}>Paste</Text>
+              <Text style={styles.pasteTxt}>{t('PASTE')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -160,7 +163,7 @@ const AddTokenComponent = ({navigation}: Props) => {
             <View style={[styles.searchContainer, {marginTop: 15}]}>
               <TextInput
                 style={styles.input1}
-                placeholder="Enter Token Name"
+                placeholder={t('ENTER_TOKEN_NAME')}
                 placeholderTextColor="#9C9DA0"
                 value={tokenName}
                 editable={false}
@@ -170,7 +173,7 @@ const AddTokenComponent = ({navigation}: Props) => {
             <View style={[styles.searchContainer, {marginTop: 15}]}>
               <TextInput
                 style={styles.input1}
-                placeholder="Enter Token Decimals"
+                placeholder={t('ENTER_TOKEN_DECIMALS')}
                 placeholderTextColor="#9C9DA0"
                 value={tokenDecimals.toString()}
                 editable={false}
@@ -193,7 +196,7 @@ const AddTokenComponent = ({navigation}: Props) => {
             colors={['#6B121C', '#ED1C24']}
             style={styles.startedBtn}>
             <Text style={styles.startedBtnTxt}>
-              {showConfirmBtn ? 'Confirm' : 'Validate'}
+              {showConfirmBtn ? t('CONFIRM') : t('VALIDATE')}
             </Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -207,14 +210,14 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   addNFTHeaderTxt: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 600,
     color: '#333333',
     marginLeft: 15,
     marginTop: 10,
   },
   addNFTSubHeaderTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginLeft: 15,
@@ -254,7 +257,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -267,7 +270,7 @@ const styles = StyleSheet.create({
   },
   pasteTxt: {
     color: '#0054A6',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     marginRight: 10,
   },

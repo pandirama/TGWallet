@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   FlatList,
   Image,
@@ -10,8 +11,20 @@ import {
   View,
 } from 'react-native';
 import {colors} from '../../../utils/colors';
+import {moderateScale, scale} from 'react-native-size-matters';
 
-const DEFIComponent = ({tokenAssets, navigation}: any) => {
+const DEFIComponent = ({tokenAssets, navigation, showAmount}: any) => {
+  const {t} = useTranslation();
+
+  const getBalanceInUSD = (balanceInUSD: string) => {
+    if (showAmount) {
+      return balanceInUSD;
+    } else {
+      return String(balanceInUSD).length > 0
+        ? '*'.repeat(String(balanceInUSD).length)
+        : '****';
+    }
+  };
   const renderItem = ({item}: any) => {
     return (
       <TouchableOpacity
@@ -42,7 +55,7 @@ const DEFIComponent = ({tokenAssets, navigation}: any) => {
               <Text
                 style={{
                   textAlign: 'center',
-                  fontSize: 16,
+                  fontSize: moderateScale(16),
                   fontWeight: 600,
                   color: '#333333',
                 }}>
@@ -54,10 +67,27 @@ const DEFIComponent = ({tokenAssets, navigation}: any) => {
         <View style={styles.defiListHeaderTxtView}>
           <Text style={[styles.defiListnameTxt]}>{item?.tokenName}</Text>
           <View style={styles.defiListTxtView}>
-            <Text style={styles.defiListNameTxt}>{item?.balance}</Text>
-            <Text style={[styles.defiListamountTxt]}>
-              {`$${item?.balanceInUSD}`}
+            <Text
+              style={[
+                styles.defiListNameTxt,
+                !showAmount && {fontFamily: 'Menlo'},
+              ]}>
+              {showAmount
+                ? item?.balance
+                : String(item?.balance).length > 0
+                ? '*'.repeat(String(item?.balance).length)
+                : '****'}
             </Text>
+            <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+              <Text style={styles.defiListamountTxt}>{t('VALUE_USD')}:</Text>
+              <Text
+                style={[
+                  styles.defiListamountTxt,
+                  !showAmount && {fontFamily: 'Menlo'},
+                ]}>
+                {` $${getBalanceInUSD(item?.balanceInUSD)}`}
+              </Text>
+            </View>
           </View>
         </View>
       </TouchableOpacity>
@@ -99,20 +129,20 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   defiListnameTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
     alignSelf: 'center',
     flex: 1,
   },
   defiListNameTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
     textAlign: 'right',
   },
   defiListamountTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#7C8FAC',
     textAlign: 'right',
@@ -142,8 +172,8 @@ const styles = StyleSheet.create({
     borderColor: '#D32F2F',
   },
   itemLogo: {
-    width: 30,
-    height: 30,
+    width: scale(30),
+    height: scale(30),
   },
 });
 

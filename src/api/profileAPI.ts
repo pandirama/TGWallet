@@ -23,7 +23,27 @@ export const profileAPI = createApi({
       }),
       transformResponse: (response: {data: any}) => response,
     }),
+    languageList: builder.mutation<any, void>({
+      query: () => ({
+        url: PROFILE_URLS.CHANGE_LANGUAGE_LIST,
+        method: 'POST',
+      }),
+      transformResponse: (response: {data: any}) => response,
+    }),
+    updateLanguage: builder.mutation<any, any>({
+      query: params => ({
+        url: PROFILE_URLS.UPDATE_LANGUAGE,
+        method: 'POST',
+        body: params,
+      }),
+      transformResponse: (response: {data: any}) => response,
+    }),
   }),
 });
 
-export const {useBasisListMutation, useUpdateTimeZoneMutation} = profileAPI;
+export const {
+  useBasisListMutation,
+  useUpdateTimeZoneMutation,
+  useLanguageListMutation,
+  useUpdateLanguageMutation,
+} = profileAPI;

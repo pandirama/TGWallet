@@ -2,6 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
 import React, {useCallback, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   FlatList,
@@ -24,16 +25,22 @@ import {
   useHDWalletCreateMutation,
 } from '../../../api/auth/authAPI';
 import useCommon from '../../../hooks/useCommon';
-import {getErrorMessage, localStorageKey, setStorage} from '../../../utils/common';
+import {
+  getErrorMessage,
+  localStorageKey,
+  setStorage,
+} from '../../../utils/common';
 import {useAppDispatch} from '../../../store';
 import {authAction} from '../../../reducer/auth/authSlice';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'HD_WALLET'>;
 
 const HDWalletComponent = ({navigation}: Props) => {
+  const {t} = useTranslation();
   const {showToast, toggleBackdrop} = useCommon();
   const dispatch = useAppDispatch();
 
@@ -45,7 +52,9 @@ const HDWalletComponent = ({navigation}: Props) => {
 
   const [HDWalletCreate, {isLoading}] = useHDWalletCreateMutation();
 
-  const {userInfo = {}, isHomeNewWallet} = useSelector(({authReducer}: any) => authReducer);
+  const {userInfo = {}, isHomeNewWallet} = useSelector(
+    ({authReducer}: any) => authReducer,
+  );
 
   useEffect(() => {
     toggleBackdrop(isFetching || isLoading);
@@ -156,9 +165,9 @@ const HDWalletComponent = ({navigation}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
-        <DashBoardHeaderComponent title={'Select Network'} />
-        <Text style={styles.networkTxt}>Single Network</Text>
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
+        <DashBoardHeaderComponent title={t('SELECT_NETWORK')} />
+        <Text style={styles.networkTxt}>{t('SINGLE_NETWORK')}</Text>
         <View
           style={[
             appStyles.boxShadow,
@@ -179,7 +188,7 @@ const HDWalletComponent = ({navigation}: Props) => {
                   <Search width={25} height={25} />
                   <TextInput
                     style={styles.input}
-                    placeholder="Search"
+                    placeholder={t('SEARCH')}
                     placeholderTextColor="#A9A9A9"
                     value={searchTerm}
                     onChangeText={text => setSearchTerm(text)}
@@ -193,7 +202,7 @@ const HDWalletComponent = ({navigation}: Props) => {
           <LinearGradient
             colors={['#6B121C', '#ED1C24']}
             style={styles.startedBtn}>
-            <Text style={styles.startedBtnTxt}>Submit</Text>
+            <Text style={styles.startedBtnTxt}>{t('SUBMIT')}</Text>
           </LinearGradient>
         </TouchableOpacity>
       </SafeAreaView>
@@ -216,7 +225,7 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   walletTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     flex: 1,
@@ -224,7 +233,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   networkTxt: {
-    fontSize: 15,
+    fontSize: moderateScale(15),
     fontWeight: 600,
     color: '#333333',
     textAlignVertical: 'center',
@@ -232,7 +241,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   networkTitleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#333333',
     flex: 1,
@@ -280,7 +289,7 @@ const styles = StyleSheet.create({
   },
   addWalletTxt: {
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: moderateScale(18),
   },
   deleteDialogContentAction: {
     alignItems: 'center',
@@ -293,7 +302,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   actionsheetTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
@@ -307,7 +316,7 @@ const styles = StyleSheet.create({
     borderColor: colors.gray1,
   },
   cancelTxt: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: 600,
     color: '#333333',
     textAlign: 'center',
@@ -336,7 +345,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,

@@ -22,6 +22,8 @@ import Carousel from 'react-native-reanimated-carousel';
 import _ from 'lodash';
 import useCommon from '../../../hooks/useCommon';
 import {Ionicons} from '../../../utils/IconUtils';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+import {useTranslation} from 'react-i18next';
 
 type Props = NativeStackScreenProps<any, 'WALLET_TYPE'>;
 
@@ -31,21 +33,6 @@ type PaginateProp = {
 };
 
 const {width} = Dimensions.get('window');
-
-const slideContent: any = [
-  {
-    title: 'Empowering a Global Crypto Future',
-    subTitle:
-      'Connect your assets to a digital world. Trade, manage, and grow in a seamless global ecosystem.',
-    icon: <Wallet1 />,
-  },
-  {
-    title: 'Unite Your Coins in One Wallet',
-    subTitle:
-      'Store, manage, and explore multiple cryptocurrencies effortlessly with cutting-edge technology at your fingertips.',
-    icon: <Wallet2 />,
-  },
-];
 
 const PaginationDots = (props: PaginateProp) => {
   return (
@@ -64,8 +51,22 @@ const PaginationDots = (props: PaginateProp) => {
 };
 
 const WalletTypeComponent = ({navigation}: Props) => {
+  const {t} = useTranslation();
   const {toggleBackdrop} = useCommon();
   const [activeDot, setActiveDot] = useState(1);
+
+  const slideContent: any = [
+    {
+      title: t('WALLET_TYPE_TITLE_1'),
+      subTitle: t('WALLET_TYPE_SUBTITLE_1'),
+      icon: <Wallet1 />,
+    },
+    {
+      title: t('WALLET_TYPE_TITLE_2'),
+      subTitle: t('WALLET_TYPE_SUBTITLE_2'),
+      icon: <Wallet2 />,
+    },
+  ];
 
   useEffect(() => {
     toggleBackdrop(false);
@@ -79,14 +80,14 @@ const WalletTypeComponent = ({navigation}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={appStyles.scrollContainer}>
           <View style={styles.caroselContainer}>
             <Carousel
               width={width}
-              height={450}
+              height={verticalScale(400)}
               loop={false}
               data={slideContent}
               scrollAnimationDuration={1000}
@@ -114,7 +115,7 @@ const WalletTypeComponent = ({navigation}: Props) => {
           </View>
 
           <View style={styles.walletContainer}>
-            <Text style={styles.headerTxt}>I have my own wallet</Text>
+            <Text style={styles.headerTxt}>{t('I_HAVE_MY_OWN_WALLET')}</Text>
             <TouchableOpacity
               style={[appStyles.boxShadow, styles.walletSubContainer]}
               onPress={() =>
@@ -122,36 +123,30 @@ const WalletTypeComponent = ({navigation}: Props) => {
                   fromImport: true,
                 })
               }>
-              <ImportWallet width={45} height={45} />
+              <ImportWallet width={scale(40)} height={scale(40)} />
               <View style={styles.txtContainer}>
-                <Text style={styles.walletTitleTxt}>
-                  Import Existing Wallet
-                </Text>
-                <Text style={styles.walletSubTitleTxt}>
-                  Import Wallet, keypal 7 MultiSig wallet
-                </Text>
+                <Text style={styles.walletTitleTxt}>{t('IMPORT_EXISTING_WALLET')}</Text>
+                <Text style={styles.walletSubTitleTxt}>{t('IMPORT_WALLET_DESC')}</Text>
               </View>
               <Ionicons
                 name={'chevron-forward'}
-                size={25}
+                size={scale(15)}
                 color={colors.black}
                 style={styles.icon}
               />
             </TouchableOpacity>
-            <Text style={styles.headerTxt}>I need a new wallet</Text>
+            <Text style={styles.headerTxt}>{t('I_NEED_A_NEW_WALLET')}</Text>
             <TouchableOpacity
               style={[appStyles.boxShadow, styles.walletSubContainer]}
               onPress={() => navigation.navigate('SELECT_NETWORK')}>
-              <CreateWallet width={45} height={45} />
+              <CreateWallet width={scale(40)} height={scale(40)} />
               <View style={styles.txtContainer}>
-                <Text style={styles.walletTitleTxt}>Create New Wallet</Text>
-                <Text style={styles.walletSubTitleTxt}>
-                  Generate a new wallet
-                </Text>
+                <Text style={styles.walletTitleTxt}>{t('CREATE_NEW_WALLET')}</Text>
+                <Text style={styles.walletSubTitleTxt}>{t('CREATE_WALLET_DESC')}</Text>
               </View>
               <Ionicons
                 name={'chevron-forward'}
-                size={25}
+                size={scale(15)}
                 color={colors.black}
                 style={styles.icon}
               />
@@ -186,30 +181,30 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(13),
     fontWeight: 400,
     color: '#7C8FAC',
     marginTop: 15,
   },
   titleTxt: {
-    fontSize: 20,
-    fontWeight: 600,
+    fontSize: moderateScale(26),
+    fontWeight: 700,
     color: '#333333',
     textAlign: 'center',
   },
   subTitleTxt: {
-    fontSize: 16,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     textAlign: 'center',
   },
   walletTitleTxt: {
-    fontSize: 16,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   walletSubTitleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
   },

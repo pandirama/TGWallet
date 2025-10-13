@@ -1,48 +1,17 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {StatusBar, StyleSheet, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
-import WebView from 'react-native-webview';
-import {Ionicons} from '../../../utils/IconUtils';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'DISCOVER'>;
 
 const DiscoverComponent = ({}: Props) => {
-  const [url, setUrl] = useState('');
-  const [urlName, setUrlName] = useState('https://pancakeswap.finance/');
-  const [urlError, setUrlError] = useState(false);
-  const [showWebView, setShowWebView] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-
-  const searchInput = useRef<TextInput | null>(null);
-
-  console.log(isFocused);
-
-  useEffect(() => {
-    return () => {
-      setShowWebView(false);
-      setUrl('');
-    };
-  }, []);
-
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
-
-  const handleBlur = () => {
-    setIsFocused(false);
-  };
-
+  const {t} = useTranslation();
   return (
     <>
       <StatusBar
@@ -51,87 +20,14 @@ const DiscoverComponent = ({}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
-        <View style={{flex: 1}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              backgroundColor: colors.white,
-              paddingLeft: 15,
-              paddingRight: 15,
-              paddingTop: 10,
-              paddingBottom: 10,
-            }}>
-            <View style={styles.searchContainer}>
-              <Ionicons name={'search'} size={20} color={colors.black} />
-              <TextInput
-                ref={input => {
-                  searchInput.current = input;
-                }}
-                style={styles.input}
-                placeholder="Enter Url"
-                placeholderTextColor="#9C9DA0"
-                value={urlName}
-                onChangeText={text => {
-                  setUrlName(text);
-                  setUrlError(false);
-                }}
-                returnKeyType={'done'}
-                onSubmitEditing={() => {
-                  setUrl(urlName);
-                  setShowWebView(true);
-                }}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-              />
-              {isFocused && (
-                <TouchableOpacity
-                  style={{marginLeft: 10}}
-                  onPress={() => {
-                    setUrlName('');
-                    setIsFocused(false);
-                  }}>
-                  <Ionicons
-                    name={'close-circle-outline'}
-                    size={20}
-                    color={colors.black}
-                  />
-                </TouchableOpacity>
-              )}
-            </View>
-            <TouchableOpacity
-              style={{marginLeft: 10}}
-              onPress={() => {
-                console.log(urlName);
-                if (isFocused) {
-                  setUrlName('');
-                  setIsFocused(false);
-                } else {
-                  setUrl(urlName);
-                  setShowWebView(true);
-                }
-                setUrl(urlName);
-                setShowWebView(true);
-              }}>
-              <Text style={styles.headerRightTxt}>Submit</Text>
-            </TouchableOpacity>
-          </View>
 
-          {urlError && <Text style={styles.errorTxt}>Enter Url</Text>}
-
-          {showWebView && (
-            <View style={{flex: 1, backgroundColor: 'red', marginTop: 15}}>
-              <WebView
-                source={{uri: url}}
-                originWhitelist={['*']}
-                javaScriptEnabled={true}
-                cacheEnabled={false}
-                startInLoadingState={true}
-              />
-            </View>
-          )}
-        </View>
+      <SafeAreaView
+        style={[
+          appStyles.container,
+          {alignItems: 'center', justifyContent: 'center'},
+        ]}
+        edges={['right', 'left', 'top']}>
+        <Text style={styles.headerRightTxt}>{t('COMING_SOON')}</Text>
       </SafeAreaView>
     </>
   );
@@ -157,7 +53,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   errorTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#F04438',
     marginLeft: 5,
@@ -170,19 +66,19 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   titleTxt: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 600,
     color: '#333333',
     marginBottom: 5,
   },
   subTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#7C8FAC',
     marginBottom: 25,
   },
   inputTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginBottom: 1,
@@ -202,7 +98,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -214,22 +110,22 @@ const styles = StyleSheet.create({
   },
   readAgreeTxt: {
     color: '#7C8FAC',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     marginLeft: 3,
   },
   agreeTxt: {
     color: '#ED1C24',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
   },
   touchOpacity: {
     opacity: 0.5,
   },
   headerRightTxt: {
-    fontSize: 14,
-    fontWeight: 400,
-    color: '#7C8FAC',
+    fontSize: moderateScale(16),
+    fontWeight: 900,
+    color: '#333333',
   },
 });
 

@@ -26,30 +26,19 @@ import {
   useDescriptionInfoMutation,
   useTradingInfoMutation,
 } from '../../../api/marketAPI';
+import {moderateScale} from 'react-native-size-matters';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<any, 'MARKET_DETAILS'>;
-
-const markets = [
-  {
-    id: 0,
-    marketName: 'Trading',
-  },
-  {
-    id: 1,
-    marketName: 'Check',
-  },
-  {
-    id: 2,
-    marketName: 'Description',
-  },
-];
 
 const MarketDetailsComponent = ({navigation, route}: Props) => {
   const {marketDetails} = route?.params ?? {};
 
+  const {t} = useTranslation();
+
   const {showToast, toggleBackdrop} = useCommon();
 
-  const [selectedMarket, setSelectedMarket] = useState('Trading');
+  const [selectedMarket, setSelectedMarket] = useState(t('TRADING_TAB'));
   const [marketInfos, setMarketInfos] = useState<any>(null);
   const [checkInfos, setCheckInfos] = useState<any>(null);
   const [descInfos, setDescInfos] = useState<any>(null);
@@ -58,6 +47,21 @@ const MarketDetailsComponent = ({navigation, route}: Props) => {
   const [checkInfo, {isLoading: isCheckLoading}] = useCheckInfoMutation();
   const [descriptionInfo, {isLoading: isDescLoading}] =
     useDescriptionInfoMutation();
+
+  const markets = [
+    {
+      id: 0,
+      marketName: t('TRADING_TAB'),
+    },
+    {
+      id: 1,
+      marketName: t('CHECK_TAB'),
+    },
+    {
+      id: 2,
+      marketName: t('DESCRIPTION_TAB'),
+    },
+  ];
 
   useEffect(() => {
     toggleBackdrop(isLoading || isCheckLoading || isDescLoading);
@@ -164,7 +168,9 @@ const MarketDetailsComponent = ({navigation, route}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <View style={styles.backContainer}>
           <TouchableOpacity
             style={styles.backTouch}
@@ -203,16 +209,16 @@ const MarketDetailsComponent = ({navigation, route}: Props) => {
             style={{borderBottomWidth: 1, borderBottomColor: colors.gray1}}
           />
         </View>
-        {selectedMarket === 'Trading' && (
+        {selectedMarket === t('TRADING_TAB') && (
           <TradingComponent
             marketInfos={marketInfos}
             marketDetails={marketDetails}
           />
         )}
-        {selectedMarket === 'Check' && (
+        {selectedMarket === t('CHECK_TAB') && (
           <CheckComponent checkInfos={checkInfos} />
         )}
-        {selectedMarket === 'Description' && (
+        {selectedMarket === t('DESCRIPTION_TAB') && (
           <DescriptionComponent descInfos={descInfos} />
         )}
       </SafeAreaView>
@@ -276,12 +282,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   selectedAssetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   assetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
     opacity: 0.3,
@@ -337,17 +343,17 @@ const styles = StyleSheet.create({
     borderColor: '#D32F2F',
   },
   defiListnameTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   defiListVolumeTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
   },
   defiListNameTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     textAlign: 'right',
   },
@@ -358,7 +364,7 @@ const styles = StyleSheet.create({
     color: '#D32F2F',
   },
   defiListamountTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#7C8FAC',
     textAlign: 'right',
@@ -388,7 +394,7 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
   },
   titleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#333333',
     fontWeight: 600,
     flex: 1,

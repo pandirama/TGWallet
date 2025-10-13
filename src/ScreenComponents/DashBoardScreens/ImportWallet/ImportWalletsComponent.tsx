@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   Platform,
@@ -12,10 +13,9 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../utils/appStyles';
-import Scan from '../../../assets/scan.svg';
 import {colors} from '../../../utils/colors';
 import DashBoardHeaderComponent from '../../../components/DashBoardHeaderComponent';
-import CustomTabs, {WalletTabs} from '../../../components/CustomTabs';
+import CustomTabs, {getWalletTabs} from '../../../components/CustomTabs';
 import LinearGradient from 'react-native-linear-gradient';
 import {Feather, Ionicons} from '../../../utils/IconUtils';
 import useCommon from '../../../hooks/useCommon';
@@ -32,10 +32,13 @@ import {
 import Clipboard from '@react-native-clipboard/clipboard';
 import {useAppDispatch} from '../../../store';
 import {authAction} from '../../../reducer/auth/authSlice';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'IMPORT_WALLET'>;
 
 const ImportWalletsComponent = ({navigation, route}: Props) => {
+  const {t} = useTranslation();
+  const WalletTabs = getWalletTabs(t);
   const {walletTabs, walletNetwork} = route?.params ?? {};
 
   const {showToast, toggleBackdrop} = useCommon();
@@ -64,11 +67,11 @@ const ImportWalletsComponent = ({navigation, route}: Props) => {
   const recoveryPhraseTab = activeTab === WalletTabs.RecoveryPhrase;
 
   const placeHolderTxt = recoveryPhraseTab
-    ? 'Please enter the Recovery Phrase in order and separate them with spaces'
-    : 'Please enter private key or scan its QR code';
+    ? t('RECOVERY_PHRASE_PLACE_HOLDER')
+    : t('PRIVATE_KEY_PLACE_HOLDER');
   const titleTxt = recoveryPhraseTab
-    ? 'Please use cold wallet in disconnected environment. The cold wallet must be used in conjunction with watch wallet. You can create you new wallet offline here, please back it up well.'
-    : 'Please use cold wallet in disconnected environment. The cold wallet must be used in conjunction with watch wallet. You can create you new wallet offline here, please back it up well.';
+    ? t('RECOVERY_PHRASE_TITLE')
+    : t('RECOVERY_PHRASE_TITLE');
 
   const fetchCopiedKey = async () => {
     const text = await Clipboard.getString();
@@ -92,28 +95,28 @@ const ImportWalletsComponent = ({navigation, route}: Props) => {
           />
           <View style={styles.pasteCard}>
             <TouchableOpacity>
-              <Text style={styles.pasteTxt}>KeyPal Card</Text>
+              <Text style={styles.pasteTxt}>{t('KEYPAL_CARD')}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => fetchCopiedKey()}>
-              <Text style={styles.pasteTxt}>Paste</Text>
+              <Text style={styles.pasteTxt}>{t('PASTE')}</Text>
             </TouchableOpacity>
           </View>
         </View>
-        <Text style={styles.inputTitleTxt}>Wallet Name</Text>
+        <Text style={styles.inputTitleTxt}>{t('WALLET_NAME')}</Text>
         <View style={styles.searchContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Enter Wallet Name"
+            placeholder={t('WALLET_NAME_PLACE_HOLDER')}
             placeholderTextColor="#9C9DA0"
             value={walletName}
             onChangeText={text => setWalletName(text)}
           />
         </View>
-        <Text style={styles.inputTitleTxt}>Password</Text>
+        <Text style={styles.inputTitleTxt}>{t('PASSWORD')}</Text>
         <View style={styles.searchContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Min. 8 characters"
+            placeholder={t('PASSWORD_PLACE_HOLDER')}
             placeholderTextColor="#9C9DA0"
             value={password}
             secureTextEntry={showPassword}
@@ -134,12 +137,6 @@ const ImportWalletsComponent = ({navigation, route}: Props) => {
         </View>
         {passwordErrorTxt && passwordError && (
           <Text style={styles.errorTxt}>{passwordErrorTxt}</Text>
-        )}
-        {recoveryPhraseTab && (
-          <TouchableOpacity style={[styles.pasteCard, styles.advanceCard]}>
-            <Text style={styles.modeTxt}>Advanced Mode</Text>
-            <Ionicons name={'chevron-down'} size={18} color={'#333333'} />
-          </TouchableOpacity>
         )}
       </View>
     );
@@ -209,11 +206,10 @@ const ImportWalletsComponent = ({navigation, route}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
-        <DashBoardHeaderComponent
-          title={'Import Wallets'}
-          rightIcon={<Scan width={24} height={24} style={styles.scanIcon} />}
-        />
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
+        <DashBoardHeaderComponent title={t('IMPORT_WALLETS')} />
         <View style={styles.tabsView}>
           <CustomTabs
             activeTab={activeTab}
@@ -227,12 +223,14 @@ const ImportWalletsComponent = ({navigation, route}: Props) => {
             <TouchableOpacity onPress={() => toggleAccept(a => !a)}>
               <Ionicons
                 name={accept ? 'checkbox-outline' : 'square-outline'}
-                size={18}
+                size={scale(14)}
                 color={'#0054A6'}
               />
             </TouchableOpacity>
-            <Text style={styles.readAgreeTxt}>I have read and agree </Text>
-            <Text style={styles.agreeTxt}>Terms of Service</Text>
+            <Text style={styles.readAgreeTxt}>
+              {t('I_HAVE_READ_AND_AGREE')}
+            </Text>
+            <Text style={styles.agreeTxt}>{t('TERMS_OF_SERVICE')}</Text>
           </View>
           <TouchableOpacity
             style={[styles.startedTouch, !accept && styles.touchOpacity]}
@@ -243,7 +241,7 @@ const ImportWalletsComponent = ({navigation, route}: Props) => {
             <LinearGradient
               colors={['#6B121C', '#ED1C24']}
               style={styles.startedBtn}>
-              <Text style={styles.startedBtnTxt}>Confirm</Text>
+              <Text style={styles.startedBtnTxt}>{t('CONFIRM')}</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -260,14 +258,14 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   titleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#333333',
     marginTop: 10,
     marginLeft: 5,
   },
   inputTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginBottom: 1,
@@ -292,21 +290,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.gray1,
     marginTop: 20,
-    height: 130,
+    height: verticalScale(130),
   },
   input: {
     flex: 1,
-    paddingVertical: 13,
+    paddingVertical: moderateScale(12),
     color: colors.black,
+    fontSize: moderateScale(12),
   },
   multiLineInput: {
-    height: 90,
+    height: verticalScale(90),
     marginBottom: 10,
     color: colors.black,
     textAlignVertical: 'top',
+    fontSize: moderateScale(12),
   },
   pasteCard: {
-    height: 30,
+    height: verticalScale(30),
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
@@ -315,13 +315,13 @@ const styles = StyleSheet.create({
   },
   pasteTxt: {
     color: '#0054A6',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     marginRight: 10,
   },
   modeTxt: {
     color: '#7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
   },
   containerView: {
@@ -332,16 +332,17 @@ const styles = StyleSheet.create({
   readAgreeView: {
     flexDirection: 'row',
     marginLeft: 25,
+    alignItems: 'center',
   },
   readAgreeTxt: {
     color: '#7C8FAC',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     marginLeft: 3,
   },
   agreeTxt: {
     color: '#0054A6',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
   },
   touchOpacity: {
@@ -359,7 +360,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -369,7 +370,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   errorTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#F04438',
     marginLeft: 5,

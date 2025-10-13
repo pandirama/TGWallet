@@ -10,6 +10,8 @@ const initialState = {
   isHomeNewWallet: false,
   selectedNetwork: null,
   timeZone: null,
+  selectedLang: null,
+  selectedLangCode: '',
 };
 
 const slice = createSlice({
@@ -50,6 +52,12 @@ const slice = createSlice({
     },
     setTimeZone: (state, action) => {
       state.timeZone = action.payload;
+    },
+    setSelectedLang: (state, action) => {
+      state.selectedLang = action.payload;
+    },
+    setSelectedLangCode: (state, action) => {
+      state.selectedLangCode = action.payload;
     },
   },
 });

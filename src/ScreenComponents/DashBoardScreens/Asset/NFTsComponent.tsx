@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   FlatList,
@@ -15,6 +16,7 @@ import {colors} from '../../../utils/colors';
 import NFTName from '../../../assets/NFT_name.svg';
 import DashBoardHeaderComponent from '../../../components/DashBoardHeaderComponent';
 import {EvilIcons} from '../../../utils/IconUtils';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'NFTs'>;
 
@@ -78,6 +80,7 @@ const NFTs = [
 
 const NFTsComponent = ({route}: Props) => {
   const {title} = route?.params ?? {};
+  const { t } = useTranslation();
   const renderItem = ({item}: any) => {
     return (
       <TouchableOpacity style={styles.walletTouch}>
@@ -85,7 +88,7 @@ const NFTsComponent = ({route}: Props) => {
         <View style={styles.nftNameView}>
           <Text style={styles.nftNameTxt}>{item?.nftName}</Text>
           <Text style={styles.nftValueTxt}>{item?.nftValue}</Text>
-          <Text style={styles.nftBalanceTxt}>Balance: 0</Text>
+          <Text style={styles.nftBalanceTxt}>{t('BALANCE')}: 0</Text>
         </View>
         <EvilIcons
           name={item?.icon === 'plus' ? 'plus' : 'minus'}
@@ -110,7 +113,7 @@ const NFTsComponent = ({route}: Props) => {
         edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent title={title} />
         <View style={styles.walletContainer}>
-          <Text style={styles.networkTxt}>Asset List</Text>
+          <Text style={styles.networkTxt}>{t('ASSET_LIST')}</Text>
           <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
             <FlatList
               data={NFTs}
@@ -142,14 +145,14 @@ const styles = StyleSheet.create({
     marginBottom: 155,
   },
   walletTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlignVertical: 'center',
     marginLeft: 8,
   },
   networkTxt: {
-    fontSize: 15,
+    fontSize: moderateScale(15),
     fontWeight: 600,
     color: '#333333',
     textAlignVertical: 'center',
@@ -177,17 +180,17 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   nftNameTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 500,
     color: '#333333',
   },
   nftValueTxt: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: 400,
     color: '#7C8FAC',
   },
   nftBalanceTxt: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: 400,
     color: '#333333',
   },

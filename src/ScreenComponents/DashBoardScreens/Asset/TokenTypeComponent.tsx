@@ -2,6 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
 import React, {useCallback, useEffect, useState} from 'react';
+import { useTranslation } from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   FlatList,
@@ -27,10 +28,12 @@ import {
   useMyTokenMutation,
   useRemoveTokenMutation,
 } from '../../../api/tokenAPI';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'TOKENSTYPE'>;
 
 const TokenTypeComponent = ({route}: Props) => {
+  const { t } = useTranslation();
   const {title, type} = route?.params ?? {};
 
   const {showToast, toggleBackdrop} = useCommon();
@@ -99,7 +102,7 @@ const TokenTypeComponent = ({route}: Props) => {
         address: token?.tokenAddress,
       };
       let response: any;
-      if (token?.status === '1') {
+      if (token?.status?.toString() === '1') {
         response = await addToken(params).unwrap();
       } else {
         response = await removeToken(params).unwrap();
@@ -143,9 +146,9 @@ const TokenTypeComponent = ({route}: Props) => {
             addRemoveToken(item);
           }}>
           <EvilIcons
-            name={item?.status === '1' ? 'plus' : 'minus'}
+            name={item?.status?.toString() === '1' ? 'plus' : 'minus'}
             size={25}
-            color={item?.status === '1' ? '#ED1C24' : '#7C8FAC'}
+            color={item?.status?.toString() === '1' ? '#ED1C24' : '#7C8FAC'}
             style={styles.icon}
           />
         </TouchableOpacity>
@@ -166,7 +169,7 @@ const TokenTypeComponent = ({route}: Props) => {
         edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent title={title} />
         <View style={styles.walletContainer}>
-          <Text style={styles.networkTxt}>Asset List</Text>
+          <Text style={styles.networkTxt}>{t('ASSET_LIST')}</Text>
           <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
             <FlatList
               data={tokens}
@@ -198,14 +201,14 @@ const styles = StyleSheet.create({
     marginBottom: 155,
   },
   walletTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlignVertical: 'center',
     marginLeft: 8,
   },
   networkTxt: {
-    fontSize: 15,
+    fontSize: moderateScale(15),
     fontWeight: 600,
     color: '#333333',
     textAlignVertical: 'center',
@@ -234,17 +237,17 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   nftNameTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 500,
     color: '#333333',
   },
   nftValueTxt: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: 400,
     color: '#7C8FAC',
   },
   nftBalanceTxt: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: 400,
     color: '#333333',
   },

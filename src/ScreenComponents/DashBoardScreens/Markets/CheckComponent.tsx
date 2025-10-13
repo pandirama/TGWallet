@@ -1,10 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {ScrollView, Text, View} from 'react-native';
 import {colors} from '../../../utils/colors';
+import { moderateScale } from 'react-native-size-matters';
 
 const CheckComponent = ({checkInfos}: any) => {
+  const {t} = useTranslation();
   const [checkInfo, setCheckInfo] = useState<any>([]);
 
   useEffect(() => {
@@ -21,11 +24,11 @@ const CheckComponent = ({checkInfos}: any) => {
       <View style={{backgroundColor: colors.white, padding: 20, flex: 1}}>
         <Text
           style={{
-            fontSize: 14,
+            fontSize: moderateScale(14),
             fontWeight: 500,
             color: '#333333',
           }}>
-          Security
+          {t('SECURITY')}
         </Text>
         <View style={{flexDirection: 'row', marginTop: 15}}>
           <View
@@ -38,15 +41,15 @@ const CheckComponent = ({checkInfos}: any) => {
             }}>
             <Text
               style={{
-                fontSize: 13,
+                fontSize: moderateScale(13),
                 fontWeight: 700,
                 color: '#333333',
               }}>
-              ⚠️ Attention Count
+              {t('ATTENTION_COUNT')}
             </Text>
             <Text
               style={{
-                fontSize: 14,
+                fontSize: moderateScale(14),
                 fontWeight: 600,
                 color: '#333333',
                 marginTop: 5,
@@ -63,15 +66,15 @@ const CheckComponent = ({checkInfos}: any) => {
             }}>
             <Text
               style={{
-                fontSize: 13,
+                fontSize: moderateScale(13),
                 fontWeight: 700,
                 color: '#333333',
               }}>
-              ☠️ Danger Count
+              {t('DANGER_COUNT')}
             </Text>
             <Text
               style={{
-                fontSize: 14,
+                fontSize: moderateScale(14),
                 fontWeight: 600,
                 color: '#333333',
                 marginTop: 5,
@@ -82,7 +85,7 @@ const CheckComponent = ({checkInfos}: any) => {
         </View>
         <Text
           style={{
-            fontSize: 14,
+            fontSize: moderateScale(14),
             fontWeight: 500,
             color: '#333333',
             marginTop: 10,
@@ -108,7 +111,7 @@ const CheckComponent = ({checkInfos}: any) => {
               }}>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: moderateScale(12),
                   fontWeight: 400,
                   color: '#7C8FAC',
                   flex: 1,
@@ -117,7 +120,7 @@ const CheckComponent = ({checkInfos}: any) => {
               </Text>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: moderateScale(12),
                   fontWeight: 400,
                   color: '#167E8D',
                   flex: 1,
@@ -137,7 +140,7 @@ const CheckComponent = ({checkInfos}: any) => {
               }}>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: moderateScale(12),
                   fontWeight: 400,
                   color: '#7C8FAC',
                   flex: 1,
@@ -146,7 +149,7 @@ const CheckComponent = ({checkInfos}: any) => {
               </Text>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: moderateScale(12),
                   fontWeight: 400,
                   color: '#D32F2F',
                   flex: 1,
@@ -161,7 +164,7 @@ const CheckComponent = ({checkInfos}: any) => {
             return (
               <Text
                 style={{
-                  fontSize: 14,
+                  fontSize: moderateScale(14),
                   fontWeight: 600,
                   color: '#333333',
                   marginTop: 5,
@@ -173,7 +176,7 @@ const CheckComponent = ({checkInfos}: any) => {
         </View>
         <Text
           style={{
-            fontSize: 14,
+            fontSize: moderateScale(14),
             fontWeight: 500,
             color: '#333333',
             marginTop: 10,
@@ -191,7 +194,7 @@ const CheckComponent = ({checkInfos}: any) => {
             return (
               <Text
                 style={{
-                  fontSize: 14,
+                  fontSize: moderateScale(14),
                   fontWeight: 600,
                   color: '#333333',
                   marginTop: 5,

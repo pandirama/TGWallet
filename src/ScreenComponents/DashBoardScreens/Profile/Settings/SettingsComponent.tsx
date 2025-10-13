@@ -1,4 +1,5 @@
-import React, {useRef, useState} from 'react';
+import {moderateScale} from 'react-native-size-matters';
+import React, {useRef} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   ScrollView,
@@ -11,24 +12,22 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../../utils/appStyles';
 import {colors} from '../../../../utils/colors';
-import Market from '../../../../assets/market_setting.svg';
 import {ActionSheetRef} from 'react-native-actions-sheet';
 import ActionsSheets from '../../../../components/ActionsSheets';
 import LinearGradient from 'react-native-linear-gradient';
-import {Switch} from 'react-native-paper';
 import {Ionicons} from '../../../../utils/IconUtils';
 import {useSelector} from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<any, 'SETTINGS_LIST'>;
 
 const SettingsComponent = ({navigation}: Props) => {
-  const [isDevelopModeOn, setIsDevelopModeOn] = useState(false);
-  const [isNostOn, setIsNostOn] = useState(false);
-  const [isTransactionsOn, setIsTransactionsOn] = useState(false);
-  const [isPermitOn, setIsPermitOn] = useState(false);
+  const {t} = useTranslation();
   const cacheActionSheetRef = useRef<ActionSheetRef>(null);
 
-  const {timeZone = ''} = useSelector(({authReducer}: any) => authReducer);
+  const {timeZone = '', selectedLang = ''} = useSelector(
+    ({authReducer}: any) => authReducer,
+  );
 
   return (
     <>
@@ -38,7 +37,9 @@ const SettingsComponent = ({navigation}: Props) => {
         backgroundColor={colors.white}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <View style={styles.headerView}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
@@ -46,7 +47,7 @@ const SettingsComponent = ({navigation}: Props) => {
             <Ionicons name={'chevron-back'} size={25} color={'#333333'} />
           </TouchableOpacity>
 
-          <Text style={styles.headerTxt}>Settings</Text>
+          <Text style={styles.headerTxt}>{t('PROFILE')}</Text>
         </View>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -54,83 +55,8 @@ const SettingsComponent = ({navigation}: Props) => {
           <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
             <TouchableOpacity
               style={[styles.walletTouch]}
-              onPress={() => navigation.navigate('NOTIFICATION')}>
-              <Text style={styles.titleTxt}>Notifications</Text>
-              <Text style={styles.redirectTxt}>Enabled</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-          </View>
-
-          <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={styles.walletTouch}
-              onPress={() => navigation.navigate('LANGUAGE')}>
-              <Text style={styles.titleTxt}>Language</Text>
-              <Text style={styles.redirectTxt}>English</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={styles.borderView} />
-            <TouchableOpacity style={styles.walletTouch}>
-              <Text style={styles.titleTxt}>Node Setting</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-          </View>
-
-          <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={styles.walletTouch}
-              onPress={() => navigation.navigate('CURRENCY_UNIT')}>
-              <Text style={styles.titleTxt}>Currency Unit</Text>
-              <Text style={styles.redirectTxt}>USD</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={styles.walletTouch}
-              onPress={() => navigation.navigate('MARKET_SETTINGS')}>
-              <View style={styles.titleView}>
-                <Text style={[styles.titleTxt, styles.subTitleFlex]}>
-                  Market Settings
-                </Text>
-                <Text style={[styles.subTtitleTxt, styles.subTitleFlex]}>
-                  Asset market data on homepage is not available
-                </Text>
-              </View>
-              <Market />
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={[styles.walletTouch]}
               onPress={() => navigation.navigate('CHANGE_BASIS')}>
-              <Text style={styles.titleTxt}>Change Basis</Text>
+              <Text style={styles.titleTxt}>{t('CHANGE_BASIS')}</Text>
               <Text style={styles.redirectTxt}>{timeZone?.name}</Text>
               <Ionicons
                 name={'chevron-forward'}
@@ -139,81 +65,13 @@ const SettingsComponent = ({navigation}: Props) => {
                 style={styles.icon}
               />
             </TouchableOpacity>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={[styles.walletTouch]}
-              onPress={() => navigation.navigate('NUMBER_DISPLAY')}>
-              <Text style={styles.titleTxt}>Number Display</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
           </View>
-
           <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
-            <View style={styles.borderView} />
-            <View style={styles.walletTouch}>
-              <Text style={styles.titleTxt}>Enable Nost</Text>
-              <Switch
-                color="#00C9A7"
-                value={isNostOn}
-                onValueChange={val => setIsNostOn(val)}
-              />
-            </View>
-            <View style={styles.borderView} />
-            <View style={styles.walletTouch}>
-              <Text style={styles.titleTxt}>Show Transactions</Text>
-              <Switch
-                color="#00C9A7"
-                value={isTransactionsOn}
-                onValueChange={val => setIsTransactionsOn(val)}
-              />
-            </View>
-          </View>
-
-          <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
-            <View style={styles.borderView} />
             <TouchableOpacity
-              style={[
-                styles.walletTouch,
-                styles.walletColor,
-                styles.walletPaddingTop,
-              ]}>
-              <Text style={styles.titleTxt}>NetWork Statue</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={styles.borderView} />
-            <View style={styles.walletTouch}>
-              <Text style={styles.titleTxt}>Disable Permit</Text>
-              <Switch
-                color="#00C9A7"
-                value={isPermitOn}
-                onValueChange={val => setIsPermitOn(val)}
-              />
-            </View>
-            <View style={styles.borderView} />
-            <View style={[styles.walletTouch]}>
-              <Text style={styles.titleTxt}>Development Mode</Text>
-              <Switch
-                color="#00C9A7"
-                value={isDevelopModeOn}
-                onValueChange={val => setIsDevelopModeOn(val)}
-              />
-            </View>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={[styles.walletTouch]}
-              onPress={() => cacheActionSheetRef?.current?.show()}>
-              <Text style={styles.titleTxt}>Clear Cache</Text>
-              <Text style={styles.redirectTxt}>93.15MB</Text>
+              style={styles.walletTouch}
+              onPress={() => navigation.navigate('LANGUAGE')}>
+              <Text style={styles.titleTxt}>{t('LANGUAGE')}</Text>
+              <Text style={styles.redirectTxt}>{selectedLang?.lang_name}</Text>
               <Ionicons
                 name={'chevron-forward'}
                 size={25}
@@ -258,7 +116,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   headerTxt: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 600,
     color: '#333333',
     textAlign: 'center',
@@ -290,7 +148,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlignVertical: 'center',
@@ -298,7 +156,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   subTtitleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     textAlignVertical: 'center',
@@ -311,7 +169,7 @@ const styles = StyleSheet.create({
     flex: 0,
   },
   redirectTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     alignItems: 'center',
@@ -343,7 +201,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   actionsheetTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginBottom: 20,
@@ -360,7 +218,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,

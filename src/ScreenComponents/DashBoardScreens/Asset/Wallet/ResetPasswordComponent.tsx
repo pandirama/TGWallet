@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useRef, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   Platform,
@@ -20,11 +21,13 @@ import {colors} from '../../../../utils/colors';
 import {getErrorMessage} from '../../../../utils/common';
 import {Feather} from '../../../../utils/IconUtils';
 import {useWalletResetPwdMutation} from '../../../../api/walletAPI';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'RESET_PASSWORD'>;
 
 const ResetPasswordComponent = ({route, navigation}: Props) => {
   const {walletDetails} = route?.params ?? {};
+  const {t} = useTranslation();
 
   const {showToast, toggleBackdrop} = useCommon();
 
@@ -116,12 +119,12 @@ const ResetPasswordComponent = ({route, navigation}: Props) => {
       <SafeAreaView
         style={appStyles.container}
         edges={['right', 'left', 'top']}>
-        <DashBoardHeaderComponent title={'Reset Password'} />
+        <DashBoardHeaderComponent title={t('RESET_PASSWORD')} />
         <View style={styles.topView}>
           <View style={styles.searchWordsContainer}>
             <TextInput
               style={styles.wordInput}
-              placeholder="Memorizing words, separated by space"
+              placeholder={t('MEMORIZING_WORDS_PLACEHOLDER')}
               placeholderTextColor="#9C9DA0"
               value={memorizeWords}
               multiline={true}
@@ -132,14 +135,14 @@ const ResetPasswordComponent = ({route, navigation}: Props) => {
               onSubmitEditing={() => wordFieldRef.current?.focus()}
             />
             <TouchableOpacity style={styles.pasteTouch}>
-              <Text style={styles.pasteTxt}>Paste</Text>
+              <Text style={styles.pasteTxt}>{t('PASTE')}</Text>
             </TouchableOpacity>
           </View>
-          <Text style={styles.inputTitleTxt}>Passphrase</Text>
+          <Text style={styles.inputTitleTxt}>{t('PASS_PHRASE')}</Text>
           <View style={styles.searchContainer}>
             <TextInput
               style={styles.input}
-              placeholder="Not required if left blank"
+              placeholder={t('NOT_REQUIRED_IF_BLANK')}
               placeholderTextColor="#9C9DA0"
               value={passPharse}
               onChangeText={text => {
@@ -157,11 +160,11 @@ const ResetPasswordComponent = ({route, navigation}: Props) => {
               />
             </TouchableOpacity>
           </View>
-          <Text style={styles.inputTitleTxt}>Set Password</Text>
+          <Text style={styles.inputTitleTxt}>{t('SET_PASSWORD')}</Text>
           <View style={styles.searchContainer}>
             <TextInput
               style={styles.input}
-              placeholder="Password is not less than 8 digits"
+              placeholder={t('PASSWORD_NOT_LESS_THAN_8_DIGITS')}
               placeholderTextColor="#9C9DA0"
               value={password}
               secureTextEntry={showPassword}
@@ -187,11 +190,11 @@ const ResetPasswordComponent = ({route, navigation}: Props) => {
           {passwordErrorTxt && passwordError && (
             <Text style={styles.errorTxt}>{passwordErrorTxt}</Text>
           )}
-          <Text style={styles.inputTitleTxt}>Repeat New password</Text>
+          <Text style={styles.inputTitleTxt}>{t('REPEAT_NEW_PASSWORD')}</Text>
           <View style={styles.searchContainer}>
             <TextInput
               style={styles.input}
-              placeholder="Repeat password"
+              placeholder={t('REPEAT_PASSWORD')}
               placeholderTextColor="#9C9DA0"
               value={confirmPassword}
               secureTextEntry={showConfirmPassword}
@@ -211,7 +214,9 @@ const ResetPasswordComponent = ({route, navigation}: Props) => {
             </TouchableOpacity>
           </View>
           {confirmPasswordError && (
-            <Text style={styles.errorTxt}>The password is not match</Text>
+            <Text style={styles.errorTxt}>
+              {t('THE_PASSWORD_IS_NOT_MATCH')}
+            </Text>
           )}
         </View>
         <View style={styles.bottomView}>
@@ -219,7 +224,7 @@ const ResetPasswordComponent = ({route, navigation}: Props) => {
             <LinearGradient
               colors={['#6B121C', '#ED1C24']}
               style={styles.startedBtn}>
-              <Text style={styles.startedBtnTxt}>Add</Text>
+              <Text style={styles.startedBtnTxt}>{t('ADD_LABEL')}</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -255,7 +260,7 @@ const styles = StyleSheet.create({
     borderColor: colors.gray1,
   },
   errorTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#F04438',
     marginLeft: 5,
@@ -267,7 +272,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   pasteTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#0054A6',
   },
@@ -284,19 +289,19 @@ const styles = StyleSheet.create({
     height: 100,
   },
   titleTxt: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 600,
     color: '#333333',
     marginBottom: 5,
   },
   subTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#7C8FAC',
     marginBottom: 25,
   },
   inputTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginBottom: 1,
@@ -316,7 +321,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -328,13 +333,13 @@ const styles = StyleSheet.create({
   },
   readAgreeTxt: {
     color: '#7C8FAC',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     marginLeft: 3,
   },
   agreeTxt: {
     color: '#ED1C24',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
   },
   touchOpacity: {

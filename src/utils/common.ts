@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const localStorageKey = {
   userInfo: 'userInfo',
   walletInfo: 'walletinfo',
+  language: 'language',
 };
 
 export async function setStorage(key: string, value: any) {

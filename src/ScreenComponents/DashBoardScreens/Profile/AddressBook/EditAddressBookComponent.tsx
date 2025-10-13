@@ -1,3 +1,4 @@
+import { moderateScale } from 'react-native-size-matters';
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useRef, useState} from 'react';
 import {
@@ -25,10 +26,12 @@ import {Ionicons} from '../../../../utils/IconUtils';
 import ActionSheet, {ActionSheetRef} from 'react-native-actions-sheet';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<any, 'EDIT_ADDRESS'>;
 
 const EditAddressBookComponent = ({navigation, route}: Props) => {
+  const {t} = useTranslation();
   const {walletInfo, networks, allNetworks} = route?.params ?? {};
 
   const {showToast, toggleBackdrop} = useCommon();
@@ -118,16 +121,16 @@ const EditAddressBookComponent = ({navigation, route}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent
-          title={'Address Information'}
+          title={t('ADDRESS_INFORMATION')}
           rightIcon={
             <TouchableOpacity
               style={styles.editTouch}
               onPress={() => {
                 navigation.goBack();
               }}>
-              <Text style={styles.editTxt}>Cancel</Text>
+              <Text style={styles.editTxt}>{t('CANCEL')}</Text>
             </TouchableOpacity>
           }
         />
@@ -138,7 +141,7 @@ const EditAddressBookComponent = ({navigation, route}: Props) => {
             styles.scrollView,
           ]}>
           <View style={styles.topView}>
-            <Text style={styles.inputTitleTxt}>Wallet Name</Text>
+            <Text style={styles.inputTitleTxt}>{t('WALLET_NAME')}</Text>
             <View style={styles.searchContainer}>
               <TouchableOpacity
                 onPress={() => {
@@ -162,11 +165,11 @@ const EditAddressBookComponent = ({navigation, route}: Props) => {
               </TouchableOpacity>
             </View>
 
-            <Text style={styles.inputTitleTxt}>Wallet Address</Text>
+            <Text style={styles.inputTitleTxt}>{t('WALLET_ADDRESS')}</Text>
             <View style={styles.searchContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Please input the address"
+                placeholder={t('INPUT_ADDRESS')}
                 placeholderTextColor="#9C9DA0"
                 value={walletAddress}
                 onChangeText={text => {
@@ -188,11 +191,11 @@ const EditAddressBookComponent = ({navigation, route}: Props) => {
                 <Ionicons name={'copy-outline'} size={16} color={'#7C8FAC'} />
               </TouchableOpacity>
             </View>
-            <Text style={styles.inputTitleTxt}>Set Name</Text>
+            <Text style={styles.inputTitleTxt}>{t('SET_NAME')}</Text>
             <View style={styles.searchContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Please input a name"
+                placeholder={t('INPUT_NAME')}
                 placeholderTextColor="#9C9DA0"
                 value={inputName}
                 onChangeText={text => {
@@ -204,11 +207,11 @@ const EditAddressBookComponent = ({navigation, route}: Props) => {
               />
             </View>
 
-            <Text style={styles.inputTitleTxt}>Note</Text>
+            <Text style={styles.inputTitleTxt}>{t('NOTE')}</Text>
             <View style={styles.searchContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Please input a note"
+                placeholder={t('INPUT_NOTE')}
                 placeholderTextColor="#9C9DA0"
                 value={inputNote}
                 onChangeText={text => {
@@ -226,7 +229,7 @@ const EditAddressBookComponent = ({navigation, route}: Props) => {
               <LinearGradient
                 colors={['#6B121C', '#ED1C24']}
                 style={styles.startedBtn}>
-                <Text style={styles.startedBtnTxt}>Save</Text>
+                <Text style={styles.startedBtnTxt}>{t('SAVE')}</Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
@@ -241,7 +244,7 @@ const EditAddressBookComponent = ({navigation, route}: Props) => {
           }}>
           <View style={styles.actionViewContainer}>
             <View style={styles.actionTitleView}>
-              <Text style={styles.actionTitleTxt}>Choose a network</Text>
+              <Text style={styles.actionTitleTxt}>{t('CHOOSE_A_NETWORK')}</Text>
               <TouchableOpacity
                 onPress={() => {
                   actionSheetRef?.current?.hide();
@@ -273,12 +276,12 @@ const styles = StyleSheet.create({
   },
   modeTxt: {
     color: '#7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
   },
   informationTxt: {
     color: '#7C8FAC',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     marginTop: 15,
   },
@@ -299,7 +302,7 @@ const styles = StyleSheet.create({
   },
   advancedTxt: {
     color: '#333333',
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -331,7 +334,7 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   inputTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginBottom: 1,
@@ -351,7 +354,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -373,7 +376,7 @@ const styles = StyleSheet.create({
   },
   actionTitleTxt: {
     flex: 1,
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#333333',
     textAlign: 'center',
     fontWeight: 600,
@@ -406,7 +409,7 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.gray1,
   },
   walletTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     flex: 1,
@@ -418,7 +421,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   editTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
   },

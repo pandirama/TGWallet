@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useRef, useState} from 'react';
+import { useTranslation } from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   Platform,
@@ -24,10 +25,12 @@ import useCommon from '../../../hooks/useCommon';
 import {getErrorMessage} from '../../../utils/common';
 import {useSelector} from 'react-redux';
 import {Feather, Ionicons} from '../../../utils/IconUtils';
+import {moderateScale, scale} from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'NEW_WALLET_PASSWORD'>;
 
 const WalletPasswordComponent = ({route, navigation}: Props) => {
+  const { t } = useTranslation();
   const {walletNetwork} = route?.params ?? {};
 
   const {showToast, toggleBackdrop} = useCommon();
@@ -123,26 +126,23 @@ const WalletPasswordComponent = ({route, navigation}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent />
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={appStyles.scrollContainer}>
           <View style={styles.topView}>
-            <Text style={styles.titleTxt}>Create Wallet Password</Text>
-            <Text style={styles.subTitleTxt}>
-              This password will only be used to unlock TGWallet in this device,
-              and the password will only be saved in this device
-            </Text>
+            <Text style={styles.titleTxt}>{t('CREATE_WALLET_PASSWORD')}</Text>
+            <Text style={styles.subTitleTxt}>{t('CREATE_WALLET_PASSWORD_SUBTITLE')}</Text>
 
             <View>
               <Text style={styles.inputTitleTxt}>
-                Wallet Name ({walletNetwork?.Wallet_network ?? 'HD'})
+                {t('WALLET_NAME')} ({walletNetwork?.Wallet_network ?? 'HD'})
               </Text>
               <View style={styles.searchContainer}>
                 <TextInput
                   style={styles.input}
-                  placeholder="Max. 12 characters"
+                  placeholder={t('MAX_12_CHARACTERS')}
                   placeholderTextColor="#9C9DA0"
                   value={walletName}
                   onChangeText={text => {
@@ -154,14 +154,14 @@ const WalletPasswordComponent = ({route, navigation}: Props) => {
                 />
               </View>
               {walletNameError && (
-                <Text style={styles.errorTxt}>The wallet name missing</Text>
+                <Text style={styles.errorTxt}>{t('THE_WALLET_NAME_MISSING')}</Text>
               )}
 
-              <Text style={styles.inputTitleTxt}>Set Password</Text>
+              <Text style={styles.inputTitleTxt}>{t('SET_PASSWORD')}</Text>
               <View style={styles.searchContainer}>
                 <TextInput
                   style={styles.input}
-                  placeholder="Min. 8 characters"
+                  placeholder={t('PASSWORD_PLACE_HOLDER')}
                   placeholderTextColor="#9C9DA0"
                   value={password}
                   secureTextEntry={showPassword}
@@ -185,14 +185,14 @@ const WalletPasswordComponent = ({route, navigation}: Props) => {
                 </TouchableOpacity>
               </View>
               {passwordErrorTxt && passwordError && (
-                <Text style={styles.errorTxt}>{passwordErrorTxt}</Text>
+                <Text style={styles.errorTxt}>{passwordErrorTxt ? t(passwordErrorTxt) : ''}</Text>
               )}
 
-              <Text style={styles.inputTitleTxt}>Confirm Password</Text>
+              <Text style={styles.inputTitleTxt}>{t('CONFIRM_PASSWORD')}</Text>
               <View style={styles.searchContainer}>
                 <TextInput
                   style={styles.input}
-                  placeholder="Repeat password"
+                  placeholder={t('REPEAT_PASSWORD')}
                   placeholderTextColor="#9C9DA0"
                   value={confirmPassword}
                   secureTextEntry={showConfirmPassword}
@@ -216,14 +216,14 @@ const WalletPasswordComponent = ({route, navigation}: Props) => {
                 </TouchableOpacity>
               </View>
               {confirmPasswordError && (
-                <Text style={styles.errorTxt}>The password is not match</Text>
+                <Text style={styles.errorTxt}>{t('THE_PASSWORD_IS_NOT_MATCH')}</Text>
               )}
 
-              <Text style={styles.inputTitleTxt}>Password hint (Optional)</Text>
+              <Text style={styles.inputTitleTxt}>{t('PASSWORD_HINT_OPTIONAL')}</Text>
               <View style={styles.searchContainer}>
                 <TextInput
                   style={styles.input}
-                  placeholder="Enter reminder of the password"
+                  placeholder={t('ENTER_REMINDER_OF_PASSWORD')}
                   placeholderTextColor="#9C9DA0"
                   value={passwordHint}
                   onChangeText={text => {
@@ -240,12 +240,12 @@ const WalletPasswordComponent = ({route, navigation}: Props) => {
               <TouchableOpacity onPress={() => toggleAccept(a => !a)}>
                 <Ionicons
                   name={accept ? 'checkbox-outline' : 'square-outline'}
-                  size={18}
-                  color={accept ? '##0054A6' : '#E0E0E0'}
+                  size={scale(14)}
+                  color={accept ? '#0054A6' : '#E0E0E0'}
                 />
               </TouchableOpacity>
-              <Text style={styles.readAgreeTxt}>I have read and agree </Text>
-              <Text style={styles.agreeTxt}>User Agreement</Text>
+              <Text style={styles.readAgreeTxt}>{t('I_HAVE_READ_AND_AGREE')}</Text>
+              <Text style={styles.agreeTxt}>{t('USER_AGREEMENT')}</Text>
             </View>
             <TouchableOpacity
               style={[styles.startedTouch, !accept && styles.touchOpacity]}
@@ -254,7 +254,7 @@ const WalletPasswordComponent = ({route, navigation}: Props) => {
               <LinearGradient
                 colors={['#6B121C', '#ED1C24']}
                 style={styles.startedBtn}>
-                <Text style={styles.startedBtnTxt}>Confirm</Text>
+                <Text style={styles.startedBtnTxt}>{t('CONFIRM')}</Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     borderColor: colors.gray1,
   },
   errorTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#F04438',
     marginLeft: 5,
@@ -292,29 +292,29 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    paddingVertical: 13,
+    paddingVertical: moderateScale(11),
     color: colors.black,
+    fontSize: moderateScale(12),
   },
   titleTxt: {
-    fontSize: 20,
+    fontSize: moderateScale(18),
     fontWeight: 600,
     color: '#333333',
     marginBottom: 5,
   },
   subTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     marginBottom: 25,
   },
   inputTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginBottom: 1,
     marginTop: 20,
     marginLeft: 5,
-    lineHeight: 20,
   },
   startedTouch: {
     width: '100%',
@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -337,16 +337,17 @@ const styles = StyleSheet.create({
   readAgreeView: {
     flexDirection: 'row',
     marginLeft: 25,
+    alignItems: 'center',
   },
   readAgreeTxt: {
     color: '#7C8FAC',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     marginLeft: 3,
   },
   agreeTxt: {
     color: '#ED1C24',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
   },
   touchOpacity: {

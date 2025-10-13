@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-shadow */
 import React, {useEffect, useState} from 'react';
@@ -23,9 +24,16 @@ import appStyles, {fontFamily} from '../../utils/appStyles';
 import LinearGradient from 'react-native-linear-gradient';
 import {useRegisterMutation} from '../../api/auth/authAPI';
 import useCommon from '../../hooks/useCommon';
-import {getErrorMessage} from '../../utils/common';
-import {getBaseOs, getDeviceId, getUniqueId} from 'react-native-device-info';
-import {axiosAPI} from '../../axios/axiosAPI';
+import {
+  getErrorMessage,
+  getStorage,
+  localStorageKey,
+  setStorage,
+} from '../../utils/common';
+import {getBaseOs, getUniqueId} from 'react-native-device-info';
+import {moderateScale} from 'react-native-size-matters';
+import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
 
 type Props = NativeStackScreenProps<any, 'INTRO'>;
 
@@ -46,14 +54,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   titleTxt: {
-    fontSize: 28,
+    fontSize: moderateScale(26),
     color: '#231F20',
     fontWeight: 700,
     fontFamily: fontFamily.inter_bold,
     textAlign: 'center',
   },
   subTitleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     color: '#7C8FAC',
     fontWeight: 400,
     fontFamily: fontFamily.inter_regular,
@@ -115,7 +123,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     fontFamily: fontFamily.inter_semi_bold,
@@ -126,21 +134,6 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
 });
-
-const slideContent: any = [
-  {
-    img: <Intro1 width={350} height={350} style={styles.imageContainer} />,
-    title: 'Secure Your Assets Easily',
-    subTitle:
-      'Protect your assets with advanced encryption and stay in control of your secure crypto wallet.',
-  },
-  {
-    img: <Intro2 width={350} height={350} style={styles.imageContainer} />,
-    title: 'Simplified Your Crypto',
-    subTitle:
-      'Effortlessly manage and track your tokens with TGwallet, keeping your crypto organized and accessible anytime."',
-  },
-];
 
 const PaginationDots = (props: PaginateProp) => {
   return (
@@ -161,6 +154,7 @@ const PaginationDots = (props: PaginateProp) => {
 };
 
 const IntroComponent = ({}: Props) => {
+  const {t} = useTranslation();
   const {showToast, toggleBackdrop} = useCommon();
   const [activeDot, setActiveDot] = useState(1);
   const [deviceID, setDeviceID] = useState('');
@@ -168,6 +162,36 @@ const IntroComponent = ({}: Props) => {
   const dispatch = useAppDispatch();
 
   const [register, {isLoading}] = useRegisterMutation();
+
+  const {selectedLangCode} = useSelector(({authReducer}: any) => authReducer);
+
+  const slideContent: any = [
+    {
+      img: <Intro1 width={350} height={350} style={styles.imageContainer} />,
+      title: t('INTRO_TITLE_1'),
+      subTitle: t('INTRO_SUBTITLE_1'),
+    },
+    {
+      img: <Intro2 width={350} height={350} style={styles.imageContainer} />,
+      title: t('INTRO_TITLE_2'),
+      subTitle: t('INTRO_SUBTITLE_2'),
+    },
+  ];
+
+  const setLanguageLocal = async () => {
+    const lang = await getStorage(localStorageKey.language);
+    if (lang !== selectedLangCode) {
+      await setStorage(localStorageKey.language, 'en');
+      dispatch(authAction.setSelectedLangCode('en'));
+      dispatch(
+        authAction.setSelectedLang({
+          id: 1,
+          lang_name: 'English',
+          lang_symbol: 'en',
+        }),
+      );
+    }
+  };
 
   useEffect(() => {
     toggleBackdrop(isLoading);
@@ -180,6 +204,7 @@ const IntroComponent = ({}: Props) => {
     getBaseOs().then(baseOs => {
       setDeviceName(baseOs);
     });
+    setLanguageLocal();
   }, []);
 
   const registerSubmit = async () => {
@@ -214,7 +239,9 @@ const IntroComponent = ({}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <ImageBackground
           source={require('../../assets/background.png')}
           style={styles.container}>
@@ -255,7 +282,7 @@ const IntroComponent = ({}: Props) => {
             <LinearGradient
               colors={['#6B121C', '#ED1C24']}
               style={styles.startedBtn}>
-              <Text style={styles.startedBtnTxt}>Get Started</Text>
+              <Text style={styles.startedBtnTxt}>{t('GET_STARTED')}</Text>
             </LinearGradient>
           </TouchableOpacity>
         </ImageBackground>

@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   FlatList,
@@ -25,10 +26,12 @@ import {useVerifyMnemonicMutation} from '../../../api/auth/authAPI';
 import {Ionicons} from '../../../utils/IconUtils';
 import {useAppDispatch} from '../../../store';
 import {authAction} from '../../../reducer/auth/authSlice';
+import {moderateScale, verticalScale} from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'CHECK_CODE'>;
 
 const CheckCodeComponent = ({navigation, route}: Props) => {
+  const {t} = useTranslation();
   let {walletInfo} = route?.params ?? {};
   const dispatch = useAppDispatch();
 
@@ -68,7 +71,7 @@ const CheckCodeComponent = ({navigation, route}: Props) => {
     if (updateCodes?.length < walletInfo?.secret_phase?.length) {
       showToast({
         type: 'error',
-        text1: 'Select All Secret Phase',
+        text1: t('SELECT_ALL_SECRET_PHASE'),
       });
       return;
     }
@@ -78,7 +81,7 @@ const CheckCodeComponent = ({navigation, route}: Props) => {
     ) {
       showToast({
         type: 'error',
-        text1: 'Select Correct Secret Phase',
+        text1: t('SELECT_CORRECT_SECRET_PHASE'),
       });
       return;
     }
@@ -236,12 +239,13 @@ const CheckCodeComponent = ({navigation, route}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
-        <DashBoardHeaderComponent title={'Check Secret Recovery Phrase'} />
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
+        <DashBoardHeaderComponent title={t('CHECK_SECRET_RECOVERY_PHRASE')} />
         <View style={styles.tabsView}>
           <Text style={styles.titleTxt}>
-            Tap the phrases and put them together in the correct order to check
-            that your backup phrases are correct
+            {t('CHECK_SECRET_RECOVERY_PHRASE_DESC')}
           </Text>
           <FlatList
             data={walletInfo?.secret_phase}
@@ -267,7 +271,7 @@ const CheckCodeComponent = ({navigation, route}: Props) => {
           <LinearGradient
             colors={['#6B121C', '#ED1C24']}
             style={styles.startedBtn}>
-            <Text style={styles.startedBtnTxt}>Complete</Text>
+            <Text style={styles.startedBtnTxt}>{t('COMPLETE')}</Text>
           </LinearGradient>
         </TouchableOpacity>
       </SafeAreaView>
@@ -291,7 +295,7 @@ const styles = StyleSheet.create({
   },
   titleTxt: {
     color: '#7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
   },
   plainTxtView: {
@@ -300,7 +304,7 @@ const styles = StyleSheet.create({
   },
   plainTxt: {
     color: '#333333',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     flex: 1,
   },
@@ -309,12 +313,12 @@ const styles = StyleSheet.create({
   },
   QRcodeTxt: {
     color: '##7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
   },
   tabTxt: {
     color: '#333333',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     textAlign: 'center',
     fontWeight: 400,
     paddingTop: 15,
@@ -322,7 +326,7 @@ const styles = StyleSheet.create({
   },
   copyTxt: {
     color: '#7C8FAC',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     marginLeft: 5,
   },
@@ -338,7 +342,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -395,14 +399,14 @@ const styles = StyleSheet.create({
   },
   impTitleTxt: {
     color: '#D32F2F',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     marginLeft: 5,
     marginRight: 20,
   },
   impSubTitleTxt: {
     color: '#D32F2F',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     marginLeft: 10,
     marginTop: 3,
@@ -419,10 +423,10 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     alignItems: 'center',
     flex: 1,
-    marginLeft: 5,
     marginRight: 5,
     marginTop: 10,
     backgroundColor: colors.white,
+    height: verticalScale(30),
   },
   itemErrorTouch: {
     borderColor: '#D32F2F',
@@ -437,21 +441,20 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     alignItems: 'center',
     flex: 1,
-    height: 30,
-    marginLeft: 5,
+    height: verticalScale(30),
     marginRight: 5,
     marginTop: 10,
     borderStyle: 'dashed',
   },
   itemIndexTxt: {
     color: '#7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     marginLeft: 5,
   },
   itemTxt: {
     color: '#333333',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     textAlign: 'center',
     flex: 1,

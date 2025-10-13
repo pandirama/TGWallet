@@ -1,9 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
-  Dimensions,
+  ActivityIndicator,
   FlatList,
   Image,
   StatusBar,
@@ -15,12 +16,8 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
-import Scan from '../../../assets/scan.svg';
-import AddWallet from '../../../assets/add_wallet.svg';
-import Buy from '../../../assets/buy.svg';
+// import Buy from '../../../assets/buy.svg';
 import Send from '../../../assets/send.svg';
-import Eye from '../../../assets/eye.svg';
-// import Transaction from '../../../assets/profile/transaction.svg';
 import DEFIComponent from './DEFIComponent';
 import {Feather, Ionicons, MaterialIcons} from '../../../utils/IconUtils';
 import {useSelector} from 'react-redux';
@@ -32,46 +29,40 @@ import {getErrorMessage} from '../../../utils/common';
 import {useGetNetworksQuery} from '../../../api/auth/authAPI';
 import {authAction} from '../../../reducer/auth/authSlice';
 import {useAppDispatch} from '../../../store';
+import {moderateScale, verticalScale} from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'ASSET'>;
 
 const assets = [
   {
     id: 0,
-    assetName: 'Assets',
+    assetName: 'ASSETS',
   },
-  // {
-  //   id: 1,
-  //   assetName: 'NFT',
-  // },
 ];
 
 const AssetComponent = ({navigation}: Props) => {
-  const {showToast, toggleBackdrop} = useCommon();
+  const {t} = useTranslation();
+  const {showToast} = useCommon();
   const dispatch = useAppDispatch();
 
-  const [selectedAsset, setSelectedAsset] = useState('Assets');
+  const [selectedAsset, setSelectedAsset] = useState('ASSETS');
   const [tokenAssets, setTokenAssets] = useState([]);
   const [ethBalance, setETHBalance] = useState([]);
-  // const [tokenNFTs, setTokenNFTs] = useState([]);
   const [showWallets, setShowWallets] = useState(false);
   const [networks, setNetworks] = useState<any>([]);
   const [walletIcon, setWalletIcon] = useState<any>(null);
+  const [showAmount, toggleAmount] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    walletInfo = {},
-    userInfo = {},
-    selectedNetwork,
-  } = useSelector(({authReducer}: any) => authReducer);
+  const authReducer = useSelector((state: any) => state.authReducer);
+  const walletInfo = authReducer.walletInfo || {};
+  const userInfo = authReducer.userInfo || {};
+  const selectedNetwork = authReducer.selectedNetwork;
   const {wallet_name, network_mode} = walletInfo ?? {};
 
   const {isFetching, refetch} = useGetNetworksQuery();
 
-  const [walletInfos, {isLoading}] = useWalletInfosMutation();
-
-  useEffect(() => {
-    toggleBackdrop(isLoading || isFetching);
-  }, [isLoading || isFetching]);
+  const [walletInfos] = useWalletInfosMutation();
 
   useEffect(() => {
     setWalletIcon(walletInfo?.Wallet_icon);
@@ -79,16 +70,19 @@ const AssetComponent = ({navigation}: Props) => {
 
   const getWalletInfos = async () => {
     try {
+      setIsLoading(true);
       const params = {
         wallet_id: walletInfo?.wallet_id,
         userid: userInfo?.generated_Id,
       };
       const response: any = await walletInfos(params).unwrap();
       if (response?.success) {
+        setIsLoading(false);
         setETHBalance(response?.message?.ethBalance);
         setTokenAssets(response?.message?.tokenBalances);
         // setTokenNFTs(response?.message?.nfts);
       } else {
+        setIsLoading(false);
         setTokenAssets([]);
         // setTokenNFTs([]);
         showToast({
@@ -97,6 +91,7 @@ const AssetComponent = ({navigation}: Props) => {
         });
       }
     } catch (err: any) {
+      setIsLoading(false);
       showToast({
         type: 'error',
         text1: getErrorMessage(err),
@@ -104,6 +99,7 @@ const AssetComponent = ({navigation}: Props) => {
     }
   };
 
+  // Call getWalletInfos only once when the screen is focused or walletInfo changes, not both
   useFocusEffect(
     useCallback(() => {
       refetch().then(response => {
@@ -123,9 +119,11 @@ const AssetComponent = ({navigation}: Props) => {
           });
         }
       });
-      getWalletInfos();
+      if (walletInfo && walletInfo.wallet_id && !showWallets) {
+        getWalletInfos();
+      }
       return () => {};
-    }, [showWallets, walletInfo]),
+    }, [showWallets, walletInfo?.wallet_id]),
   );
 
   const renderItem = ({item}: any) => {
@@ -141,7 +139,7 @@ const AssetComponent = ({navigation}: Props) => {
             style={
               findAsset ? styles.selectedAssetItemTxt : styles.assetItemTxt
             }>
-            {item?.assetName}
+            {t(item?.assetName)}
           </Text>
         </TouchableOpacity>
         {findAsset && <View style={styles.verticalView} />}
@@ -181,47 +179,57 @@ const AssetComponent = ({navigation}: Props) => {
             </View>
           </View>
         </TouchableOpacity>
-        <View style={styles.headerRightIconView}>
-          <TouchableOpacity style={styles.walletIcon}>
-            <AddWallet width={28} height={28} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Scan width={28} height={28} />
-          </TouchableOpacity>
-        </View>
       </View>
       <View style={[appStyles.boxShadow, styles.headerContainer]}>
         <Image
           source={require('../../../assets/Wallet_BG.png')}
           style={{
-            width: Dimensions.get('window').width / 1.1,
-            height: 182,
+            width: '100%',
+            height: verticalScale(182),
             borderRadius: 10,
           }}
         />
         <View style={styles.walletView}>
-          <TouchableOpacity
-            style={styles.walletNameView}
-            onPress={() => {
-              navigation.navigate('WALLET_STACK', {
-                screen: 'WALLET_DETAILS',
-                params: {
-                  walletDetails: walletInfo,
-                  networkIcon: walletInfo?.Wallet_icon,
-                },
-              });
-            }}>
-            <Text style={styles.walletNameTxt}>{wallet_name}</Text>
-            <MaterialIcons
-              name={'keyboard-arrow-right'}
-              size={26}
-              color={'#FFFFFF'}
-            />
-          </TouchableOpacity>
+          <View style={{flex: 1}}>
+            <TouchableOpacity
+              style={styles.walletNameView}
+              onPress={() => {
+                navigation.navigate('WALLET_STACK', {
+                  screen: 'WALLET_DETAILS',
+                  params: {
+                    walletDetails: walletInfo,
+                    networkIcon: walletInfo?.Wallet_icon,
+                  },
+                });
+              }}>
+              <Text style={styles.walletNameTxt}>{wallet_name}</Text>
+              <MaterialIcons
+                name={'keyboard-arrow-right'}
+                size={26}
+                color={'#FFFFFF'}
+              />
+            </TouchableOpacity>
 
-          <View style={styles.amountView}>
-            <Text style={styles.menuAmountTxt}>{ethBalance}</Text>
-            <Eye width={30} height={30} />
+            <View style={styles.amountView}>
+              <Text
+                style={[
+                  styles.menuAmountTxt,
+                  !showAmount && {fontFamily: 'Menlo'},
+                ]}>
+                {showAmount
+                  ? ethBalance
+                  : String(ethBalance).length > 0
+                  ? '*'.repeat(String(ethBalance).length)
+                  : '****'}
+              </Text>
+              <TouchableOpacity onPress={() => toggleAmount(p => !p)}>
+                <Feather
+                  name={showAmount ? 'eye-off' : 'eye'}
+                  size={25}
+                  color={'#FFFFFF'}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
 
           <View style={[appStyles.boxShadow, styles.headerSubContainer]}>
@@ -231,7 +239,7 @@ const AssetComponent = ({navigation}: Props) => {
                 navigation.navigate('SEND');
               }}>
               <Send width={28} height={28} />
-              <Text style={styles.menuItemTxt}>Send</Text>
+              <Text style={styles.menuItemTxt}>{t('SEND')}</Text>
             </TouchableOpacity>
             <View style={styles.horizontalBorder} />
             <TouchableOpacity
@@ -244,9 +252,9 @@ const AssetComponent = ({navigation}: Props) => {
                 size={26}
                 color={'#333333'}
               />
-              <Text style={styles.menuItemTxt}>Receive</Text>
+              <Text style={styles.menuItemTxt}>{t('RECEIVE')}</Text>
             </TouchableOpacity>
-            <View style={styles.horizontalBorder} />
+            {/* <View style={styles.horizontalBorder} />
             <TouchableOpacity
               style={styles.menuItemTouch}
               onPress={() => {
@@ -260,13 +268,9 @@ const AssetComponent = ({navigation}: Props) => {
                 });
               }}>
               <Buy width={28} height={28} />
-              <Text style={styles.menuItemTxt}>Buy</Text>
+              <Text style={styles.menuItemTxt}>{t('BUY')}</Text>
             </TouchableOpacity>
-            <View style={styles.horizontalBorder} />
-            {/* <TouchableOpacity style={styles.menuItemTouch}>
-              <Transaction width={28} height={28} />
-              <Text style={styles.menuItemTxt}>Swap</Text>
-            </TouchableOpacity> */}
+            <View style={styles.horizontalBorder} /> */}
           </View>
         </View>
       </View>
@@ -287,12 +291,13 @@ const AssetComponent = ({navigation}: Props) => {
           <Feather name={'plus'} size={20} color={'#333333'} />
         </TouchableOpacity>
       </View>
-      {selectedAsset === 'Assets' && (
-        <DEFIComponent tokenAssets={tokenAssets} navigation={navigation} />
+      {selectedAsset === 'ASSETS' && (
+        <DEFIComponent
+          tokenAssets={tokenAssets}
+          navigation={navigation}
+          showAmount={showAmount}
+        />
       )}
-      {/* {selectedAsset === 'NFT' && (
-        <NFTComponent navigation={navigation} tokenNFTs={tokenNFTs} />
-      )} */}
       <WalletListComponent
         navigation={navigation}
         showWallets={showWallets}
@@ -301,6 +306,15 @@ const AssetComponent = ({navigation}: Props) => {
         selectedNetworkMode={selectedNetwork}
         networks={networks}
       />
+      {isLoading || isFetching ? (
+        <View style={styles.backDropView}>
+          <ActivityIndicator
+            size="small"
+            color={'#6B121C'}
+            style={{transform: [{scaleX: 1.3}, {scaleY: 1.3}]}}
+          />
+        </View>
+      ) : null}
     </SafeAreaView>
   );
 };
@@ -318,9 +332,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     width: '100%',
+    bottom: 0,
+    top: 0,
   },
   headerTxt: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 600,
     color: '#333333',
     textAlign: 'center',
@@ -332,7 +348,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   headerRightTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
@@ -391,20 +407,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   menuItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
   },
   menuAmountTxt: {
-    fontSize: 28,
+    fontSize: moderateScale(28),
     fontWeight: 700,
     color: '#FFFFFF',
     marginRight: 5,
-    marginLeft: 5,
+    textAlign: 'right',
   },
   walletNameTxt: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 400,
     color: '#FFFFFF',
   },
@@ -425,12 +441,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   selectedAssetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   assetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#7C8FAC',
   },
@@ -474,7 +490,7 @@ const styles = StyleSheet.create({
   },
   actionTitleTxt: {
     flex: 1,
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#333333',
     textAlign: 'center',
     fontWeight: 600,
@@ -489,7 +505,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   walletListNameTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     flex: 1,
@@ -501,7 +517,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   walletAddressTxt: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: 400,
     color: '#7C8FAC',
     textAlignVertical: 'center',
@@ -510,7 +526,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   walletBalanceTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#333333',
     flex: 1,
@@ -566,7 +582,7 @@ const styles = StyleSheet.create({
   selectedWalletTxt: {
     width: '85%',
     marginLeft: 12,
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
   },
@@ -581,7 +597,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   actionsheetTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
@@ -595,7 +611,7 @@ const styles = StyleSheet.create({
     borderColor: colors.gray1,
   },
   cancelTxt: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: 600,
     color: '#333333',
     textAlign: 'center',
@@ -618,7 +634,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   titleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#333333',
     flex: 1,
     textAlign: 'center',
@@ -626,6 +642,17 @@ const styles = StyleSheet.create({
   },
   closeTouch: {
     padding: 5,
+  },
+  backDropView: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    zIndex: 1000,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fefefe4d',
   },
 });
 

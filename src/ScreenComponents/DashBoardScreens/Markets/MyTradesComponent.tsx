@@ -1,18 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {useTranslation} from 'react-i18next';
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {colors} from '../../../utils/colors';
+import { moderateScale } from 'react-native-size-matters';
 
-const titles = ['All', 'Buy', 'Sell'];
 
 const MyTradesComponent = ({}: any) => {
-  const [activeTab, setActiveTab] = useState('All');
+  const {t} = useTranslation();
+  const titles = [t('ALL_TAB'), t('BUY_TAB'), t('SELL_TAB')];
+  const [activeTab, setActiveTab] = useState(t('ALL_TAB'));
 
   return (
     <View>
@@ -23,7 +20,7 @@ const MyTradesComponent = ({}: any) => {
           marginTop: 5,
           marginRight: 10,
         }}>
-        <Text style={styles.titleTxt}>Transactions</Text>
+        <Text style={styles.titleTxt}>{t('TRANSACTIONS')}</Text>
         <View style={styles.tabContainer}>
           {titles?.map((title: string) => {
             return (
@@ -39,7 +36,7 @@ const MyTradesComponent = ({}: any) => {
                     styles.title,
                     activeTab === title && styles.activeTitle,
                   ]}>
-                  {title}
+                  {t(title.toUpperCase())}
                 </Text>
               </TouchableOpacity>
             );
@@ -65,21 +62,21 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   listItemTitleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     flex: 1,
     textAlign: 'left',
   },
   listItemTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     flex: 1,
     textAlign: 'left',
   },
   titleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 500,
     color: '#333333',
     marginTop: 10,
@@ -114,7 +111,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 13,
+    fontSize: moderateScale(13),
     fontWeight: 500,
     color: '#7C8FAC',
     letterSpacing: 0.5,

@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
@@ -16,18 +17,21 @@ import DashBoardHeaderComponent from '../../../components/DashBoardHeaderCompone
 import LinearGradient from 'react-native-linear-gradient';
 import PlainTxt from '../../../assets/plain_txt.svg';
 import PlainTxtEye from '../../../assets/plain_txt_eye.svg';
-import CustomTabs, {RecoveryTabs} from '../../../components/CustomTabs';
+import CustomTabs, { getRecoveryTabs } from '../../../components/CustomTabs';
 import {Ionicons} from '../../../utils/IconUtils';
 import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-clipboard/clipboard';
 import useCommon from '../../../hooks/useCommon';
+import { moderateScale, scale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'COMPLETED_BACKUP'>;
 
 const CompletedBackupComponent = ({route, navigation}: Props) => {
+  const { t } = useTranslation();
   const {walletInfo} = route?.params ?? {};
 
   const {showToast} = useCommon();
+  const RecoveryTabs = getRecoveryTabs(t);
 
   const [activeTab, setActiveTab] = useState(RecoveryTabs.HandwrittenBackup);
   const [showCode, setShowCode] = useState(false);
@@ -60,7 +64,7 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
     if (showQR) {
       return (
         <View style={styles.QRView}>
-          <QRCode value={'https://www.google.co.in/'} size={170} />
+          <QRCode value={''} size={170} />
         </View>
       );
     }
@@ -71,11 +75,11 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
           setShowQR(true);
         }}>
         <View style={[styles.QRView, styles.QROpacityView]}>
-          <QRCode value={'https://www.google.co.in/'} size={170} />
+          <QRCode value={''} size={170} />
         </View>
         <View style={[appStyles.boxShadow, styles.qrEyeView]}>
           <PlainTxtEye style={styles.plainEye} />
-          <Text style={styles.tabTxt}>Tap to display recovery phrase</Text>
+          <Text style={styles.tabTxt}>{t('TAP_TO_DISPLAY_RECOVERY_PHRASE')}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -104,7 +108,7 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
         <PlainTxt style={styles.plain} />
         <View style={[appStyles.boxShadow, styles.plainEyeView]}>
           <PlainTxtEye style={styles.plainEye} />
-          <Text style={styles.tabTxt}>Tap to display recovery phrase</Text>
+          <Text style={styles.tabTxt}>{t('TAP_TO_DISPLAY_RECOVERY_PHRASE')}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -114,9 +118,7 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
     if (activeTab === RecoveryTabs.HandwrittenBackup) {
       return (
         <View style={styles.containerView}>
-          <Text style={styles.titleTxt}>
-            Please write down the mnemonic in correct order on a piece of paper.
-          </Text>
+          <Text style={styles.titleTxt}>{t('PLEASE_WRITE_MNEMONIC')}</Text>
           <View style={styles.plainTxtView}>
             <TouchableOpacity
               onPress={() => {
@@ -124,22 +126,7 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
                 setShowCode(false);
               }}
               style={styles.plainTouch}>
-              <Text style={styles.plainTxt}>Plain text (12 words)</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => {
-                setShowQRCode(true);
-                setShowQR(false);
-              }}
-              style={styles.qrTouch}>
-              <Ionicons
-                name={'qr-code-outline'}
-                size={16}
-                color={'#7C8FAC'}
-                style={styles.icon}
-              />
-              <Text style={styles.QRcodeTxt}>Show QR Code</Text>
+              <Text style={styles.plainTxt}>{t('PLAIN_TEXT_12')}</Text>
             </TouchableOpacity>
           </View>
           {showQRCode ? qRCodeView() : plainTxtView()}
@@ -152,25 +139,15 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
               });
               Clipboard.setString(walletInfo?.secret_phase?.join(' '));
             }}>
-            <Ionicons name={'copy-outline'} size={12} color={'#7C8FAC'} />
-            <Text style={styles.copyTxt}>Copy secret recovery phase</Text>
+            <Ionicons name={'copy-outline'} size={scale(15)} color={'#7C8FAC'} />
+            <Text style={styles.copyTxt}>{t('COPY_SECRET_RECOVERY_PHRASE')}</Text>
           </TouchableOpacity>
           <View style={styles.importantView}>
-            <Text style={styles.impTitleTxt}>Remember:</Text>
-            <Text style={styles.impSubTitleTxt}>
-              {'\u25CF'} Don’t disclose recovery phase to anyone
-            </Text>
-            <Text style={styles.impSubTitleTxt}>
-              {'\u25CF'} Once the recovery phase is lost, asset cannot be
-              recovery
-            </Text>
-            <Text style={styles.impSubTitleTxt}>
-              {'\u25CF'} Don’t disclose recovery phase to anyone
-            </Text>
-            <Text style={styles.impSubTitleTxt}>
-              {'\u25CF'} Once the secret recovery phase is lost, asset cannot be
-              recovery
-            </Text>
+            <Text style={styles.impTitleTxt}>{t('REMEMBER')}</Text>
+            <Text style={styles.impSubTitleTxt}>{'\u25CF'} {t('DONT_DISCLOSE_RECOVERY_PHASE')}</Text>
+            <Text style={styles.impSubTitleTxt}>{'\u25CF'} {t('ONCE_RECOVERY_PHASE_LOST')}</Text>
+            <Text style={styles.impSubTitleTxt}>{'\u25CF'} {t('DONT_DISCLOSE_RECOVERY_PHASE')}</Text>
+            <Text style={styles.impSubTitleTxt}>{'\u25CF'} {t('ONCE_SECRET_RECOVERY_PHASE_LOST')}</Text>
           </View>
         </View>
       );
@@ -186,16 +163,13 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
-        <DashBoardHeaderComponent title={'Backup Secret Recovery Phrase'} />
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
+        <DashBoardHeaderComponent title={t('BACKUP_SECRET_RECOVERY_PHRASE')} />
         <View style={styles.tabsView}>
           <CustomTabs
             activeTab={activeTab}
             onSelectItem={(val: any) => setActiveTab(val)}
-            titles={[
-              RecoveryTabs.HandwrittenBackup,
-              RecoveryTabs.KeypalCardBackup,
-            ]}
+            titles={[RecoveryTabs.HandwrittenBackup]}
           />
         </View>
         <ScrollView>
@@ -206,7 +180,7 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
             colors={['#6B121C', '#ED1C24']}
             style={styles.startedBtn}>
             <Text style={styles.startedBtnTxt}>
-              Completed Backup & Verify It
+              {t('COMPLETED_BACKUP_VERIFY')}
             </Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -230,7 +204,7 @@ const styles = StyleSheet.create({
   },
   titleTxt: {
     color: '#7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
   },
   plainTxtView: {
@@ -239,7 +213,7 @@ const styles = StyleSheet.create({
   },
   plainTxt: {
     color: '#333333',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     flex: 1,
   },
@@ -248,12 +222,12 @@ const styles = StyleSheet.create({
   },
   QRcodeTxt: {
     color: '##7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(2),
     fontWeight: 400,
   },
   tabTxt: {
     color: '#333333',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     textAlign: 'center',
     fontWeight: 400,
     paddingTop: 15,
@@ -261,7 +235,7 @@ const styles = StyleSheet.create({
   },
   copyTxt: {
     color: '#7C8FAC',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     marginLeft: 5,
   },
@@ -277,7 +251,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -334,14 +308,14 @@ const styles = StyleSheet.create({
   },
   impTitleTxt: {
     color: '#D32F2F',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     marginLeft: 5,
     marginRight: 20,
   },
   impSubTitleTxt: {
     color: '#D32F2F',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     marginLeft: 10,
     marginTop: 3,
@@ -365,13 +339,13 @@ const styles = StyleSheet.create({
   },
   itemIndexTxt: {
     color: '#7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     marginLeft: 5,
   },
   itemTxt: {
     color: '#333333',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     textAlign: 'center',
     flex: 1,

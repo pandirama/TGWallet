@@ -2,6 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   FlatList,
@@ -15,26 +16,27 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
-import CustomTabs, {MarketTabs} from '../../../components/CustomTabs';
+import {getMarketTabs} from '../../../components/CustomTabs';
 import {Ionicons} from '../../../utils/IconUtils';
 import {useSelector} from 'react-redux';
 import {useGetNetworksQuery} from '../../../api/auth/authAPI';
 import {useFocusEffect} from '@react-navigation/native';
-import {authAction} from '../../../reducer/auth/authSlice';
 import useCommon from '../../../hooks/useCommon';
-import {useAppDispatch} from '../../../store';
 import {getErrorMessage} from '../../../utils/common';
 import {useMarketListMutation} from '../../../api/marketAPI';
-import SwapBridgeComponent from './Swap&Bridge/Swap&BridgeComponent';
 import WalletListComponent from '../../../components/WalletListComponent';
+import {moderateScale} from 'react-native-size-matters';
+import {authAction} from '../../../reducer/auth/authSlice';
+import {useAppDispatch} from '../../../store';
 
 type Props = NativeStackScreenProps<any, 'MARKETS'>;
 
 const MarketsComponent = ({navigation}: Props) => {
+  const {t} = useTranslation();
+  const MarketTabs = getMarketTabs(t);
   const {showToast, toggleBackdrop} = useCommon();
   const dispatch = useAppDispatch();
 
-  const [activeTab, setActiveTab] = useState(MarketTabs.Market);
   const [walletIcon, setWalletIcon] = useState<any>(null);
   const [marketLists, setMarketLists] = useState<any>([]);
   const [networks, setNetworks] = useState<any>([]);
@@ -99,11 +101,13 @@ const MarketsComponent = ({navigation}: Props) => {
         const {isSuccess, isError, data, error} = response;
         if (isSuccess) {
           const networkData = data?.networks?.filter((network: any) => {
-            return network?.ID === walletInfo?.network_mode;
+            return (
+              network?.ID?.toString() === walletInfo?.network_mode?.toString()
+            );
           })?.[0];
-          setNetworks(data?.networks);
           dispatch(authAction.setSelectedNetwork(networkData));
           const networkIcon = networkData?.Wallet_icon;
+          setNetworks(data?.networks);
           setWalletIcon(networkIcon);
         } else if (isError) {
           showToast({
@@ -113,71 +117,61 @@ const MarketsComponent = ({navigation}: Props) => {
         }
       });
       return () => {};
-    }, []),
+    }, [walletInfo]),
   );
 
   const tabsView = () => {
-    if (activeTab === MarketTabs.Market) {
-      return (
-        <>
+    return (
+      <>
+        <View style={styles.listHeaderView}>
+          <FlatList
+            data={marketLists?.tabs}
+            renderItem={({item}) => renderItem(item, 'mode')}
+            removeClippedSubviews={false}
+            keyExtractor={(item, index) => 'key' + index}
+            horizontal={true}
+            style={{borderBottomWidth: 1, borderBottomColor: colors.gray1}}
+          />
+        </View>
+        {marketLists?.sub_tabs?.length > 0 && (
           <View style={styles.listHeaderView}>
             <FlatList
-              data={marketLists?.tabs}
-              renderItem={({item}) => renderItem(item, 'mode')}
+              data={marketLists?.sub_tabs}
+              renderItem={({item}) => renderItem(item, 'submode')}
               removeClippedSubviews={false}
               keyExtractor={(item, index) => 'key' + index}
               horizontal={true}
               style={{borderBottomWidth: 1, borderBottomColor: colors.gray1}}
             />
           </View>
-          {marketLists?.sub_tabs?.length > 0 && (
-            <View style={styles.listHeaderView}>
-              <FlatList
-                data={marketLists?.sub_tabs}
-                renderItem={({item}) => renderItem(item, 'submode')}
-                removeClippedSubviews={false}
-                keyExtractor={(item, index) => 'key' + index}
-                horizontal={true}
-                style={{borderBottomWidth: 1, borderBottomColor: colors.gray1}}
-              />
-            </View>
-          )}
-          <View
-            style={{
-              flexDirection: 'row',
-              borderBottomWidth: 1,
-              borderBottomColor: '#E0E0E0',
-              paddingBottom: 10,
-              paddingTop: 5,
-              paddingLeft: 20,
-              backgroundColor: colors.white,
-            }}>
-            <Text style={[styles.listItemTitleTxt]}>Name</Text>
-            <View style={{flex: 1}} />
-            <View style={{flex: 1}} />
-            <Text style={[styles.listItemTitleTxt]}>Last Price</Text>
-            <Text style={[styles.listItemTitleTxt]}>Change(%)</Text>
-          </View>
-          <FlatList
-            data={marketLists?.market_datas}
-            renderItem={renderMarketItem}
-            removeClippedSubviews={false}
-            keyExtractor={(item, index) => 'key' + index}
-            showsVerticalScrollIndicator={false}
-            ItemSeparatorComponent={() => {
-              return <View style={styles.borderView} />;
-            }}
-          />
-        </>
-      );
-    }
-    return (
-      <SwapBridgeComponent
-        networks={networks}
-        navigation={navigation}
-        setShowWallets={setShowWallets}
-        walletInfo={walletInfo}
-      />
+        )}
+        <View
+          style={{
+            flexDirection: 'row',
+            borderBottomWidth: 1,
+            borderBottomColor: '#E0E0E0',
+            paddingBottom: 10,
+            paddingTop: 5,
+            paddingLeft: 20,
+            backgroundColor: colors.white,
+          }}>
+          <Text style={[styles.listItemTitleTxt]}>{t('NAME')}</Text>
+          <View style={{flex: 1}} />
+          <View style={{flex: 1}} />
+          <Text style={[styles.listItemTitleTxt]}>{t('LAST_PRICE')}</Text>
+          <Text style={[styles.listItemTitleTxt]}>{t('CHANGE_PERCENT')}</Text>
+        </View>
+        <FlatList
+          data={marketLists?.market_datas}
+          renderItem={renderMarketItem}
+          removeClippedSubviews={false}
+          keyExtractor={(item, index) => 'key' + index}
+          showsVerticalScrollIndicator={false}
+          ItemSeparatorComponent={() => {
+            return <View style={styles.borderView} />;
+          }}
+        />
+      </>
     );
   };
 
@@ -275,7 +269,9 @@ const MarketsComponent = ({navigation}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <View style={styles.tabsView}>
           <View style={styles.headerView}>
             <TouchableOpacity
@@ -303,19 +299,10 @@ const MarketsComponent = ({navigation}: Props) => {
             </TouchableOpacity>
           </View>
           <View style={{justifyContent: 'center', flex: 1}}>
-            {/* <CustomTabs
-              activeTab={activeTab}
-              onSelectItem={(val: any) => setActiveTab(val)}
-              titles={[MarketTabs.SwapBridge, MarketTabs.Market]}
-            /> */}
-            <Text style={styles.title}>
-              {MarketTabs.Market}
-            </Text>
+            <Text style={styles.title}>{MarketTabs.Market}</Text>
           </View>
           <View style={styles.headerRightIconView}>
-            <TouchableOpacity style={styles.walletIcon}>
-              <Ionicons name={'search'} size={25} color={'#000'} />
-            </TouchableOpacity>
+            <TouchableOpacity style={styles.walletIcon} />
           </View>
         </View>
         {tabsView()}
@@ -325,6 +312,7 @@ const MarketsComponent = ({navigation}: Props) => {
           setShowWallets={setShowWallets}
           networkMode={network_mode}
           networks={networks}
+          isFromProfileComponent={true}
         />
       </SafeAreaView>
     </>
@@ -386,12 +374,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   selectedAssetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   assetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#7C8FAC',
   },
@@ -447,17 +435,17 @@ const styles = StyleSheet.create({
     borderColor: '#D32F2F',
   },
   defiListnameTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   defiListVolumeTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
   },
   defiListNameTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     textAlign: 'right',
   },
@@ -468,7 +456,7 @@ const styles = StyleSheet.create({
     color: '#D32F2F',
   },
   defiListamountTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#7C8FAC',
     textAlign: 'right',
@@ -488,14 +476,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#9C9DA0',
   },
   listItemTitleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     flex: 1,
     textAlign: 'left',
   },
   title: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 700,
     color: '#333333',
     letterSpacing: 0.5,

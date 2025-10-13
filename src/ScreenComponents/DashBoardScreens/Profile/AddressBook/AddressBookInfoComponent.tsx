@@ -1,3 +1,4 @@
+import { moderateScale } from 'react-native-size-matters';
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback, useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -20,10 +21,12 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import {useAddressBookInfoMutation} from '../../../../api/addressBookAPI';
 import {getErrorMessage} from '../../../../utils/common';
 import {useFocusEffect} from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<any, 'ADDRESS_INFO'>;
 
 const AddressBookInfoComponent = ({navigation, route}: Props) => {
+  const {t} = useTranslation();
   const {walletInfo, networks, allNetworks} = route?.params ?? {};
 
   const {showToast, toggleBackdrop} = useCommon();
@@ -73,9 +76,9 @@ const AddressBookInfoComponent = ({navigation, route}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent
-          title={'Address Information'}
+           title={t('ADDRESS_INFORMATION')}
           rightIcon={
             <TouchableOpacity
               style={styles.editTouch}
@@ -86,7 +89,7 @@ const AddressBookInfoComponent = ({navigation, route}: Props) => {
                   allNetworks,
                 });
               }}>
-              <Text style={styles.editTxt}>Edit</Text>
+              <Text style={styles.editTxt}>{t('EDIT')}</Text>
             </TouchableOpacity>
           }
         />
@@ -97,7 +100,7 @@ const AddressBookInfoComponent = ({navigation, route}: Props) => {
             styles.scrollView,
           ]}>
           <View style={styles.topView}>
-            <Text style={styles.inputTitleTxt}>Wallet Name</Text>
+            <Text style={styles.inputTitleTxt}>{t('WALLET_NAME')}</Text>
             <View style={styles.searchContainer}>
               {networks?.Wallet_icon && (
                 <Image
@@ -111,7 +114,7 @@ const AddressBookInfoComponent = ({navigation, route}: Props) => {
               <Text style={styles.inputTxt}>{networks?.Wallet_network}</Text>
             </View>
 
-            <Text style={styles.inputTitleTxt}>Wallet Address</Text>
+            <Text style={styles.inputTitleTxt}>{t('WALLET_ADDRESS')}</Text>
             <View style={styles.searchContainer}>
               <Text style={styles.inputTxt}>
                 {singleWalletInfo?.wallet_address}
@@ -128,14 +131,14 @@ const AddressBookInfoComponent = ({navigation, route}: Props) => {
                 <Ionicons name={'copy-outline'} size={16} color={'#7C8FAC'} />
               </TouchableOpacity>
             </View>
-            <Text style={styles.inputTitleTxt}>Set Name</Text>
+            <Text style={styles.inputTitleTxt}>{t('SET_NAME')}</Text>
             <View style={styles.searchContainer}>
               <Text style={styles.inputTxt}>
                 {singleWalletInfo?.wallet_name}
               </Text>
             </View>
 
-            <Text style={styles.inputTitleTxt}>Note</Text>
+            <Text style={styles.inputTitleTxt}>{t('NOTE')}</Text>
             <View style={styles.searchContainer}>
               <Text style={styles.inputTxt}>
                 {singleWalletInfo?.wallet_note}
@@ -157,12 +160,12 @@ const styles = StyleSheet.create({
   },
   modeTxt: {
     color: '#7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
   },
   informationTxt: {
     color: '#7C8FAC',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     marginTop: 15,
   },
@@ -183,7 +186,7 @@ const styles = StyleSheet.create({
   },
   advancedTxt: {
     color: '#333333',
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -211,12 +214,12 @@ const styles = StyleSheet.create({
   inputTxt: {
     flex: 1,
     paddingVertical: 13,
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
   },
   inputTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginBottom: 1,
@@ -225,7 +228,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   editTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
   },

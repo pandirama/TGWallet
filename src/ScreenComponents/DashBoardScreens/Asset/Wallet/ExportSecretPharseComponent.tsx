@@ -1,4 +1,5 @@
 import React from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   ScrollView,
@@ -14,10 +15,12 @@ import DashBoardHeaderComponent from '../../../../components/DashBoardHeaderComp
 import {colors} from '../../../../utils/colors';
 import appStyles from '../../../../utils/appStyles';
 import RecoveryPharseComponent from '../../../../components/RecoveryPharseComponent';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'EXPORT_SECRET_PHARSE'>;
 
 const ExportSecretPharseComponent = ({navigation, route}: Props) => {
+  const {t} = useTranslation();
   const {walletInfo} = route?.params ?? {};
   return (
     <>
@@ -30,7 +33,7 @@ const ExportSecretPharseComponent = ({navigation, route}: Props) => {
       <SafeAreaView
         style={appStyles.container}
         edges={['right', 'left', 'top']}>
-        <DashBoardHeaderComponent title={'Backup Secret Recovery Phrase'} />
+        <DashBoardHeaderComponent title={t('BACKUP_SECRET_RECOVERY_PHRASE')} />
 
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -48,7 +51,7 @@ const ExportSecretPharseComponent = ({navigation, route}: Props) => {
             <LinearGradient
               colors={['#6B121C', '#ED1C24']}
               style={styles.startedBtn}>
-              <Text style={styles.startedBtnTxt}>Next</Text>
+              <Text style={styles.startedBtnTxt}>{t('NEXT')}</Text>
             </LinearGradient>
           </TouchableOpacity>
         </ScrollView>
@@ -75,7 +78,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,

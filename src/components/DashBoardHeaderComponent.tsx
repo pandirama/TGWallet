@@ -4,6 +4,7 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {colors} from '../utils/colors';
 import {useNavigation} from '@react-navigation/native';
 import { Ionicons } from '../utils/IconUtils';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 
 const DashBoardHeaderComponent = ({title, rightIcon}: any) => {
   const navigation = useNavigation();
@@ -12,7 +13,7 @@ const DashBoardHeaderComponent = ({title, rightIcon}: any) => {
       <TouchableOpacity
         style={styles.backTouch}
         onPress={() => navigation.goBack()}>
-        <Ionicons name={'chevron-back'} size={22} color={colors.black} />
+        <Ionicons name={'chevron-back'} size={scale(18)} color={colors.black} />
       </TouchableOpacity>
       <Text style={styles.titleTxt}>{title}</Text>
       {rightIcon && rightIcon}
@@ -24,7 +25,7 @@ export default DashBoardHeaderComponent;
 
 const styles = StyleSheet.create({
   container: {
-    height: 60,
+    height: verticalScale(50),
     flexDirection: 'row',
     width: '100%',
     alignItems: 'center',
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
   },
   titleTxt: {
-    fontSize: 18,
+    fontSize: moderateScale(16),
     color: '#333333',
     fontWeight: 600,
     textAlign: 'center',

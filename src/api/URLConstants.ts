@@ -60,4 +60,6 @@ export const NFTS_URLS = {
 export const PROFILE_URLS = {
   CHANGE_BASIS_LIST: `${BASE_URL}/timezone`,
   UPDATE_TIME_ZONE: `${BASE_URL}/updatetime`,
+  CHANGE_LANGUAGE_LIST: `${BASE_URL}/language`,
+  UPDATE_LANGUAGE: `${BASE_URL}/updatelang`,
 };

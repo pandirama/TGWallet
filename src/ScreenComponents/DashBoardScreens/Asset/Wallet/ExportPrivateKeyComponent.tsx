@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   ScrollView,
@@ -10,7 +11,7 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import PlainTxtEye from '../../../../assets/plain_txt_eye.svg';
-import CustomTabs, {RecoveryTabs} from '../../../../components/CustomTabs';
+import CustomTabs, {getRecoveryTabs} from '../../../../components/CustomTabs';
 import DashBoardHeaderComponent from '../../../../components/DashBoardHeaderComponent';
 import appStyles from '../../../../utils/appStyles';
 import {colors} from '../../../../utils/colors';
@@ -19,10 +20,13 @@ import QRCode from 'react-native-qrcode-svg';
 import LinearGradient from 'react-native-linear-gradient';
 import useCommon from '../../../../hooks/useCommon';
 import Clipboard from '@react-native-clipboard/clipboard';
+import {moderateScale} from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'EXPORT_PRIVATEKEY'>;
 
 const ExportPrivateKeyComponent = ({route}: Props) => {
+  const {t} = useTranslation();
+  const RecoveryTabs = getRecoveryTabs(t);
   const {walletInfo} = route?.params ?? {};
   const {showToast} = useCommon();
 
@@ -33,7 +37,7 @@ const ExportPrivateKeyComponent = ({route}: Props) => {
   const completedBackup = async () => {
     showToast({
       type: 'success',
-      text1: 'Private Key Copied Successfully',
+      text1: t('COPY_PRIVATE_KEY'),
     });
     Clipboard.setString(walletInfo?.private_key);
   };
@@ -59,7 +63,7 @@ const ExportPrivateKeyComponent = ({route}: Props) => {
         <View style={[appStyles.boxShadow, styles.qrEyeView]}>
           <PlainTxtEye style={styles.plainEye} />
           <Text style={styles.tabTxt}>
-            Please make sure there is no one or camera around
+            {t('PLEASE_MAKE_SURE_NO_ONE_AROUND')}
           </Text>
         </View>
       </TouchableOpacity>
@@ -82,7 +86,7 @@ const ExportPrivateKeyComponent = ({route}: Props) => {
         }}>
         <View style={[appStyles.boxShadow, styles.keyEyeView]}>
           <PlainTxtEye style={styles.plainEye} />
-          <Text style={styles.tabTxt}>Tap to display private key</Text>
+          <Text style={styles.tabTxt}>{t('TAP_TO_DISPLAY_PRIVATE_KEY')}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -99,19 +103,13 @@ const ExportPrivateKeyComponent = ({route}: Props) => {
               color={'#D32F2F'}
               style={styles.icon}
             />
-            <Text style={styles.impTitleTxt}>
-              The private key is not encrypted, please export it carefully and
-              make a safe backup! When backing up the private key, please make
-              sure that no one is around!
-            </Text>
+            <Text style={styles.impTitleTxt}>{t('PRIVATE_KEY_WARNING')}</Text>
           </View>
-          <Text style={styles.titleTxt}>
-            Please write down the mnemonic in correct order on a piece of paper.
-          </Text>
+          <Text style={styles.titleTxt}>{t('PLEASE_WRITE_MNEMONIC')}</Text>
           {qRCodeView()}
           <View style={styles.privateKeyView}>
             <View style={styles.borderView} />
-            <Text style={styles.privateKeyTitleTxt}>Private Key</Text>
+            <Text style={styles.privateKeyTitleTxt}>{t('PRIVATE_KEY')}</Text>
             <View style={styles.borderView} />
           </View>
           {privateKeyView()}
@@ -132,15 +130,12 @@ const ExportPrivateKeyComponent = ({route}: Props) => {
       <SafeAreaView
         style={appStyles.container}
         edges={['right', 'left', 'top']}>
-        <DashBoardHeaderComponent title={'Backup Private Key'} />
+        <DashBoardHeaderComponent title={t('EXPORT_PRIVATE_KEY_TITLE')} />
         <View style={styles.tabsView}>
           <CustomTabs
             activeTab={activeTab}
             onSelectItem={(val: any) => setActiveTab(val)}
-            titles={[
-              RecoveryTabs.HandwrittenBackup,
-              RecoveryTabs.KeypalCardBackup,
-            ]}
+            titles={[RecoveryTabs.HandwrittenBackup]}
           />
         </View>
         <ScrollView>
@@ -150,7 +145,7 @@ const ExportPrivateKeyComponent = ({route}: Props) => {
           <LinearGradient
             colors={['#6B121C', '#ED1C24']}
             style={styles.startedBtn}>
-            <Text style={styles.startedBtnTxt}>Copy Private Key</Text>
+            <Text style={styles.startedBtnTxt}>{t('COPY_PRIVATE_KEY')}</Text>
           </LinearGradient>
         </TouchableOpacity>
       </SafeAreaView>
@@ -174,13 +169,13 @@ const styles = StyleSheet.create({
   },
   titleTxt: {
     color: '#7C8FAC',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     marginTop: 20,
   },
   tabTxt: {
     color: '#333333',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     textAlign: 'center',
     fontWeight: 400,
     paddingTop: 15,
@@ -199,7 +194,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -247,7 +242,7 @@ const styles = StyleSheet.create({
   },
   privateKeyTitleTxt: {
     color: '#7C8FAC',
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: 400,
     marginLeft: 8,
     marginRight: 8,
@@ -265,7 +260,7 @@ const styles = StyleSheet.create({
   },
   keyTxt: {
     color: '#333333',
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
   },
   keyEyeView: {
@@ -288,7 +283,7 @@ const styles = StyleSheet.create({
   },
   impTitleTxt: {
     color: '#D32F2F',
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     flex: 1,
     marginRight: 8,

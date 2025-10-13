@@ -16,6 +16,7 @@ import {
   View,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useTranslation} from 'react-i18next';
 import appStyles from '../../../../utils/appStyles';
 import {colors} from '../../../../utils/colors';
 import DashBoardHeaderComponent from '../../../../components/DashBoardHeaderComponent';
@@ -28,30 +29,35 @@ import {getErrorMessage} from '../../../../utils/common';
 import Send from '../../../../assets/send.svg';
 // import Transaction from '../../../../assets/profile/transaction.svg';
 import Clipboard from '@react-native-clipboard/clipboard';
+import {moderateScale} from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'TOKEN'>;
 
-const assets = [
-  {
-    id: 0,
-    assetName: 'All',
-  },
-  {
-    id: 1,
-    assetName: 'In',
-  },
-  {
-    id: 2,
-    assetName: 'Out',
-  },
-];
-
 const TokenComponent = ({navigation, route}: Props) => {
+  const {t} = useTranslation();
   const {token} = route?.params ?? {};
   const {showToast, toggleBackdrop} = useCommon();
   const {walletInfo = {}, userInfo = {}} = useSelector(
     ({authReducer}: any) => authReducer,
   );
+
+  const assets = [
+    {
+      id: 0,
+      assetName: t('ALL'),
+      assetValue: 'All',
+    },
+    {
+      id: 1,
+      assetName: t('IN'),
+      assetValue: 'In',
+    },
+    {
+      id: 2,
+      assetName: t('OUT'),
+      assetValue: 'Out',
+    },
+  ];
 
   const [selectedAsset, setSelectedAsset] = useState('All');
   const [all, setAll] = useState([]);
@@ -101,13 +107,13 @@ const TokenComponent = ({navigation, route}: Props) => {
   );
 
   const renderItem = ({item}: any) => {
-    const findAsset = selectedAsset === item?.assetName;
+    const findAsset = selectedAsset === item?.assetValue;
     return (
       <View>
         <TouchableOpacity
           style={styles.assetItemTouch}
           onPress={() => {
-            setSelectedAsset(item?.assetName);
+            setSelectedAsset(item?.assetValue);
           }}>
           <Text
             style={
@@ -156,7 +162,7 @@ const TokenComponent = ({navigation, route}: Props) => {
               onPress={() => {
                 showToast({
                   type: 'success',
-                  text1: 'Address Copied Successfully',
+                  text1: t('ADDRESS_COPIED_SUCCESSFULLY'),
                 });
                 Clipboard.setString(address);
               }}>
@@ -207,7 +213,7 @@ const TokenComponent = ({navigation, route}: Props) => {
                     }}
                   />
                   <View style={{marginLeft: 20}}>
-                    <Text style={styles.balanceTxt}>Balance</Text>
+                    <Text style={styles.balanceTxt}>{t('BALANCE')}</Text>
                     <Text style={styles.balanceValTxt}>{token?.balance}</Text>
                     <Text style={styles.balanceUSDTxt}>
                       {`$${token?.balanceInUSD}`}
@@ -217,7 +223,7 @@ const TokenComponent = ({navigation, route}: Props) => {
 
                 <View style={styles.borderView} />
                 <View style={styles.walletTouch}>
-                  <Text style={styles.walletTitleTxt}>Price</Text>
+                  <Text style={styles.walletTitleTxt}>{t('PRICE')}</Text>
                   <Text style={[styles.walletTitleTxt, {textAlign: 'right'}]}>
                     {`$${token?.tokenPrice}`}
                   </Text>
@@ -237,7 +243,7 @@ const TokenComponent = ({navigation, route}: Props) => {
                   navigation.navigate('SEND');
                 }}>
                 <Send width={28} height={28} />
-                <Text style={styles.menuItemTxt}>Send</Text>
+                <Text style={styles.menuItemTxt}>{t('SEND')}</Text>
               </TouchableOpacity>
               <View style={styles.horizontalBorder} />
               <TouchableOpacity
@@ -250,14 +256,10 @@ const TokenComponent = ({navigation, route}: Props) => {
                   size={26}
                   color={'#333333'}
                 />
-                <Text style={styles.menuItemTxt}>Receive</Text>
+                <Text style={styles.menuItemTxt}>{t('RECEIVE')}</Text>
               </TouchableOpacity>
               <View style={styles.horizontalBorder} />
               <View style={styles.horizontalBorder} />
-              {/* <TouchableOpacity style={styles.menuItemTouch}>
-                <Transaction width={28} height={28} />
-                <Text style={styles.menuItemTxt}>Swap</Text>
-              </TouchableOpacity> */}
             </View>
             <View style={styles.listHeaderView}>
               <View style={styles.listView}>
@@ -270,10 +272,6 @@ const TokenComponent = ({navigation, route}: Props) => {
                   horizontal={true}
                 />
               </View>
-
-              <TouchableOpacity style={styles.addIcon}>
-                <Feather name={'filter'} size={20} color={'#333333'} />
-              </TouchableOpacity>
             </View>
             <FlatList
               data={getData()}
@@ -286,13 +284,6 @@ const TokenComponent = ({navigation, route}: Props) => {
                 return <View style={styles.borderView} />;
               }}
             />
-            {/* {selectedAsset === 'DEFI' && <DEFIComponent />} */}
-            {/* {selectedAsset === 'Assets' && (
-            <DEFIComponent tokenAssets={tokenAssets} navigation={navigation} />
-          )}
-          {selectedAsset === 'NFT' && (
-            <NFTComponent navigation={navigation} tokenNFTs={tokenNFTs} />
-          )} */}
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
@@ -320,14 +311,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   walletTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
     flex: 1,
     marginLeft: 8,
   },
   networkTxt: {
-    fontSize: 15,
+    fontSize: moderateScale(15),
     fontWeight: 600,
     color: '#333333',
     textAlignVertical: 'center',
@@ -373,12 +364,12 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   nftNameTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 500,
     color: '#333333',
   },
   nftValueTxt: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: 400,
     color: '#7C8FAC',
   },
@@ -403,28 +394,28 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   selectedAssetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   assetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#7C8FAC',
   },
   itemTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#33333',
     flex: 1,
   },
   itemSubTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
   },
   itemSubValueTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 500,
     color: '#333333',
     flex: 0.3,
@@ -452,7 +443,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   menuItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
@@ -469,19 +460,19 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   balanceTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     marginTop: 2,
   },
   balanceValTxt: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 600,
     color: '#333333',
     marginTop: 2,
   },
   balanceUSDTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#7C8FAC',
     marginTop: 2,

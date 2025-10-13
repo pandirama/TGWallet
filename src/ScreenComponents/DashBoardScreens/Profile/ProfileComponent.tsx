@@ -13,20 +13,20 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
 import WalletNew from '../../../assets/wallet_new.svg';
-import InviteFriends from '../../../assets/profile/invite_friends.svg';
-import Transaction from '../../../assets/profile/transaction.svg';
-import WalletGuide from '../../../assets/profile/wallet_guide.svg';
-import {Fontisto, Ionicons, SimpleLineIcons} from '../../../utils/IconUtils';
+import {Ionicons, SimpleLineIcons} from '../../../utils/IconUtils';
 import WalletListComponent from '../../../components/WalletListComponent';
 import {useGetNetworksQuery} from '../../../api/auth/authAPI';
 import {useFocusEffect} from '@react-navigation/native';
 import {getErrorMessage} from '../../../utils/common';
 import useCommon from '../../../hooks/useCommon';
 import {useSelector} from 'react-redux';
+import { moderateScale } from 'react-native-size-matters';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<any, 'PROFILE'>;
 
 const ProfileComponent = ({navigation}: Props) => {
+  const {t} = useTranslation();
   const {showToast, toggleBackdrop} = useCommon();
 
   const {walletInfo = {}} = useSelector(({authReducer}: any) => authReducer);
@@ -41,12 +41,6 @@ const ProfileComponent = ({navigation}: Props) => {
   useEffect(() => {
     toggleBackdrop(isFetching);
   }, [isFetching]);
-
-  useEffect(() => {
-    if (!showWallets) {
-      navigation?.navigate('Asset');
-    }
-  }, [showWallets]);
 
   useFocusEffect(
     useCallback(() => {
@@ -73,21 +67,9 @@ const ProfileComponent = ({navigation}: Props) => {
         backgroundColor={colors.white}
         animated
       />
-      <SafeAreaView style={appStyles.container}>
+      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
         <View style={styles.headerView}>
-          <Text style={styles.headerTxt}>Profile</Text>
-          <Ionicons
-            name={'sunny-outline'}
-            size={25}
-            color={'#333333'}
-            style={styles.icon}
-          />
-          <Fontisto
-            name={'bell'}
-            size={24}
-            color={'#333333'}
-            style={styles.icon}
-          />
+          <Text style={styles.headerTxt}>{t('PROFILE')}</Text>
         </View>
 
         <ScrollView
@@ -95,44 +77,12 @@ const ProfileComponent = ({navigation}: Props) => {
           contentContainerStyle={appStyles.scrollContainer}>
           <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
             <TouchableOpacity
-              style={[
-                styles.walletTouch,
-                styles.walletColor,
-                styles.walletPaddingTop,
-              ]}>
-              <WalletNew width={22} height={21} style={styles.walletIcon} />
-              <Text style={styles.walletTitleTxt}>Asset Overview</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={styles.borderView} />
-            <TouchableOpacity
               style={styles.walletTouch}
               onPress={() => {
                 setShowWallets(true);
               }}>
               <WalletNew width={22} height={21} style={styles.walletIcon} />
-              <Text style={styles.walletTitleTxt}>Manage Wallets</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={[
-                styles.walletTouch,
-                styles.walletColor,
-                styles.walletPaddgionBottom,
-              ]}>
-              <Transaction width={22} height={21} style={styles.walletIcon} />
-              <Text style={styles.walletTitleTxt}>Transaction Records</Text>
+              <Text style={styles.walletTitleTxt}>{t('MANAGE_WALLETS')}</Text>
               <Ionicons
                 name={'chevron-forward'}
                 size={25}
@@ -143,22 +93,6 @@ const ProfileComponent = ({navigation}: Props) => {
           </View>
 
           <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
-            <TouchableOpacity
-              style={[
-                styles.walletTouch,
-                styles.walletColor,
-                styles.walletPaddingTop,
-              ]}>
-              <WalletNew width={22} height={21} style={styles.walletIcon} />
-              <Text style={styles.walletTitleTxt}>Experience</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={styles.borderView} />
             <TouchableOpacity
               style={styles.walletTouch}
               onPress={() => navigation.navigate('ADDRESS_BOOK')}>
@@ -168,7 +102,7 @@ const ProfileComponent = ({navigation}: Props) => {
                 color={'#333333'}
                 style={styles.leftIcon}
               />
-              <Text style={styles.walletTitleTxt}>Address Book</Text>
+              <Text style={styles.walletTitleTxt}>{t('ADDRESS_BOOK')}</Text>
               <Ionicons
                 name={'chevron-forward'}
                 size={25}
@@ -181,48 +115,6 @@ const ProfileComponent = ({navigation}: Props) => {
           <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
             <TouchableOpacity
               style={styles.walletTouch}
-              onPress={() => navigation.navigate('INVITE_FRIENDS')}>
-              <InviteFriends width={24} height={25} style={styles.walletIcon} />
-              <Text style={styles.walletTitleTxt}>Invite Friends</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={styles.borderView} />
-            <TouchableOpacity style={styles.walletTouch}>
-              <WalletGuide width={24} height={25} style={styles.walletIcon} />
-              <Text style={styles.walletTitleTxt}>Wallet Guides</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={styles.walletTouch}
-              onPress={() => navigation.navigate('ABOUT_US')}>
-              <Ionicons
-                name={'information-circle-outline'}
-                size={25}
-                color={'#333333'}
-                style={styles.leftIcon}
-              />
-              <Text style={styles.walletTitleTxt}>About Us</Text>
-              <Ionicons
-                name={'chevron-forward'}
-                size={25}
-                color={'#333333'}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={styles.borderView} />
-            <TouchableOpacity
-              style={styles.walletTouch}
               onPress={() => navigation.navigate('SETTINGS')}>
               <Ionicons
                 name={'settings-outline'}
@@ -230,7 +122,7 @@ const ProfileComponent = ({navigation}: Props) => {
                 color={'#333333'}
                 style={styles.leftIcon}
               />
-              <Text style={styles.walletTitleTxt}>Settings</Text>
+              <Text style={styles.walletTitleTxt}>{t('SETTINGS')}</Text>
               <Ionicons
                 name={'chevron-forward'}
                 size={25}
@@ -246,6 +138,7 @@ const ProfileComponent = ({navigation}: Props) => {
           setShowWallets={setShowWallets}
           networkMode={network_mode}
           networks={networks}
+          isFromProfileComponent={true}
         />
       </SafeAreaView>
     </>
@@ -263,12 +156,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   headerTxt: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 600,
     color: '#333333',
     flex: 1,
     textAlign: 'center',
-    marginLeft: 70,
   },
   walletSubContainer: {
     backgroundColor: colors.white,
@@ -281,7 +173,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   walletTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlignVertical: 'center',

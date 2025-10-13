@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   errorTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#F04438',
     marginLeft: 5,
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: 500,
     color: colors.black,
   },

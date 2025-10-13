@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import ActionSheet from 'react-native-actions-sheet';
 import { Ionicons } from '../utils/IconUtils';
+import { moderateScale } from 'react-native-size-matters';
 
 export const ActionSheetTitle = ({titleTxt, actionSheetRef}: any) => {
   return (
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
   },
   actionTitleTxt: {
     flex: 1,
-    fontSize: 15,
+    fontSize: moderateScale(15),
     color: '#333333',
     textAlign: 'center',
     fontWeight: 600,

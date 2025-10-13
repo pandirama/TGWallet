@@ -16,12 +16,15 @@ import {colors} from '../../../../utils/colors';
 import useCommon from '../../../../hooks/useCommon';
 import Clipboard from '@react-native-clipboard/clipboard';
 import appStyles from '../../../../utils/appStyles';
+import {moderateScale} from 'react-native-size-matters';
+import {useTranslation} from 'react-i18next';
 
 const ChooseWalletComponent = ({
   setShowWallets,
   showWallets,
   chooseWallets,
 }: any) => {
+  const {t} = useTranslation();
   const {showToast} = useCommon();
   const actionSheetRef = useRef<ActionSheetRef>(null);
 
@@ -95,19 +98,19 @@ const ChooseWalletComponent = ({
               padding: 15,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.itemTitleTxt}>From : </Text>
+              <Text style={styles.itemTitleTxt}>{t('FROM')}</Text>
               <Text style={styles.itemSubTxt}>{item?.from}</Text>
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.itemTitleTxt}>To : </Text>
+              <Text style={styles.itemTitleTxt}>{t('TO')}</Text>
               <Text style={styles.itemSubTxt}>{item?.to}</Text>
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.itemTitleTxt}>Time : </Text>
+              <Text style={styles.itemTitleTxt}>{`${t('TIME')} :`}</Text>
               <Text style={styles.itemSubTxt}>{item?.time}</Text>
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.itemTitleTxt}>Value : </Text>
+              <Text style={styles.itemTitleTxt}>{t('VALUE_COLON')}</Text>
               <Text style={styles.itemSubTxt}>{item?.value}</Text>
             </View>
           </TouchableOpacity>
@@ -164,19 +167,19 @@ const ChooseWalletComponent = ({
             padding: 15,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.itemTitleTxt}>From : </Text>
+            <Text style={styles.itemTitleTxt}>{t('FROM')}</Text>
             <Text style={styles.itemSubTxt}>{item?.from}</Text>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.itemTitleTxt}>To : </Text>
+            <Text style={styles.itemTitleTxt}>{t('TO')}</Text>
             <Text style={styles.itemSubTxt}>{item?.to}</Text>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.itemTitleTxt}>Time : </Text>
+            <Text style={styles.itemTitleTxt}>{`${t('TIME')} :`}</Text>
             <Text style={styles.itemSubTxt}>{item?.time}</Text>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.itemTitleTxt}>Value : </Text>
+            <Text style={styles.itemTitleTxt}>{t('VALUE_COLON')}</Text>
             <Text style={styles.itemSubTxt}>{item?.value}</Text>
           </View>
         </TouchableOpacity>
@@ -207,7 +210,7 @@ const ChooseWalletComponent = ({
       }}>
       <View style={styles.actionViewContainer}>
         <View style={styles.actionTitleView}>
-          <Text style={styles.actionTitleTxt}>Choose a Wallet</Text>
+          <Text style={styles.actionTitleTxt}>{t('CHOOSE_A_WALLET')}</Text>
           <TouchableOpacity
             onPress={() => {
               actionSheetRef?.current?.hide();
@@ -232,7 +235,7 @@ const ChooseWalletComponent = ({
               styles.walletBalanceTxt,
               selectedWalletType === 'recent' && styles.selectWalletBalanceTxt,
             ]}>
-            Recent Transfer
+            {t('RECENT_TRANSFER')}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -248,7 +251,7 @@ const ChooseWalletComponent = ({
               styles.walletBalanceTxt,
               selectedWalletType === 'wallet' && styles.selectWalletBalanceTxt,
             ]}>
-            Wallet List
+            {t('WALLET_LIST')}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -264,7 +267,7 @@ const ChooseWalletComponent = ({
               styles.walletBalanceTxt,
               selectedWalletType === 'address' && styles.selectWalletBalanceTxt,
             ]}>
-            Address Book
+            {t('ADDRESS_BOOK')}
           </Text>
         </TouchableOpacity>
       </View>
@@ -316,7 +319,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   headerTxt: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 600,
     color: '#333333',
     textAlign: 'center',
@@ -328,7 +331,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   headerRightTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
@@ -389,13 +392,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   menuItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
   },
   menuAmountTxt: {
-    fontSize: 28,
+    fontSize: moderateScale(28),
     fontWeight: 700,
     color: '#FFFFFF',
     marginRight: 5,
@@ -418,12 +421,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   selectedAssetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   assetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#7C8FAC',
   },
@@ -468,7 +471,7 @@ const styles = StyleSheet.create({
   },
   actionTitleTxt: {
     flex: 1,
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#333333',
     textAlign: 'center',
     fontWeight: 600,
@@ -483,7 +486,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   walletListNameTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     flex: 1,
@@ -506,7 +509,7 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
   },
   walletListLabelTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
@@ -516,7 +519,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   walletAddressTxt: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: 400,
     color: '#7C8FAC',
     textAlignVertical: 'center',
@@ -525,7 +528,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   walletBalanceTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 500,
     color: '#7C8FAC',
     textAlign: 'center',
@@ -590,7 +593,7 @@ const styles = StyleSheet.create({
   selectedWalletTxt: {
     width: '85%',
     marginLeft: 12,
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
   },
@@ -605,7 +608,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   actionsheetTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
@@ -619,7 +622,7 @@ const styles = StyleSheet.create({
     borderColor: colors.gray1,
   },
   cancelTxt: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: 600,
     color: '#333333',
     textAlign: 'center',
@@ -642,7 +645,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   titleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#333333',
     flex: 1,
     textAlign: 'center',
@@ -652,13 +655,13 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   itemTitleTxt: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     flex: 0.15,
     fontWeight: 800,
     color: '#33333',
   },
   itemSubTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     flex: 1,
     color: '#333333',
@@ -674,14 +677,14 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   walletCopyTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#333333',
     marginRight: 5,
     marginTop: 2,
   },
   walletNameTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
   },

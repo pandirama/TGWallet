@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   FlatList,
   Image,
@@ -12,13 +13,16 @@ import {
 import {Ionicons} from '../../../utils/IconUtils';
 import CustomTabs from '../../../components/CustomTabs';
 import {colors} from '../../../utils/colors';
+import { moderateScale } from 'react-native-size-matters';
 
-const PoolsTabs = {
-  PoolChanges: 'Pool Changes',
-  LPDetails: 'LP Details',
-};
 
 const PoolsComponent = ({pools}: any) => {
+  const {t} = useTranslation();
+
+  const PoolsTabs = {
+  PoolChanges: t('POOL_CHANGES'),
+  LPDetails: t('LP_DETAILS'),
+};
   const [activeTab, setActiveTab] = useState(PoolsTabs.PoolChanges);
 
   const renderItem = ({item}: any) => {
@@ -93,13 +97,12 @@ const PoolsComponent = ({pools}: any) => {
             }}>
             <Text
               style={{
-                fontSize: 12,
+                fontSize: moderateScale(12),
                 fontWeight: 400,
                 color: '#FFA000',
                 flex: 1,
               }}>
-              Displaying data for the largest pool by default. You can switch to
-              different pools to view their respective data.
+              {t('POOL_DISPLAY_HINT')}
             </Text>
             <TouchableOpacity style={{alignItems: 'center'}}>
               <Ionicons name={'close-outline'} size={22} color={'#FFA000'} />
@@ -108,39 +111,39 @@ const PoolsComponent = ({pools}: any) => {
           <View style={{flexDirection: 'row', marginTop: 10}}>
             <Text
               style={{
-                fontSize: 12,
+                fontSize: moderateScale(12),
                 fontWeight: 400,
                 color: '#7C8FAC',
                 flex: 1,
               }}>
-              Pair
+              {t('PAIR')}
             </Text>
             <Text
               style={{
-                fontSize: 12,
+                fontSize: moderateScale(12),
                 fontWeight: 400,
                 color: '#7C8FAC',
                 flex: 1,
               }}>
-              Amount
+              {t('AMOUNT')}
             </Text>
             <Text
               style={{
-                fontSize: 12,
+                fontSize: moderateScale(12),
                 fontWeight: 400,
                 color: '#7C8FAC',
                 flex: 1,
               }}>
-              Value
+              {t('VALUE')}
             </Text>
             <Text
               style={{
-                fontSize: 12,
+                fontSize: moderateScale(12),
                 fontWeight: 400,
                 color: '#7C8FAC',
                 flex: 1,
               }}>
-              Logo
+              {t('LOGO')}
             </Text>
           </View>
           {pools?.pooldisplay?.map((pool: any) => {
@@ -148,7 +151,7 @@ const PoolsComponent = ({pools}: any) => {
               <View style={{flexDirection: 'row', marginTop: 10}}>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 400,
                     color: '#333',
                     flex: 1,
@@ -157,7 +160,7 @@ const PoolsComponent = ({pools}: any) => {
                 </Text>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 400,
                     color: '#333',
                     flex: 1,
@@ -166,7 +169,7 @@ const PoolsComponent = ({pools}: any) => {
                 </Text>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 400,
                     color: '#333',
                     flex: 1,
@@ -223,12 +226,9 @@ const PoolsComponent = ({pools}: any) => {
                       marginRight: 5,
                     }}
                   />
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: 400,
-                      color: '#333',
-                    }}>{`Liquidity: ${pools?.liquidity}`}</Text>
+                  <Text style={{fontSize: moderateScale(12), fontWeight: 400, color: '#333'}}>
+                    {t('LIQUIDITY', {value: pools?.liquidity})}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -245,12 +245,9 @@ const PoolsComponent = ({pools}: any) => {
                       marginRight: 5,
                     }}
                   />
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: 400,
-                      color: '#333',
-                    }}>{`24H Vol: ${pools?.volume_24h}`}</Text>
+                  <Text style={{fontSize: moderateScale(12), fontWeight: 400, color: '#333'}}>
+                    {t('VOLUME_24H', {value: pools?.volume_24h})}
+                  </Text>
                 </View>
               </View>
 
@@ -262,10 +259,10 @@ const PoolsComponent = ({pools}: any) => {
                   paddingBottom: 10,
                   paddingTop: 15,
                 }}>
-                <Text style={[styles.listItemTitleTxt]}>Time</Text>
-                <Text style={[styles.listItemTitleTxt]}>Amount</Text>
-                <Text style={[styles.listItemTitleTxt]}>Value($)</Text>
-                <Text style={[styles.listItemTitleTxt]}>Address</Text>
+                <Text style={[styles.listItemTitleTxt]}>{t('TIME')}</Text>
+                <Text style={[styles.listItemTitleTxt]}>{t('AMOUNT')}</Text>
+                <Text style={[styles.listItemTitleTxt]}>{t('VALUE_USD')}</Text>
+                <Text style={[styles.listItemTitleTxt]}>{t('ADDRESS')}</Text>
               </View>
             </View>
           }
@@ -289,38 +286,18 @@ const PoolsComponent = ({pools}: any) => {
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Text
                     style={{
-                      fontSize: 14,
+                      fontSize: moderateScale(14),
                       fontWeight: 400,
                       color: '#333',
                       flex: 1,
                     }}>
-                    LP Holders
+                    {t('LP_HOLDERS')}
+                  </Text>
+                  <Text style={{fontSize: moderateScale(14), fontWeight: 400, color: '#333'}}>
+                    {pools?.holderscount} {t('LOCKED')}
                   </Text>
                   <Text
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 400,
-                      color: '#333',
-                    }}>
-                    {pools?.holderscount}
-                  </Text>
-                </View>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 400,
-                      color: '#333',
-                      flex: 1,
-                    }}>
-                    Locked
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 400,
-                      color: '#0288D1',
-                    }}>
+                    style={{fontSize: moderateScale(14), fontWeight: 400, color: '#0288D1'}}>
                     0.00%
                   </Text>
                 </View>
@@ -333,8 +310,12 @@ const PoolsComponent = ({pools}: any) => {
                     paddingBottom: 10,
                     paddingTop: 15,
                   }}>
-                  <Text style={[styles.listItemTitleTxt]}>Holder(Top10)</Text>
-                  <Text style={[styles.listItemTitleTxt]}>Amount(Ratio)</Text>
+                  <Text style={[styles.listItemTitleTxt]}>
+                    {t('HOLDER_TOP10')}
+                  </Text>
+                  <Text style={[styles.listItemTitleTxt]}>
+                    {t('AMOUNT_RATIO')}
+                  </Text>
                 </View>
               </View>
             }
@@ -359,14 +340,14 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   listItemTitleTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     flex: 1,
     textAlign: 'left',
   },
   listItemTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     flex: 1,

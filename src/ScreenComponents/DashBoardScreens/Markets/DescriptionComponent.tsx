@@ -1,5 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
+import { useTranslation } from 'react-i18next';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {colors} from '../../../utils/colors';
 import {Ionicons, MaterialIcons} from '../../../utils/IconUtils';
@@ -9,8 +10,10 @@ import Telegram from '../../../assets/profile/telegram.svg';
 import FeedBack from '../../../assets/profile/feed_back.svg';
 import Clipboard from '@react-native-clipboard/clipboard';
 import AppWebviewComponent from '../../../components/AppWebviewComponent';
+import { moderateScale } from 'react-native-size-matters';
 
 const DescriptionComponent = ({descInfos}: any) => {
+  const { t } = useTranslation();
   const [url, setUrl] = useState('');
   const [visible, setVisible] = useState(false);
 
@@ -33,12 +36,12 @@ const DescriptionComponent = ({descInfos}: any) => {
           }}>
           <Text
             style={{
-              fontSize: 12,
+              fontSize: moderateScale(12),
               color: '#7C8FAC',
               fontWeight: 400,
               flex: 1,
             }}>
-            Contract
+            {t('CONTRACT')}
           </Text>
           <TouchableOpacity
             style={{flex: 1, flexDirection: 'row'}}
@@ -47,7 +50,7 @@ const DescriptionComponent = ({descInfos}: any) => {
             }}>
             <Text
               style={{
-                fontSize: 12,
+                fontSize: moderateScale(12),
                 color: '#333333',
                 fontWeight: 400,
                 flex: 1,
@@ -65,16 +68,16 @@ const DescriptionComponent = ({descInfos}: any) => {
           }}>
           <Text
             style={{
-              fontSize: 12,
+              fontSize: moderateScale(12),
               color: '#7C8FAC',
               fontWeight: 400,
               flex: 1,
             }}>
-            Total Supply
+            {t('TOTAL_SUPPLY')}
           </Text>
           <Text
             style={{
-              fontSize: 12,
+              fontSize: moderateScale(12),
               color: '#333333',
               fontWeight: 400,
               flex: 1,
@@ -85,32 +88,31 @@ const DescriptionComponent = ({descInfos}: any) => {
         <View style={styles.borderView} />
         <Text
           style={{
-            fontSize: 12,
+            fontSize: moderateScale(12),
             color: '#333333',
             fontWeight: 500,
             marginTop: 15,
           }}>
-          Description
+          {t('DESCRIPTION')}
         </Text>
         <Text
           style={{
-            fontSize: 12,
+            fontSize: moderateScale(12),
             color: '#7C8FAC',
             fontWeight: 400,
             marginTop: 5,
           }}>
-          As the native coin of the Binance Chain, BNB has multiple use cases:
-          fueling transactions on the Chain, paying
+          {t('BNB_DESCRIPTION')}
         </Text>
         <View style={styles.borderView} />
         <Text
           style={{
-            fontSize: 12,
+            fontSize: moderateScale(12),
             color: '#333333',
             fontWeight: 500,
             marginTop: 15,
           }}>
-          Project Info
+          {t('PROJECT_INFO')}
         </Text>
         {descInfos?.website && (
           <View
@@ -125,13 +127,13 @@ const DescriptionComponent = ({descInfos}: any) => {
             <Website width={30} height={30} />
             <Text
               style={{
-                fontSize: 12,
+                fontSize: moderateScale(12),
                 color: '#333333',
                 fontWeight: 400,
                 marginLeft: 5,
                 flex: 0.5,
               }}>
-              Website
+              {t('WEBSITE')}
             </Text>
 
             <TouchableOpacity
@@ -147,7 +149,7 @@ const DescriptionComponent = ({descInfos}: any) => {
               }}>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: moderateScale(12),
                   color: '#7C8FAC',
                   fontWeight: 400,
                   marginRight: 5,
@@ -179,13 +181,13 @@ const DescriptionComponent = ({descInfos}: any) => {
             <Twitter width={30} height={30} />
             <Text
               style={{
-                fontSize: 12,
+                fontSize: moderateScale(12),
                 color: '#333333',
                 fontWeight: 400,
                 marginLeft: 5,
                 flex: 0.5,
               }}>
-              Twitter
+              {t('TWITTER')}
             </Text>
 
             <TouchableOpacity
@@ -201,7 +203,7 @@ const DescriptionComponent = ({descInfos}: any) => {
               }}>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: moderateScale(12),
                   color: '#7C8FAC',
                   fontWeight: 400,
                   marginRight: 5,
@@ -233,13 +235,13 @@ const DescriptionComponent = ({descInfos}: any) => {
             <Telegram width={30} height={30} />
             <Text
               style={{
-                fontSize: 12,
+                fontSize: moderateScale(12),
                 color: '#333333',
                 fontWeight: 400,
                 marginLeft: 5,
                 flex: 0.5,
               }}>
-              Telegram
+              {t('TELEGRAM')}
             </Text>
 
             <TouchableOpacity
@@ -255,7 +257,7 @@ const DescriptionComponent = ({descInfos}: any) => {
               }}>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: moderateScale(12),
                   color: '#7C8FAC',
                   fontWeight: 400,
                   marginRight: 5,
@@ -286,13 +288,13 @@ const DescriptionComponent = ({descInfos}: any) => {
             <FeedBack width={30} height={30} />
             <Text
               style={{
-                fontSize: 12,
+                fontSize: moderateScale(12),
                 color: '#333333',
                 fontWeight: 400,
                 marginLeft: 5,
                 flex: 0.5,
               }}>
-              Facebook
+              {t('FACEBOOK')}
             </Text>
             <TouchableOpacity
               onPress={() => {
@@ -307,7 +309,7 @@ const DescriptionComponent = ({descInfos}: any) => {
               }}>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: moderateScale(12),
                   color: '#7C8FAC',
                   fontWeight: 400,
                   marginRight: 5,

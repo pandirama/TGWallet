@@ -7,7 +7,7 @@ import SplashScreen from 'react-native-splash-screen';
 import {colors} from '../utils/colors';
 import {useSelector} from 'react-redux';
 import {useAppDispatch} from '../store';
-import {getStorage, localStorageKey} from '../utils/common';
+import {getStorage, localStorageKey, setStorage} from '../utils/common';
 import {authAction} from '../reducer/auth/authSlice';
 import SplashComponent from '../ScreenComponents/Splash/SplashComponent';
 import IntroComponent from '../ScreenComponents/Intro/IntroComponent';
@@ -23,6 +23,7 @@ import DashboardBottomNavigator from './DashboardBottomNavigator';
 import ImportTypeComponent from '../ScreenComponents/DashBoardScreens/ImportWallet/ImportTypeComponent';
 import HDWalletComponent from '../ScreenComponents/DashBoardScreens/NewWallet/HDWalletComponent';
 import WatchWalletComponent from '../ScreenComponents/DashBoardScreens/ImportWallet/WatchWalletComponent';
+import i18next from 'i18next';
 
 const defaultTheme = {
   ...DefaultTheme,
@@ -143,7 +144,9 @@ const MainAppStack = () => {
 };
 
 const AppNavigationContainer = (): JSX.Element => {
-  const {isInitialized} = useSelector(({authReducer}: any) => authReducer);
+  const {isInitialized, selectedLangCode} = useSelector(
+    ({authReducer}: any) => authReducer,
+  );
   const dispatch = useAppDispatch();
 
   const initializeApp = async () => {
@@ -163,6 +166,15 @@ const AppNavigationContainer = (): JSX.Element => {
   useEffect(() => {
     initializeApp();
   }, [isInitialized]);
+
+  const checkLanguage = async () => {
+    await setStorage(localStorageKey.language, selectedLangCode);
+    i18next.changeLanguage(selectedLangCode);
+  };
+
+  useEffect(() => {
+    checkLanguage();
+  }, [selectedLangCode]);
 
   if (!isInitialized) {
     return <SplashComponent />;

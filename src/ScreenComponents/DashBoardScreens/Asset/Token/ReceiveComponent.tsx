@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   StatusBar,
@@ -21,10 +22,12 @@ import {useFocusEffect} from '@react-navigation/native';
 import {getErrorMessage} from '../../../../utils/common';
 import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'RECEIVE'>;
 
 const ReceiveComponent = ({}: Props) => {
+  const {t} = useTranslation();
   const {showToast, toggleBackdrop} = useCommon();
   const {walletInfo = {}, userInfo = {}} = useSelector(
     ({authReducer}: any) => authReducer,
@@ -80,11 +83,11 @@ const ReceiveComponent = ({}: Props) => {
       <SafeAreaView
         style={appStyles.container}
         edges={['right', 'left', 'top']}>
-        <DashBoardHeaderComponent title={'Receive'} />
+        <DashBoardHeaderComponent title={t('RECEIVE')} />
         <View style={{backgroundColor: '#FDEDED', borderRadius: 8, margin: 20}}>
           <Text
             style={{
-              fontSize: 12,
+              fontSize: moderateScale(12),
               fontWeight: 400,
               color: '#D32F2F',
               paddingTop: 10,
@@ -99,16 +102,16 @@ const ReceiveComponent = ({}: Props) => {
           <QRCode value={receiveWalletInfo?.wallet_qrcode} size={170} />
           <Text
             style={{
-              fontSize: 14,
+              fontSize: moderateScale(14),
               fontWeight: 400,
               color: '#7C8FAC',
               marginTop: 25,
             }}>
-            Receiving Address
+            {t('RECEIVING_ADDRESS')}
           </Text>
           <Text
             style={{
-              fontSize: 15,
+              fontSize: moderateScale(15),
               fontWeight: 400,
               color: '#333333',
               marginTop: 5,
@@ -125,16 +128,12 @@ const ReceiveComponent = ({}: Props) => {
               onPress={() => {
                 showToast({
                   type: 'success',
-                  text1: 'Address Copied Successfully',
+                  text1: t('ADDRESS_COPIED_SUCCESSFULLY'),
                 });
                 Clipboard.setString(receiveWalletInfo?.wallet_address);
               }}>
               <Ionicons name={'copy-outline'} size={20} color={'#7C8FAC'} />
-              <Text style={styles.shareTxt}>Copy</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.shareTouch}>
-              <Ionicons name={'share-outline'} size={20} color={'#7C8FAC'} />
-              <Text style={styles.shareTxt}>Share</Text>
+              <Text style={styles.shareTxt}>{t('COPY')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -163,14 +162,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   walletTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
     flex: 1,
     marginLeft: 8,
   },
   networkTxt: {
-    fontSize: 15,
+    fontSize: moderateScale(15),
     fontWeight: 600,
     color: '#333333',
     textAlignVertical: 'center',
@@ -216,12 +215,12 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   nftNameTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 500,
     color: '#333333',
   },
   nftValueTxt: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: 400,
     color: '#7C8FAC',
   },
@@ -246,23 +245,23 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   selectedAssetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   assetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#7C8FAC',
   },
   itemTitleTxt: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     flex: 0.15,
     fontWeight: 800,
     color: '#33333',
   },
   itemSubTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     flex: 1,
     color: '#333333',
@@ -289,7 +288,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   menuItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
@@ -306,19 +305,19 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   balanceTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     marginTop: 2,
   },
   balanceValTxt: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 600,
     color: '#333333',
     marginTop: 2,
   },
   balanceUSDTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#7C8FAC',
     marginTop: 2,
@@ -338,7 +337,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   shareTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginLeft: 10,

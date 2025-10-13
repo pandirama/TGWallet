@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   Dimensions,
   StatusBar,
@@ -15,6 +16,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import DashBoardHeaderComponent from '../../../components/DashBoardHeaderComponent';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import LinearGradient from 'react-native-linear-gradient';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'ADDNEWNFT'>;
 
@@ -22,6 +24,7 @@ const {height} = Dimensions.get('window');
 
 const AddNewNFTComponent = ({}: Props) => {
   const [contractAddress, setContractAddress] = useState('');
+  const {t} = useTranslation();
   return (
     <>
       <StatusBar
@@ -34,17 +37,17 @@ const AddNewNFTComponent = ({}: Props) => {
         style={appStyles.container}
         edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent
-          title={'Add NFT'}
+          title={t('ADD_NFT')}
           rightIcon={<Scan width={24} height={24} style={styles.scanIcon} />}
         />
-        <Text style={styles.addNFTHeaderTxt}>Add NFT</Text>
+        <Text style={styles.addNFTHeaderTxt}>{t('ADD_NFT')}</Text>
         <Text style={styles.addNFTSubHeaderTxt}>
-          Enter the NFT contract you want to add
+          {t('ENTER_NFT_CONTRACT_TO_ADD')}
         </Text>
         <View style={styles.searchContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Enter contract address"
+            placeholder={t('ENTER_CONTRACT_ADDRESS')}
             placeholderTextColor="#9C9DA0"
             value={contractAddress}
             multiline={true}
@@ -57,7 +60,7 @@ const AddNewNFTComponent = ({}: Props) => {
           <LinearGradient
             colors={['#6B121C', '#ED1C24']}
             style={styles.startedBtn}>
-            <Text style={styles.startedBtnTxt}>Confirm</Text>
+            <Text style={styles.startedBtnTxt}>{t('CONFIRM')}</Text>
           </LinearGradient>
         </TouchableOpacity>
       </SafeAreaView>
@@ -70,14 +73,14 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   addNFTHeaderTxt: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 600,
     color: '#333333',
     marginLeft: 15,
     marginTop: 10,
   },
   addNFTSubHeaderTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginLeft: 15,
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,

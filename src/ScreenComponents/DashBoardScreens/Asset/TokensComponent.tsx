@@ -2,6 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
 import React, {useCallback, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   FlatList,
@@ -31,10 +32,12 @@ import {useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {getErrorMessage} from '../../../utils/common';
 import FuzzySearch from 'fuzzy-search';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'TOKENS'>;
 
 const TokensComponent = ({navigation}: Props) => {
+  const {t} = useTranslation();
   const {showToast, toggleBackdrop} = useCommon();
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -86,7 +89,7 @@ const TokensComponent = ({navigation}: Props) => {
   );
 
   const fuzzySearch = (query: string, list: any) => {
-    const searcher = new FuzzySearch(list, ['symbol','address']);
+    const searcher = new FuzzySearch(list, ['symbol', 'address']);
     return searcher.search(query);
   };
 
@@ -163,25 +166,24 @@ const TokensComponent = ({navigation}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-
       <SafeAreaView
         style={appStyles.container}
         edges={['right', 'left', 'top']}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{flex: 1}}>
-          <DashBoardHeaderComponent title={'Tokens'} />
+          <DashBoardHeaderComponent title={t('TOKENS')} />
           <View style={styles.walletContainer}>
             <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
               <TouchableOpacity
                 style={styles.walletTouch}
                 onPress={() =>
                   navigation.navigate('TOKENSTYPE', {
-                    title: 'MY Tokens',
+                    title: t('MY_TOKENS'),
                     type: 'mytokens',
                   })
                 }>
-                <Text style={styles.walletTitleTxt}>MY Tokens</Text>
+                <Text style={styles.walletTitleTxt}>{t('MY_TOKENS')}</Text>
                 <Ionicons
                   name={'chevron-forward'}
                   size={25}
@@ -194,11 +196,11 @@ const TokensComponent = ({navigation}: Props) => {
                 style={styles.walletTouch}
                 onPress={() =>
                   navigation.navigate('TOKENSTYPE', {
-                    title: 'Home Token',
+                    title: t('HOME_TOKEN'),
                     type: 'hometokens',
                   })
                 }>
-                <Text style={styles.walletTitleTxt}>Home Token</Text>
+                <Text style={styles.walletTitleTxt}>{t('HOME_TOKEN')}</Text>
                 <Ionicons
                   name={'chevron-forward'}
                   size={25}
@@ -210,7 +212,7 @@ const TokensComponent = ({navigation}: Props) => {
               <TouchableOpacity
                 style={styles.walletTouch}
                 onPress={() => navigation.navigate('ADDTOKENS')}>
-                <Text style={styles.walletTitleTxt}>Custom Token</Text>
+                <Text style={styles.walletTitleTxt}>{t('CUSTOM_TOKEN')}</Text>
                 <Ionicons
                   name={'chevron-forward'}
                   size={25}
@@ -220,7 +222,7 @@ const TokensComponent = ({navigation}: Props) => {
               </TouchableOpacity>
             </View>
           </View>
-          <Text style={styles.networkTxt}>HOT Tokens</Text>
+          <Text style={styles.networkTxt}>{t('HOT_TOKENS')}</Text>
           <View
             style={[
               appStyles.boxShadow,
@@ -240,7 +242,7 @@ const TokensComponent = ({navigation}: Props) => {
                     <Search width={25} height={25} />
                     <TextInput
                       style={styles.input}
-                      placeholder="Search"
+                      placeholder={t('SEARCH')}
                       placeholderTextColor="#A9A9A9"
                       value={searchTerm}
                       onChangeText={text => setSearchTerm(text)}
@@ -275,7 +277,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   walletTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     flex: 1,
@@ -283,7 +285,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   networkTxt: {
-    fontSize: 15,
+    fontSize: moderateScale(15),
     fontWeight: 600,
     color: '#333333',
     textAlignVertical: 'center',
@@ -329,12 +331,12 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   nftNameTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 500,
     color: '#333333',
   },
   nftValueTxt: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: 400,
     color: '#7C8FAC',
   },

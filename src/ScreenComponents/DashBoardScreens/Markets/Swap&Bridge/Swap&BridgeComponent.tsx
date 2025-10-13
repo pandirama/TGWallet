@@ -2,6 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useRef, useState} from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Dimensions,
   FlatList,
@@ -27,6 +28,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import ActionSheet, {ActionSheetRef} from 'react-native-actions-sheet';
 import {Switch} from 'react-native-paper';
 import {getErrorMessage} from '../../../../utils/common';
+import { moderateScale } from 'react-native-size-matters';
 
 const titles = [
   {label: '0.3%', value: 0.3},
@@ -38,6 +40,7 @@ const titles = [
 
 const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
   const {showToast, toggleBackdrop} = useCommon();
+  const { t } = useTranslation();
 
   const actionSheetRef = useRef<ActionSheetRef>(null);
   const swapSheetRef = useRef<ActionSheetRef>(null);
@@ -250,7 +253,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
             }}>
             <Text
               style={{
-                fontSize: 14,
+                fontSize: moderateScale(14),
                 color: '#333333',
                 textAlign: 'center',
                 fontWeight: 600,
@@ -294,7 +297,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
         />
         <Text
           style={{
-            fontSize: 14,
+            fontSize: moderateScale(14),
             color: '#333333',
             textAlign: 'center',
             fontWeight: 600,
@@ -304,7 +307,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
         </Text>
         <Text
           style={{
-            fontSize: 12,
+            fontSize: moderateScale(12),
             color: '#9C9DA0',
             textAlign: 'center',
             fontWeight: 600,
@@ -339,7 +342,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
             />
             <Text
               style={{
-                fontSize: 12,
+                fontSize: moderateScale(12),
                 fontWeight: 500,
                 color: '#333333',
                 marginLeft: 5,
@@ -374,7 +377,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
           />
           <Text
             style={{
-              fontSize: 12,
+              fontSize: moderateScale(12),
               fontWeight: 500,
               color: '#333333',
               marginLeft: 5,
@@ -392,7 +395,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
     return (
       <Text
         style={{
-          fontSize: 12,
+          fontSize: moderateScale(12),
           fontWeight: 500,
           color: '#333333',
           textAlign: 'right',
@@ -408,7 +411,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
       <View style={{flexDirection: 'row', marginRight: 5, marginTop: 5}}>
         <Text
           style={{
-            fontSize: 12,
+            fontSize: moderateScale(12),
             fontWeight: 500,
             color: '#9C9DA0',
             flex: 1,
@@ -437,7 +440,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
           />
           <Text
             style={{
-              fontSize: 14,
+              fontSize: moderateScale(14),
               fontWeight: 500,
               color: '#9C9DA0',
               marginLeft: 5,
@@ -450,7 +453,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
 
         <Text
           style={{
-            fontSize: 14,
+            fontSize: moderateScale(14),
             fontWeight: 500,
             color: '#9C9DA0',
             flex: 1.5,
@@ -459,7 +462,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
         </Text>
         <Text
           style={{
-            fontSize: 14,
+            fontSize: moderateScale(14),
             fontWeight: 500,
             color: '#9C9DA0',
             flex: 0.5,
@@ -502,7 +505,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
           />
           <Text
             style={{
-              fontSize: 14,
+              fontSize: moderateScale(14),
               fontWeight: 500,
               color: '#9C9DA0',
               marginLeft: 5,
@@ -515,7 +518,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
 
         <Text
           style={{
-            fontSize: 14,
+            fontSize: moderateScale(14),
             fontWeight: 500,
             color: '#9C9DA0',
             flex: 1.5,
@@ -524,7 +527,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
         </Text>
         <Text
           style={{
-            fontSize: 14,
+            fontSize: moderateScale(14),
             fontWeight: 500,
             color: '#9C9DA0',
             flex: 0.5,
@@ -549,8 +552,8 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
         ]}>
         <View style={{flexDirection: 'row'}}>
           <Text
-            style={{fontSize: 16, fontWeight: 700, color: '#333333', flex: 1}}>
-            Transit
+            style={{fontSize: moderateScale(16), fontWeight: 700, color: '#333333', flex: 1}}>
+            {t('TRANSIT')}
           </Text>
           <TouchableOpacity
             style={{padding: 5}}
@@ -567,8 +570,8 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
             padding: 8,
             marginTop: 5,
           }}>
-          <Text style={{fontSize: 12, fontWeight: 500, color: '#9C9DA0'}}>
-            From
+          <Text style={{fontSize: moderateScale(12), fontWeight: 500, color: '#9C9DA0'}}>
+            {t('FROM_1')}
           </Text>
           <View
             style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
@@ -587,7 +590,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
               <View style={{marginLeft: 5, flex: 1}}>
                 <Text
                   style={{
-                    fontSize: 14,
+                    fontSize: moderateScale(14),
                     fontWeight: 500,
                     color: '#333333',
                   }}
@@ -596,7 +599,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
                 </Text>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 500,
                     color: '#9C9DA0',
                   }}
@@ -632,11 +635,11 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
           }}>
           <Text
             style={{
-              fontSize: 12,
+              fontSize: moderateScale(12),
               fontWeight: 500,
               color: '#9C9DA0',
             }}>
-            To (estimate)
+            {t('TO_ESTIMATE')}
           </Text>
           <View
             style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
@@ -655,7 +658,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
               <View style={{marginLeft: 5, flex: 1}}>
                 <Text
                   style={{
-                    fontSize: 14,
+                    fontSize: moderateScale(14),
                     fontWeight: 500,
                     color: '#333333',
                   }}
@@ -664,7 +667,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
                 </Text>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 500,
                     color: '#9C9DA0',
                   }}
@@ -692,7 +695,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
             /> */}
             <Text
               style={{
-                fontSize: 14,
+                fontSize: moderateScale(14),
                 color: '#9C9DA0',
                 fontWeight: 600,
                 flex: 1,
@@ -714,7 +717,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
           <LinearGradient
             colors={['#6B121C', '#ED1C24']}
             style={styles.startedBtn}>
-            <Text style={styles.startedBtnTxt}>Swap</Text>
+            <Text style={styles.startedBtnTxt}>{t('SWAP')}</Text>
           </LinearGradient>
         </TouchableOpacity>
 
@@ -746,7 +749,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
           }}>
           <View style={styles.actionViewContainer}>
             <View style={styles.actionTitleView}>
-              <Text style={styles.actionTitleTxt}>Advanced Settings</Text>
+              <Text style={styles.actionTitleTxt}>{t('ADVANCED_SETTINGS')}</Text>
               <TouchableOpacity
                 onPress={() => {
                   actionSheetRef?.current?.hide();
@@ -759,21 +762,20 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
           <View style={{padding: 12}}>
             <Text
               style={{
-                fontSize: 14,
+                fontSize: moderateScale(14),
                 fontWeight: 400,
                 color: '#333333',
               }}>
-              Slippage Setting
+              {t('SLIPPAGE_SETTING')}
             </Text>
             <Text
               style={{
-                fontSize: 12,
+                fontSize: moderateScale(12),
                 fontWeight: 400,
                 color: '#7C8FAC',
                 marginTop: 5,
               }}>
-              Setting a higher slippage can help your trade go through, but you
-              may not get the best price. Please use with caution.
+              {t('SLIPPAGE_WARNING')}
             </Text>
             <View style={styles.tabContainer}>
               {titles?.map((title: any) => {
@@ -824,12 +826,12 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
             <View style={{flexDirection: 'row', padding: 15, marginTop: 15}}>
               <Text
                 style={{
-                  fontSize: 14,
+                  fontSize: moderateScale(14),
                   fontWeight: 400,
                   color: '#333333',
                   flex: 1,
                 }}>
-                LP Fee Discount
+                {t('LP_FEE_DISCOUNT')}
               </Text>
               <Ionicons
                 name={'chevron-forward'}
@@ -841,12 +843,12 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
             <View style={{flexDirection: 'row', padding: 15}}>
               <Text
                 style={{
-                  fontSize: 14,
+                  fontSize: moderateScale(14),
                   fontWeight: 400,
                   color: '#333333',
                   flex: 1,
                 }}>
-                MEV Protection
+                {t('MEV_PROTECTION')}
               </Text>
               <Ionicons
                 name={'chevron-forward'}
@@ -858,12 +860,12 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
             <View style={{flexDirection: 'row', padding: 15}}>
               <Text
                 style={{
-                  fontSize: 14,
+                  fontSize: moderateScale(14),
                   fontWeight: 400,
                   color: '#333333',
                   flex: 1,
                 }}>
-                Receiving Address
+                {t('RECEIVING_ADDRESS')}
               </Text>
               <Switch
                 color="#00C9A7"
@@ -923,7 +925,7 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
           }}>
           <View style={styles.actionViewContainer}>
             <View style={styles.actionTitleView}>
-              <Text style={styles.actionTitleTxt}>Route Details</Text>
+              <Text style={styles.actionTitleTxt}>{t('ROUTE_DETAILS')}</Text>
               <TouchableOpacity
                 onPress={() => {
                   routeSheetRef?.current?.hide();
@@ -952,30 +954,30 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
                     }}>
                     <Text
                       style={{
-                        fontSize: 14,
+                        fontSize: moderateScale(14),
                         fontWeight: 700,
                         color: '#333333',
                         flex: 1,
                       }}>
-                      Bridge
+                      {t('BRIDGE')}
                     </Text>
                     <Text
                       style={{
-                        fontSize: 14,
+                        fontSize: moderateScale(14),
                         fontWeight: 700,
                         color: '#333333',
                         flex: 1.5,
                       }}>
-                      Duration
+                      {t('DURATION')}
                     </Text>
                     <Text
                       style={{
-                        fontSize: 14,
+                        fontSize: moderateScale(14),
                         fontWeight: 700,
                         color: '#333333',
                         flex: 0.5,
                       }}>
-                      From_To
+                      {t('FROM_TO')}
                     </Text>
                   </View>
                 );
@@ -999,30 +1001,30 @@ const SwapBridgeComponent = ({setShowWallets, walletInfo}: any) => {
                     }}>
                     <Text
                       style={{
-                        fontSize: 14,
+                        fontSize: moderateScale(14),
                         fontWeight: 700,
                         color: '#333333',
                         flex: 1,
                       }}>
-                      Dex Name
+                      {t('DEX_NAME')}
                     </Text>
                     <Text
                       style={{
-                        fontSize: 14,
+                        fontSize: moderateScale(14),
                         fontWeight: 700,
                         color: '#333333',
                         flex: 1.5,
                       }}>
-                      output
+                      {t('OUTPUT')}
                     </Text>
                     <Text
                       style={{
-                        fontSize: 14,
+                        fontSize: moderateScale(14),
                         fontWeight: 700,
                         color: '#333333',
                         flex: 0.5,
                       }}>
-                      Diff
+                      {t('DIFF')}
                     </Text>
                   </View>
                 );
@@ -1057,10 +1059,10 @@ const styles = StyleSheet.create({
     height: 24,
   },
   placeholderStyle: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
   },
   selectedTextStyle: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     marginLeft: 8,
   },
   iconStyle: {
@@ -1069,7 +1071,7 @@ const styles = StyleSheet.create({
   },
   inputSearchStyle: {
     height: 40,
-    fontSize: 16,
+    fontSize: moderateScale(16),
   },
   searchContainer: {
     flexDirection: 'row',
@@ -1100,7 +1102,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -1123,7 +1125,7 @@ const styles = StyleSheet.create({
   },
   actionTitleTxt: {
     flex: 1,
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#333333',
     textAlign: 'center',
     fontWeight: 600,
@@ -1167,7 +1169,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 13,
+    fontSize: moderateScale(13),
     fontWeight: 500,
     color: '#7C8FAC',
     letterSpacing: 0.5,

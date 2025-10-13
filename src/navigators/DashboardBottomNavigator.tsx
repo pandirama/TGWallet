@@ -57,6 +57,11 @@ import MarketDetailsComponent from '../ScreenComponents/DashBoardScreens/Markets
 import TokensComponent from '../ScreenComponents/DashBoardScreens/Asset/TokensComponent';
 import TokenTypeComponent from '../ScreenComponents/DashBoardScreens/Asset/TokenTypeComponent';
 import AddTokenComponent from '../ScreenComponents/DashBoardScreens/Asset/AddTokenComponent';
+import {use} from 'i18next';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { moderateScale, scale } from 'react-native-size-matters';
+import { colors } from '../utils/colors';
+import { useTranslation } from 'react-i18next';
 
 const WalletStack = createNativeStackNavigator<any>();
 
@@ -137,6 +142,10 @@ const MarketsStackNavigator = () => {
       screenOptions={{headerShown: false}}
       initialRouteName="MARKETS">
       <MarketsStack.Screen name="MARKETS" component={MarketsComponent} />
+      <MarketsStack.Screen
+        name="WALLET_STACK"
+        component={WalletStackNavigator}
+      />
       <MarketsStack.Screen
         name="MARKET_DETAILS"
         component={MarketDetailsComponent}
@@ -248,11 +257,12 @@ const ProfileStackNavigator = () => {
 
 const Tab = createBottomTabNavigator<any>();
 
-const DashBoardTabBar = ({state, descriptors, navigation}: any) => {
+const DashBoardTabBar = ({state, descriptors, navigation, insets}: any) => {
   const {buildHref} = useLinkBuilder();
+    const {t} = useTranslation();
 
   return (
-    <View style={styles.bottomView}>
+    <View style={[styles.bottomView, {paddingBottom: insets.bottom}]}>
       {state.routes.map((route: any, index: number) => {
         const {options} = descriptors[route.key];
         const label =
@@ -284,32 +294,32 @@ const DashBoardTabBar = ({state, descriptors, navigation}: any) => {
         };
 
         let icon: any = {
-          unSelected: <Assets width={32} height={32} />,
-          selected: <AssetsActive width={32} height={32} />,
+          unSelected: <Assets width={scale(32)} height={scale(32)} />,
+          selected: <AssetsActive width={scale(32)} height={scale(32)} />,
         };
         switch (route.name) {
           case 'Asset':
             icon = {
-              unSelected: <Assets width={32} height={32} />,
-              selected: <AssetsActive width={32} height={32} />,
+              unSelected: <Assets width={scale(32)} height={scale(32)} />,
+              selected: <AssetsActive width={scale(32)} height={scale(32)} />,
             };
             break;
           case 'Markets':
             icon = {
-              unSelected: <Markets width={32} height={32} />,
-              selected: <MarketsActive width={32} height={32} />,
+              unSelected: <Markets width={scale(32)} height={scale(32)} />,
+              selected: <MarketsActive width={scale(32)} height={scale(32)} />,
             };
             break;
           case 'Discover':
             icon = {
-              unSelected: <Discover width={32} height={32} />,
-              selected: <DiscoverActive width={32} height={32} />,
+              unSelected: <Discover width={scale(32)} height={scale(32)} />,
+              selected: <DiscoverActive width={scale(32)} height={scale(32)} />,
             };
             break;
           case 'Profile':
             icon = {
-              unSelected: <Profile width={32} height={32} />,
-              selected: <ProfileActive width={32} height={32} />,
+              unSelected: <Profile width={scale(32)} height={scale(32)} />,
+              selected: <ProfileActive width={scale(32)} height={scale(32)} />,
             };
             break;
         }
@@ -336,17 +346,19 @@ const DashBoardTabBar = ({state, descriptors, navigation}: any) => {
 };
 
 const DashboardBottomNavigator = () => {
+  const insets = useSafeAreaInsets();
+    const {t} = useTranslation();
   return (
     <Tab.Navigator
-      tabBar={props => <DashBoardTabBar {...props} />}
+      tabBar={props => <DashBoardTabBar {...props} insets={insets} />}
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarHideOnKeyboard: true,
       })}>
-      <Tab.Screen name="Asset" component={AssetStackNavigator} />
-      <Tab.Screen name="Markets" component={MarketsStackNavigator} />
-      <Tab.Screen name="Discover" component={DiscoverStackNavigator} />
-      <Tab.Screen name="Profile" component={ProfileStackNavigator} />
+      <Tab.Screen name={t('ASSET')} component={AssetStackNavigator} />
+      <Tab.Screen name={t('MARKETS')} component={MarketsStackNavigator} />
+      {/* <Tab.Screen name={t('DISCOVER')} component={DiscoverStackNavigator} /> */}
+      <Tab.Screen name={t('PROFILE')} component={ProfileStackNavigator} />
     </Tab.Navigator>
   );
 };
@@ -358,14 +370,16 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
+    borderTopWidth: 1,
+    borderTopColor: colors.gray1,
     ...Platform.select({
       ios: {
-        height: 80,
+        height: scale(70),
         paddingTop: 10,
         paddingBottom: 10,
       },
       android: {
-        height: 65,
+        height: scale(55),
         paddingTop: 5,
       },
     }),
@@ -382,7 +396,7 @@ const styles = StyleSheet.create({
   },
   labelTxt: {
     color: '#757575',
-    fontSize: 13,
+    fontSize: moderateScale(13),
     fontWeight: 500,
     marginBottom: 15,
   },

@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   Dimensions,
@@ -35,11 +36,13 @@ import {
 import Clipboard from '@react-native-clipboard/clipboard';
 import {authAction} from '../../../../reducer/auth/authSlice';
 import {useAppDispatch} from '../../../../store';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'WALLET_DETAILS'>;
 
 const WalletDetailsComponent = ({navigation, route}: Props) => {
   const {walletDetails, networkIcon = ''} = route?.params ?? {};
+  const {t} = useTranslation();
 
   const {showToast, toggleBackdrop} = useCommon();
   const dispatch = useAppDispatch();
@@ -268,7 +271,7 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
       <SafeAreaView
         style={appStyles.container}
         edges={['right', 'left', 'top']}>
-        <DashBoardHeaderComponent title={'Wallet Details'} />
+        <DashBoardHeaderComponent title={t('WALLET_DETAILS')} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={appStyles.scrollContainer}>
@@ -288,7 +291,7 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
             </View>
 
             <View style={styles.walletAddressView}>
-              <Text style={styles.walletAddressTxt}>Wallet Address</Text>
+              <Text style={styles.walletAddressTxt}>{t('WALLET_ADDRESS')}</Text>
               <View style={styles.walletCopyView}>
                 <Text style={styles.walletCopyTxt}>
                   {updateWalletDetails?.wallet_address ??
@@ -298,7 +301,7 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
                   onPress={() => {
                     showToast({
                       type: 'success',
-                      text1: 'Address Copied Successfully',
+                      text1: t('ADDRESS_COPIED_SUCCESSFULLY'),
                     });
                     Clipboard.setString(
                       updateWalletDetails?.wallet_address ??
@@ -316,7 +319,7 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
               onPress={() => {
                 setNameModalVisible(true);
               }}>
-              <Text style={styles.walletTitleTxt}>Wallet Name</Text>
+              <Text style={styles.walletTitleTxt}>{t('WALLET_NAME')}</Text>
               <Text style={styles.redirectTxt}>
                 {updateWalletDetails?.wallet_name}
               </Text>
@@ -339,7 +342,7 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
                     setExportText('recoveryPhrase');
                   }}>
                   <Text style={styles.walletTitleTxt}>
-                    Export Secret Recovery Phrase
+                    {t('EXPORT_SECRET_RECOVERY_PHRASE')}
                   </Text>
                   <Ionicons
                     name={'chevron-forward'}
@@ -355,18 +358,9 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
                     setPwdModalVisible(true);
                     setExportText('privateKey');
                   }}>
-                  <Text style={styles.walletTitleTxt}>Export Private Key</Text>
-                  <Ionicons
-                    name={'chevron-forward'}
-                    size={22}
-                    color={'#333333'}
-                    style={styles.icon}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
-                <TouchableOpacity style={styles.walletTouch}>
-                  <Text style={styles.walletTitleTxt}>Add Wallet</Text>
+                  <Text style={styles.walletTitleTxt}>
+                    {t('EXPORT_PRIVATE_KEY')}
+                  </Text>
                   <Ionicons
                     name={'chevron-forward'}
                     size={22}
@@ -383,7 +377,9 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
                       walletDetails: updateWalletDetails,
                     });
                   }}>
-                  <Text style={styles.walletTitleTxt}>Modify Password</Text>
+                  <Text style={styles.walletTitleTxt}>
+                    {t('MODIFY_PASSWORD')}
+                  </Text>
                   <Ionicons
                     name={'chevron-forward'}
                     size={22}
@@ -399,7 +395,9 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
                       walletDetails: updateWalletDetails,
                     });
                   }}>
-                  <Text style={styles.walletTitleTxt}>Reset Password</Text>
+                  <Text style={styles.walletTitleTxt}>
+                    {t('RESET_PASSWORD')}
+                  </Text>
                   <Ionicons
                     name={'chevron-forward'}
                     size={22}
@@ -416,7 +414,7 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
             onPress={() => {
               onDeleteWallet();
             }}>
-            <Text style={styles.startedBtnTxt}>Delete Wallet</Text>
+            <Text style={styles.startedBtnTxt}>{t('DELETE_WALLET')}</Text>
           </TouchableOpacity>
         </ScrollView>
 
@@ -424,7 +422,7 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
           visibility={nameModalVisible}
           onDismiss={onDismiss}
           onConfirm={onConfirmNameChange}
-          titleTxt={'Edit Wallet Name'}>
+          titleTxt={t('EDIT_WALLET_NAME')}>
           <View style={styles.searchContainer}>
             <TextInput
               style={styles.input}
@@ -446,13 +444,13 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
               onConfirmExportKeys();
             }
           }}
-          titleTxt={'Verify Password'}>
+          titleTxt={t('VERIFY_PASSWORD')}>
           <>
             <View style={styles.searchContainer}>
               <TextInput
                 style={styles.input}
                 value={password}
-                placeholder="Wallet Password"
+                placeholder={t('WALLET_PASSWORD')}
                 placeholderTextColor="#9C9DA0"
                 secureTextEntry={showPassword}
                 onChangeText={text => {
@@ -486,7 +484,7 @@ const WalletDetailsComponent = ({navigation, route}: Props) => {
           titleTxt={''}>
           <>
             <Text style={styles.deleteTxt}>
-              Do You Want to Delete the Wallet?
+              {t('DO_YOU_WANT_TO_DELETE_WALLET')}
             </Text>
           </>
         </ModalComponent>
@@ -504,7 +502,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   walletTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlignVertical: 'center',
@@ -526,7 +524,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   redirectTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     alignItems: 'center',
@@ -554,7 +552,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   walletAddressTxt: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: 400,
     color: '#7C8FAC',
   },
@@ -563,7 +561,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width / 1.5,
   },
   walletCopyTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#333333',
     marginRight: 5,
@@ -588,7 +586,7 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   errorTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#F04438',
     marginLeft: 15,
@@ -596,7 +594,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   deleteTxt: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
@@ -611,7 +609,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,

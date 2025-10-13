@@ -6,6 +6,7 @@ import {colors} from '../utils/colors';
 import {useNavigation} from '@react-navigation/native';
 import {fontFamily} from '../utils/appStyles';
 import { Ionicons } from '../utils/IconUtils';
+import { moderateScale } from 'react-native-size-matters';
 
 const HeaderComponent = ({title, subTitle, screen}: any) => {
   const navigation = useNavigation();
@@ -56,13 +57,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleTxt: {
-    fontSize: 28,
+    fontSize: moderateScale(28),
     color: colors.white,
-    fontFamily: fontFamily.poppins_semi_bold,
+    fontFamily: fontFamily.inter_bold,
   },
   subTitleTxt: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     color: colors.white,
-    fontFamily: fontFamily.poppins_medium,
+    fontFamily: fontFamily.inter_medium,
   },
 });

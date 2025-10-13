@@ -2,6 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 
 import React, {useCallback, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   Dimensions,
@@ -26,14 +27,15 @@ import {
 } from '../../../../api/walletAPI';
 import {getErrorMessage} from '../../../../utils/common';
 import LinearGradient from 'react-native-linear-gradient';
-import Scan from '../../../../assets/scan.svg';
 import ChooseWalletComponent from './ChooseWalletComponent';
 import {useFocusEffect} from '@react-navigation/native';
 import {useGetNetworksQuery} from '../../../../api/auth/authAPI';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'SEND'>;
 
 const SendComponent = ({navigation}: Props) => {
+  const {t} = useTranslation();
   const {showToast, toggleBackdrop} = useCommon();
   const {walletInfo = {}, userInfo = {}} = useSelector(
     ({authReducer}: any) => authReducer,
@@ -143,17 +145,17 @@ const SendComponent = ({navigation}: Props) => {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{flex: 1}}>
-          <DashBoardHeaderComponent title={'Send'} />
+          <DashBoardHeaderComponent title={t('SEND')} />
           <View style={styles.walletContainer}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   flex: 1,
-                  fontSize: 14,
+                  fontSize: moderateScale(14),
                   fontWeight: 600,
                   color: '#333333',
                 }}>
-                Send to
+                {t('SEND_TO')}
               </Text>
               <TouchableOpacity
                 onPress={() => {
@@ -161,11 +163,11 @@ const SendComponent = ({navigation}: Props) => {
                 }}>
                 <Text
                   style={{
-                    fontSize: 10,
+                    fontSize: moderateScale(10),
                     fontWeight: 400,
                     color: '#0054A6',
                   }}>
-                  {'Choose Wallet >'}
+                  {t('CHOOSE_WALLET_ARROW')}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -173,26 +175,23 @@ const SendComponent = ({navigation}: Props) => {
             <View style={styles.searchContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Please enter the wallet address"
+                placeholder={t('PLEASE_ENTER_WALLET_ADDRESS')}
                 placeholderTextColor="#9C9DA0"
                 value={inputName}
                 onChangeText={text => {
                   setInputName(text);
                 }}
               />
-              <TouchableOpacity>
-                <Scan width={24} height={24} />
-              </TouchableOpacity>
             </View>
 
             <Text
               style={{
-                fontSize: 14,
+                fontSize: moderateScale(14),
                 fontWeight: 600,
                 color: '#333333',
                 marginTop: 25,
               }}>
-              Transfer
+              {t('TRANSFER')}
             </Text>
 
             <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
@@ -212,16 +211,16 @@ const SendComponent = ({navigation}: Props) => {
               <View style={styles.walletTouch}>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 400,
                     color: '#333333',
                     textAlign: 'center',
                   }}>
-                  Balance:
+                  {t('BALANCE')}
                 </Text>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 400,
                     color: '#9C9DA0',
                     marginLeft: 5,
@@ -233,16 +232,16 @@ const SendComponent = ({navigation}: Props) => {
               <View style={styles.walletUSDTouch}>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 400,
                     color: '#333333',
                     textAlign: 'center',
                   }}>
-                  BalanceInUSD:
+                  {t('BALANCE_IN_USD')}
                 </Text>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 400,
                     color: '#9C9DA0',
                     marginLeft: 5,
@@ -255,12 +254,12 @@ const SendComponent = ({navigation}: Props) => {
 
             <Text
               style={{
-                fontSize: 14,
+                fontSize: moderateScale(14),
                 fontWeight: 600,
                 color: '#333333',
                 marginTop: 25,
               }}>
-              Network Fee
+              {t('NETWORK_FEE')}
             </Text>
 
             <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
@@ -268,16 +267,16 @@ const SendComponent = ({navigation}: Props) => {
                 style={{marginLeft: 5, marginBottom: 10, flexDirection: 'row'}}>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 500,
                     flex: 1,
                     color: '#9C9DA0',
                   }}>
-                  Estimated
+                  {t('ESTIMATED')}
                 </Text>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 500,
                     flex: 1,
                     textAlign: 'right',
@@ -291,16 +290,16 @@ const SendComponent = ({navigation}: Props) => {
                 style={{marginLeft: 5, marginBottom: 10, flexDirection: 'row'}}>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 500,
                     flex: 1,
                     color: '#9C9DA0',
                   }}>
-                  MaxFee
+                  {t('MAX_FEE')}
                 </Text>
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: moderateScale(12),
                     fontWeight: 500,
                     flex: 1,
                     textAlign: 'right',
@@ -320,7 +319,7 @@ const SendComponent = ({navigation}: Props) => {
             <LinearGradient
               colors={['#6B121C', '#ED1C24']}
               style={styles.startedBtn}>
-              <Text style={styles.startedBtnTxt}>Confirm</Text>
+              <Text style={styles.startedBtnTxt}>{t('CONFIRM')}</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -358,14 +357,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   walletTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
     flex: 1,
     marginLeft: 8,
   },
   networkTxt: {
-    fontSize: 15,
+    fontSize: moderateScale(15),
     fontWeight: 600,
     color: '#333333',
     textAlignVertical: 'center',
@@ -424,12 +423,12 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   nftNameTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 500,
     color: '#333333',
   },
   nftValueTxt: {
-    fontSize: 10,
+    fontSize: moderateScale(10),
     fontWeight: 400,
     color: '#7C8FAC',
   },
@@ -454,23 +453,23 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   selectedAssetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#333333',
   },
   assetItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#7C8FAC',
   },
   itemTitleTxt: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     flex: 0.15,
     fontWeight: 800,
     color: '#33333',
   },
   itemSubTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     flex: 1,
     color: '#333333',
@@ -497,7 +496,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   menuItemTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
@@ -514,25 +513,25 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   balanceTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#7C8FAC',
     marginTop: 2,
   },
   balanceValTxt: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
     fontWeight: 600,
     color: '#333333',
     marginTop: 2,
   },
   balanceUSDTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 600,
     color: '#7C8FAC',
     marginTop: 2,
   },
   inputTitleTxt: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: 400,
     color: '#333333',
     marginBottom: 1,
@@ -552,7 +551,7 @@ const styles = StyleSheet.create({
   },
   startedBtnTxt: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     textAlign: 'center',
     fontWeight: '600',
     paddingTop: 15,
@@ -566,7 +565,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width / 1.5,
   },
   walletCopyTxt: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     fontWeight: 400,
     color: '#333333',
     marginRight: 5,
