@@ -4,6 +4,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   StatusBar,
@@ -41,7 +42,7 @@ const assets = [
 
 const AssetComponent = ({navigation}: Props) => {
   const {t} = useTranslation();
-  const {showToast, toggleBackdrop} = useCommon();
+  const {showToast} = useCommon();
   const dispatch = useAppDispatch();
 
   const [selectedAsset, setSelectedAsset] = useState('ASSETS');
@@ -51,21 +52,17 @@ const AssetComponent = ({navigation}: Props) => {
   const [networks, setNetworks] = useState<any>([]);
   const [walletIcon, setWalletIcon] = useState<any>(null);
   const [showAmount, toggleAmount] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    walletInfo = {},
-    userInfo = {},
-    selectedNetwork,
-  } = useSelector(({authReducer}: any) => authReducer);
+  const authReducer = useSelector((state: any) => state.authReducer);
+  const walletInfo = authReducer.walletInfo || {};
+  const userInfo = authReducer.userInfo || {};
+  const selectedNetwork = authReducer.selectedNetwork;
   const {wallet_name, network_mode} = walletInfo ?? {};
 
   const {isFetching, refetch} = useGetNetworksQuery();
 
-  const [walletInfos, {isLoading}] = useWalletInfosMutation();
-
-  useEffect(() => {
-    toggleBackdrop(isLoading || isFetching);
-  }, [isLoading || isFetching]);
+  const [walletInfos] = useWalletInfosMutation();
 
   useEffect(() => {
     setWalletIcon(walletInfo?.Wallet_icon);
@@ -73,16 +70,19 @@ const AssetComponent = ({navigation}: Props) => {
 
   const getWalletInfos = async () => {
     try {
+      setIsLoading(true);
       const params = {
         wallet_id: walletInfo?.wallet_id,
         userid: userInfo?.generated_Id,
       };
       const response: any = await walletInfos(params).unwrap();
       if (response?.success) {
+        setIsLoading(false);
         setETHBalance(response?.message?.ethBalance);
         setTokenAssets(response?.message?.tokenBalances);
         // setTokenNFTs(response?.message?.nfts);
       } else {
+        setIsLoading(false);
         setTokenAssets([]);
         // setTokenNFTs([]);
         showToast({
@@ -91,6 +91,7 @@ const AssetComponent = ({navigation}: Props) => {
         });
       }
     } catch (err: any) {
+      setIsLoading(false);
       showToast({
         type: 'error',
         text1: getErrorMessage(err),
@@ -98,6 +99,7 @@ const AssetComponent = ({navigation}: Props) => {
     }
   };
 
+  // Call getWalletInfos only once when the screen is focused or walletInfo changes, not both
   useFocusEffect(
     useCallback(() => {
       refetch().then(response => {
@@ -117,9 +119,11 @@ const AssetComponent = ({navigation}: Props) => {
           });
         }
       });
-      getWalletInfos();
+      if (walletInfo && walletInfo.wallet_id && !showWallets) {
+        getWalletInfos();
+      }
       return () => {};
-    }, [showWallets, walletInfo]),
+    }, [showWallets, walletInfo?.wallet_id]),
   );
 
   const renderItem = ({item}: any) => {
@@ -302,6 +306,15 @@ const AssetComponent = ({navigation}: Props) => {
         selectedNetworkMode={selectedNetwork}
         networks={networks}
       />
+      {isLoading || isFetching ? (
+        <View style={styles.backDropView}>
+          <ActivityIndicator
+            size="small"
+            color={'#6B121C'}
+            style={{transform: [{scaleX: 1.3}, {scaleY: 1.3}]}}
+          />
+        </View>
+      ) : null}
     </SafeAreaView>
   );
 };
@@ -629,6 +642,17 @@ const styles = StyleSheet.create({
   },
   closeTouch: {
     padding: 5,
+  },
+  backDropView: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    zIndex: 1000,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fefefe4d',
   },
 });
 

@@ -21,10 +21,12 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import {useAddressBookInfoMutation} from '../../../../api/addressBookAPI';
 import {getErrorMessage} from '../../../../utils/common';
 import {useFocusEffect} from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<any, 'ADDRESS_INFO'>;
 
 const AddressBookInfoComponent = ({navigation, route}: Props) => {
+  const {t} = useTranslation();
   const {walletInfo, networks, allNetworks} = route?.params ?? {};
 
   const {showToast, toggleBackdrop} = useCommon();
@@ -76,7 +78,7 @@ const AddressBookInfoComponent = ({navigation, route}: Props) => {
       />
       <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent
-          title={'Address Information'}
+           title={t('ADDRESS_INFORMATION')}
           rightIcon={
             <TouchableOpacity
               style={styles.editTouch}
@@ -87,7 +89,7 @@ const AddressBookInfoComponent = ({navigation, route}: Props) => {
                   allNetworks,
                 });
               }}>
-              <Text style={styles.editTxt}>Edit</Text>
+              <Text style={styles.editTxt}>{t('EDIT')}</Text>
             </TouchableOpacity>
           }
         />
@@ -98,7 +100,7 @@ const AddressBookInfoComponent = ({navigation, route}: Props) => {
             styles.scrollView,
           ]}>
           <View style={styles.topView}>
-            <Text style={styles.inputTitleTxt}>Wallet Name</Text>
+            <Text style={styles.inputTitleTxt}>{t('WALLET_NAME')}</Text>
             <View style={styles.searchContainer}>
               {networks?.Wallet_icon && (
                 <Image
@@ -112,7 +114,7 @@ const AddressBookInfoComponent = ({navigation, route}: Props) => {
               <Text style={styles.inputTxt}>{networks?.Wallet_network}</Text>
             </View>
 
-            <Text style={styles.inputTitleTxt}>Wallet Address</Text>
+            <Text style={styles.inputTitleTxt}>{t('WALLET_ADDRESS')}</Text>
             <View style={styles.searchContainer}>
               <Text style={styles.inputTxt}>
                 {singleWalletInfo?.wallet_address}
@@ -129,14 +131,14 @@ const AddressBookInfoComponent = ({navigation, route}: Props) => {
                 <Ionicons name={'copy-outline'} size={16} color={'#7C8FAC'} />
               </TouchableOpacity>
             </View>
-            <Text style={styles.inputTitleTxt}>Set Name</Text>
+            <Text style={styles.inputTitleTxt}>{t('SET_NAME')}</Text>
             <View style={styles.searchContainer}>
               <Text style={styles.inputTxt}>
                 {singleWalletInfo?.wallet_name}
               </Text>
             </View>
 
-            <Text style={styles.inputTitleTxt}>Note</Text>
+            <Text style={styles.inputTitleTxt}>{t('NOTE')}</Text>
             <View style={styles.searchContainer}>
               <Text style={styles.inputTxt}>
                 {singleWalletInfo?.wallet_note}

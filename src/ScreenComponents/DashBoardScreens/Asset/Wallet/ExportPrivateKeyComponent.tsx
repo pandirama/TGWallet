@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import PlainTxtEye from '../../../../assets/plain_txt_eye.svg';
-import CustomTabs, {RecoveryTabs} from '../../../../components/CustomTabs';
+import CustomTabs, {getRecoveryTabs} from '../../../../components/CustomTabs';
 import DashBoardHeaderComponent from '../../../../components/DashBoardHeaderComponent';
 import appStyles from '../../../../utils/appStyles';
 import {colors} from '../../../../utils/colors';
@@ -20,12 +20,13 @@ import QRCode from 'react-native-qrcode-svg';
 import LinearGradient from 'react-native-linear-gradient';
 import useCommon from '../../../../hooks/useCommon';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'EXPORT_PRIVATEKEY'>;
 
 const ExportPrivateKeyComponent = ({route}: Props) => {
   const {t} = useTranslation();
+  const RecoveryTabs = getRecoveryTabs(t);
   const {walletInfo} = route?.params ?? {};
   const {showToast} = useCommon();
 
@@ -134,10 +135,7 @@ const ExportPrivateKeyComponent = ({route}: Props) => {
           <CustomTabs
             activeTab={activeTab}
             onSelectItem={(val: any) => setActiveTab(val)}
-            titles={[
-              RecoveryTabs.HandwrittenBackup,
-              RecoveryTabs.KeypalCardBackup,
-            ]}
+            titles={[RecoveryTabs.HandwrittenBackup]}
           />
         </View>
         <ScrollView>

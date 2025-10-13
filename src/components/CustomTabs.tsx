@@ -1,22 +1,22 @@
 import React from 'react';
 import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {colors} from '../utils/colors';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
 
-export const WalletTabs = {
-  RecoveryPhrase: 'Recovery Phrase',
-  PrivateKey: 'Private Key',
-};
+export const getWalletTabs = (t: any) => ({
+  RecoveryPhrase: t('RECOVERY_PHRASE'),
+  PrivateKey: t('PRIVATE_KEY'),
+});
 
-export const RecoveryTabs = {
-  HandwrittenBackup: 'Handwritten Backup',
-  KeypalCardBackup: 'Keypal Card Backup',
-};
+export const getRecoveryTabs = (t: any) => ({
+  HandwrittenBackup: t('HANDWRITTEN_BACKUP'),
+  KeypalCardBackup: t('KEYPAL_CARD_BACKUP'),
+});
 
-export const MarketTabs = {
-  SwapBridge: 'Swap & Bridge',
-  Market: 'Market',
-};
+export const getMarketTabs = (t: any) => ({
+  SwapBridge: t('SWAP_BRIDGE'),
+  Market: t('MARKET'),
+});
 
 const TabPill = ({
   title,

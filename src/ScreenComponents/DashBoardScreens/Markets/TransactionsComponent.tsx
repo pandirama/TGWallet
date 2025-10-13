@@ -14,14 +14,16 @@ import {colors} from '../../../utils/colors';
 import useCommon from '../../../hooks/useCommon';
 import {useTransactionInfoMutation} from '../../../api/marketAPI';
 import {getErrorMessage} from '../../../utils/common';
-import { moderateScale } from 'react-native-size-matters';
-
-const titles = ['All', 'Buy', 'Sell'];
+import {moderateScale} from 'react-native-size-matters';
+import {useTranslation} from 'react-i18next';
 
 const TransactionsComponent = ({marketDetails, transactions}: any) => {
+  const {t} = useTranslation();
   const {showToast, toggleBackdrop} = useCommon();
 
-  const [activeTab, setActiveTab] = useState('All');
+  const titles = [t('ALL_TAB'), t('BUY_TAB'), t('SELL_TAB')];
+
+  const [activeTab, setActiveTab] = useState(t('ALL_TAB'));
   const [txnsInfos, setTxnsInfos] = useState<any>(null);
 
   const [transactionInfo, {isLoading}] = useTransactionInfoMutation();
@@ -51,11 +53,11 @@ const TransactionsComponent = ({marketDetails, transactions}: any) => {
   }, [isLoading]);
 
   useEffect(() => {
-    if (activeTab === 'All') {
+    if (activeTab === t('ALL_TAB')) {
       getTransactionDetails('0');
-    } else if (activeTab === 'Buy') {
+    } else if (activeTab === t('BUY_TAB')) {
       getTransactionDetails('1');
-    } else if (activeTab === 'Sell') {
+    } else if (activeTab === t('SELL_TAB')) {
       getTransactionDetails('2');
     }
   }, [activeTab]);
@@ -107,7 +109,7 @@ const TransactionsComponent = ({marketDetails, transactions}: any) => {
         }}
         ListHeaderComponent={
           <View>
-            <Text style={styles.titleTxt}>Trading Data</Text>
+            <Text style={styles.titleTxt}>{t('TRADING_DATA')}</Text>
             <View style={{flexDirection: 'row', marginTop: 10}}>
               <View
                 style={{
@@ -119,10 +121,20 @@ const TransactionsComponent = ({marketDetails, transactions}: any) => {
                   borderRadius: 5,
                   paddingLeft: 10,
                 }}>
-                <Text style={{fontSize: moderateScale(12), fontWeight: 500, color: '#7C8FAC'}}>
-                  24H Vol
+                <Text
+                  style={{
+                    fontSize: moderateScale(12),
+                    fontWeight: 500,
+                    color: '#7C8FAC',
+                  }}>
+                  {t('VOL_24H')}
                 </Text>
-                <Text style={{fontSize: moderateScale(12), fontWeight: 500, color: '#333333'}}>
+                <Text
+                  style={{
+                    fontSize: moderateScale(12),
+                    fontWeight: 500,
+                    color: '#333333',
+                  }}>
                   {transactions?.summary?.volume_24h}
                 </Text>
               </View>
@@ -136,10 +148,20 @@ const TransactionsComponent = ({marketDetails, transactions}: any) => {
                   borderRadius: 5,
                   paddingLeft: 10,
                 }}>
-                <Text style={{fontSize: moderateScale(12), fontWeight: 500, color: '#7C8FAC'}}>
-                  24H Txn Addresses
+                <Text
+                  style={{
+                    fontSize: moderateScale(12),
+                    fontWeight: 500,
+                    color: '#7C8FAC',
+                  }}>
+                  {t('TXN_ADDRESSES_24H')}
                 </Text>
-                <Text style={{fontSize: moderateScale(12), fontWeight: 500, color: '#333333'}}>
+                <Text
+                  style={{
+                    fontSize: moderateScale(12),
+                    fontWeight: 500,
+                    color: '#333333',
+                  }}>
                   {transactions?.summary?.addresscount}
                 </Text>
               </View>
@@ -154,10 +176,20 @@ const TransactionsComponent = ({marketDetails, transactions}: any) => {
                 paddingLeft: 10,
                 marginTop: 15,
               }}>
-              <Text style={{fontSize: moderateScale(12), fontWeight: 500, color: '#7C8FAC'}}>
-                24H Txns
+              <Text
+                style={{
+                  fontSize: moderateScale(12),
+                  fontWeight: 500,
+                  color: '#7C8FAC',
+                }}>
+                {t('TXNS_24H')}
               </Text>
-              <Text style={{fontSize: moderateScale(12), fontWeight: 500, color: '#333333'}}>
+              <Text
+                style={{
+                  fontSize: moderateScale(12),
+                  fontWeight: 500,
+                  color: '#333333',
+                }}>
                 {transactions?.summary?.totaltrade}
               </Text>
               <View style={{flexDirection: 'row', marginTop: 8}}>
@@ -189,7 +221,7 @@ const TransactionsComponent = ({marketDetails, transactions}: any) => {
                     color: '#167E8D',
                     flex: 1,
                   }}>
-                  {`Buy: ${transactions?.summary?.buytotal ?? ''}`}
+                  {`${t('BUY_TAB')}: ${transactions?.summary?.buytotal ?? ''}`}
                 </Text>
                 <Text
                   style={{
@@ -200,7 +232,7 @@ const TransactionsComponent = ({marketDetails, transactions}: any) => {
                     textAlign: 'right',
                     marginRight: 10,
                   }}>
-                  {`Sell: ${transactions?.summary?.selltotal ?? ''}`}
+                  {`${t('SELL_TAB')}: ${transactions?.summary?.selltotal ?? ''}`}
                 </Text>
               </View>
             </View>
@@ -211,7 +243,7 @@ const TransactionsComponent = ({marketDetails, transactions}: any) => {
                 marginTop: 10,
                 marginRight: 10,
               }}>
-              <Text style={styles.titleTxt}>Trading Data</Text>
+              <Text style={styles.titleTxt}>{t('TRADING_DATA')}</Text>
               <View style={styles.tabContainer}>
                 {titles?.map((title: string) => {
                   return (
@@ -242,11 +274,11 @@ const TransactionsComponent = ({marketDetails, transactions}: any) => {
                 paddingBottom: 10,
                 paddingTop: 5,
               }}>
-              <Text style={[styles.listItemTitleTxt]}>Time</Text>
-              <Text style={[styles.listItemTitleTxt]}>Price(&)</Text>
-              <Text style={[styles.listItemTitleTxt]}>Amount(BNB)</Text>
-              <Text style={[styles.listItemTitleTxt]}>Value($)</Text>
-              <Text style={[styles.listItemTitleTxt]}>Address</Text>
+              <Text style={[styles.listItemTitleTxt]}>{t('TIME')}</Text>
+              <Text style={[styles.listItemTitleTxt]}>{t('PRICE_ETH')}</Text>
+              <Text style={[styles.listItemTitleTxt]}>{t('AMOUNT_BNB')}</Text>
+              <Text style={[styles.listItemTitleTxt]}>{t('VALUE_USD')}</Text>
+              <Text style={[styles.listItemTitleTxt]}>{t('ADDRESS')}</Text>
             </View>
           </View>
         }

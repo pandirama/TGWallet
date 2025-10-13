@@ -15,7 +15,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
 import DashBoardHeaderComponent from '../../../components/DashBoardHeaderComponent';
-import CustomTabs, {WalletTabs} from '../../../components/CustomTabs';
+import CustomTabs, {getWalletTabs} from '../../../components/CustomTabs';
 import LinearGradient from 'react-native-linear-gradient';
 import {Feather, Ionicons} from '../../../utils/IconUtils';
 import useCommon from '../../../hooks/useCommon';
@@ -38,6 +38,7 @@ type Props = NativeStackScreenProps<any, 'IMPORT_WALLET'>;
 
 const ImportWalletsComponent = ({navigation, route}: Props) => {
   const {t} = useTranslation();
+  const WalletTabs = getWalletTabs(t);
   const {walletTabs, walletNetwork} = route?.params ?? {};
 
   const {showToast, toggleBackdrop} = useCommon();
@@ -205,7 +206,9 @@ const ImportWalletsComponent = ({navigation, route}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent title={t('IMPORT_WALLETS')} />
         <View style={styles.tabsView}>
           <CustomTabs

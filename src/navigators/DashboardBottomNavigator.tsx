@@ -61,6 +61,7 @@ import {use} from 'i18next';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import { moderateScale, scale } from 'react-native-size-matters';
 import { colors } from '../utils/colors';
+import { useTranslation } from 'react-i18next';
 
 const WalletStack = createNativeStackNavigator<any>();
 
@@ -258,6 +259,7 @@ const Tab = createBottomTabNavigator<any>();
 
 const DashBoardTabBar = ({state, descriptors, navigation, insets}: any) => {
   const {buildHref} = useLinkBuilder();
+    const {t} = useTranslation();
 
   return (
     <View style={[styles.bottomView, {paddingBottom: insets.bottom}]}>
@@ -345,6 +347,7 @@ const DashBoardTabBar = ({state, descriptors, navigation, insets}: any) => {
 
 const DashboardBottomNavigator = () => {
   const insets = useSafeAreaInsets();
+    const {t} = useTranslation();
   return (
     <Tab.Navigator
       tabBar={props => <DashBoardTabBar {...props} insets={insets} />}
@@ -352,10 +355,10 @@ const DashboardBottomNavigator = () => {
         headerShown: false,
         tabBarHideOnKeyboard: true,
       })}>
-      <Tab.Screen name="Asset" component={AssetStackNavigator} />
-      <Tab.Screen name="Markets" component={MarketsStackNavigator} />
-      {/* <Tab.Screen name="Discover" component={DiscoverStackNavigator} /> */}
-      <Tab.Screen name="Profile" component={ProfileStackNavigator} />
+      <Tab.Screen name={t('ASSET')} component={AssetStackNavigator} />
+      <Tab.Screen name={t('MARKETS')} component={MarketsStackNavigator} />
+      {/* <Tab.Screen name={t('DISCOVER')} component={DiscoverStackNavigator} /> */}
+      <Tab.Screen name={t('PROFILE')} component={ProfileStackNavigator} />
     </Tab.Navigator>
   );
 };

@@ -15,13 +15,14 @@ import CustomTabs from '../../../components/CustomTabs';
 import {colors} from '../../../utils/colors';
 import { moderateScale } from 'react-native-size-matters';
 
-const PoolsTabs = {
-  PoolChanges: 'Pool Changes',
-  LPDetails: 'LP Details',
-};
 
 const PoolsComponent = ({pools}: any) => {
   const {t} = useTranslation();
+
+  const PoolsTabs = {
+  PoolChanges: t('POOL_CHANGES'),
+  LPDetails: t('LP_DETAILS'),
+};
   const [activeTab, setActiveTab] = useState(PoolsTabs.PoolChanges);
 
   const renderItem = ({item}: any) => {

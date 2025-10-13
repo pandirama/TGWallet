@@ -1,11 +1,11 @@
 import React, {useEffect, useRef} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import ActionSheet, {ActionSheetRef} from 'react-native-actions-sheet';
 import {Ionicons} from '../utils/IconUtils';
 import {colors} from '../utils/colors';
 import WalletComponent from './WalletComponent';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
 
 const WalletListComponent = ({
   navigation,
@@ -13,6 +13,7 @@ const WalletListComponent = ({
   showWallets,
   networkMode = '',
   networks,
+  isFromProfileComponent = false,
 }: any) => {
   const actionSheetRef = useRef<ActionSheetRef>(null);
 
@@ -24,7 +25,7 @@ const WalletListComponent = ({
     }
   }, [showWallets]);
 
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   return (
     <ActionSheet
       ref={actionSheetRef}
@@ -61,6 +62,7 @@ const WalletListComponent = ({
         setShowWallets={setShowWallets}
         networkMode={networkMode}
         networks={networks}
+        isFromProfileComponent={isFromProfileComponent}
       />
     </ActionSheet>
   );

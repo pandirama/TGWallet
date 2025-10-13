@@ -17,13 +17,14 @@ import {colors} from '../../../utils/colors';
 import DashBoardHeaderComponent from '../../../components/DashBoardHeaderComponent';
 import {useTranslation} from 'react-i18next';
 import {Ionicons} from '../../../utils/IconUtils';
-import {WalletTabs} from '../../../components/CustomTabs';
 import {moderateScale, scale} from 'react-native-size-matters';
+import {getWalletTabs} from '../../../components/CustomTabs';
 
 type Props = NativeStackScreenProps<any, 'IMPORT_TYPE'>;
 
 const ImportTypeComponent = ({navigation, route}: Props) => {
   const {t} = useTranslation();
+  const WalletTabs = getWalletTabs(t);
   const {walletNetwork} = route?.params ?? {};
 
   return (
@@ -34,7 +35,9 @@ const ImportTypeComponent = ({navigation, route}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent title={t('IMPORT_WALLETS')} />
         <ScrollView>
           <View style={styles.walletContainer}>

@@ -19,28 +19,28 @@ import WebView from 'react-native-webview';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { moderateScale } from 'react-native-size-matters';
 
-const marketItems = [
+const TradingComponent = ({marketInfos, marketDetails}: any) => {
+  const { t } = useTranslation();
+  const [selectedMarket, setSelectedMarket] = useState(t('TXNS'));
+
+  const marketItems = [
   {
     id: 0,
-    marketName: 'Txns',
+    marketName: t('TXNS'),
   },
   {
     id: 1,
-    marketName: 'My Trades',
+    marketName: t('MY_TRADES'),
   },
   {
     id: 2,
-    marketName: 'Pools',
+    marketName: t('POOLS'),
   },
   {
     id: 3,
-    marketName: 'Holder',
+    marketName: t('HOLDER'),
   },
 ];
-
-const TradingComponent = ({marketInfos, marketDetails}: any) => {
-  const { t } = useTranslation();
-  const [selectedMarket, setSelectedMarket] = useState('Txns');
 
   const renderItem = ({item}: any) => {
     const findAsset = selectedMarket === item?.marketName;
@@ -152,17 +152,17 @@ const TradingComponent = ({marketInfos, marketDetails}: any) => {
             style={{borderBottomWidth: 1, borderBottomColor: colors.gray1}}
           />
         </View>
-        {selectedMarket === 'Txns' && (
+        {selectedMarket === t('TXNS') && (
           <TransactionsComponent
             transactions={marketInfos?.transactions}
             marketDetails={marketDetails}
           />
         )}
-        {selectedMarket === 'My Trades' && <MyTradesComponent />}
-        {selectedMarket === 'Pools' && (
+        {selectedMarket === t('MY_TRADES') && <MyTradesComponent />}
+        {selectedMarket === t('POOLS') && (
           <PoolsComponent pools={marketInfos?.pools} />
         )}
-        {selectedMarket === 'Holder' && (
+        {selectedMarket === t('HOLDER') && (
           <HolderComponent holders={marketInfos?.holders} />
         )}
       </ScrollView>

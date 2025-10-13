@@ -1,4 +1,4 @@
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
 import React, {useRef} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
@@ -17,13 +17,17 @@ import ActionsSheets from '../../../../components/ActionsSheets';
 import LinearGradient from 'react-native-linear-gradient';
 import {Ionicons} from '../../../../utils/IconUtils';
 import {useSelector} from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<any, 'SETTINGS_LIST'>;
 
 const SettingsComponent = ({navigation}: Props) => {
+  const {t} = useTranslation();
   const cacheActionSheetRef = useRef<ActionSheetRef>(null);
 
-  const {timeZone = ''} = useSelector(({authReducer}: any) => authReducer);
+  const {timeZone = '', selectedLang = ''} = useSelector(
+    ({authReducer}: any) => authReducer,
+  );
 
   return (
     <>
@@ -33,7 +37,9 @@ const SettingsComponent = ({navigation}: Props) => {
         backgroundColor={colors.white}
         animated
       />
-      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <View style={styles.headerView}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
@@ -41,7 +47,7 @@ const SettingsComponent = ({navigation}: Props) => {
             <Ionicons name={'chevron-back'} size={25} color={'#333333'} />
           </TouchableOpacity>
 
-          <Text style={styles.headerTxt}>Settings</Text>
+          <Text style={styles.headerTxt}>{t('PROFILE')}</Text>
         </View>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -50,8 +56,22 @@ const SettingsComponent = ({navigation}: Props) => {
             <TouchableOpacity
               style={[styles.walletTouch]}
               onPress={() => navigation.navigate('CHANGE_BASIS')}>
-              <Text style={styles.titleTxt}>Change Basis</Text>
+              <Text style={styles.titleTxt}>{t('CHANGE_BASIS')}</Text>
               <Text style={styles.redirectTxt}>{timeZone?.name}</Text>
+              <Ionicons
+                name={'chevron-forward'}
+                size={25}
+                color={'#333333'}
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={[appStyles.boxShadow, styles.walletSubContainer]}>
+            <TouchableOpacity
+              style={styles.walletTouch}
+              onPress={() => navigation.navigate('LANGUAGE')}>
+              <Text style={styles.titleTxt}>{t('LANGUAGE')}</Text>
+              <Text style={styles.redirectTxt}>{selectedLang?.lang_name}</Text>
               <Ionicons
                 name={'chevron-forward'}
                 size={25}

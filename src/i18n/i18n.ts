@@ -4,12 +4,14 @@ import en from './translations/en.json';
 import vi from './translations/vi.json';
 import ind from './translations/in.json';
 import ph from './translations/ph.json';
+import jp from './translations/jp.json';
 
 const resources = {
   en: en,
   vi: vi,
   in: ind,
   ph: ph,
+  jp: jp,
 };
 
 const fallbackLng = ['en'];

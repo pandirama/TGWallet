@@ -16,7 +16,7 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import appStyles from '../../../utils/appStyles';
 import {colors} from '../../../utils/colors';
-import {MarketTabs} from '../../../components/CustomTabs';
+import {getMarketTabs} from '../../../components/CustomTabs';
 import {Ionicons} from '../../../utils/IconUtils';
 import {useSelector} from 'react-redux';
 import {useGetNetworksQuery} from '../../../api/auth/authAPI';
@@ -26,12 +26,16 @@ import {getErrorMessage} from '../../../utils/common';
 import {useMarketListMutation} from '../../../api/marketAPI';
 import WalletListComponent from '../../../components/WalletListComponent';
 import {moderateScale} from 'react-native-size-matters';
+import {authAction} from '../../../reducer/auth/authSlice';
+import {useAppDispatch} from '../../../store';
 
 type Props = NativeStackScreenProps<any, 'MARKETS'>;
 
 const MarketsComponent = ({navigation}: Props) => {
   const {t} = useTranslation();
+  const MarketTabs = getMarketTabs(t);
   const {showToast, toggleBackdrop} = useCommon();
+  const dispatch = useAppDispatch();
 
   const [walletIcon, setWalletIcon] = useState<any>(null);
   const [marketLists, setMarketLists] = useState<any>([]);
@@ -96,7 +100,15 @@ const MarketsComponent = ({navigation}: Props) => {
       refetch().then(response => {
         const {isSuccess, isError, data, error} = response;
         if (isSuccess) {
+          const networkData = data?.networks?.filter((network: any) => {
+            return (
+              network?.ID?.toString() === walletInfo?.network_mode?.toString()
+            );
+          })?.[0];
+          dispatch(authAction.setSelectedNetwork(networkData));
+          const networkIcon = networkData?.Wallet_icon;
           setNetworks(data?.networks);
+          setWalletIcon(networkIcon);
         } else if (isError) {
           showToast({
             type: 'error',
@@ -105,7 +117,7 @@ const MarketsComponent = ({navigation}: Props) => {
         }
       });
       return () => {};
-    }, []),
+    }, [walletInfo]),
   );
 
   const tabsView = () => {
@@ -300,6 +312,7 @@ const MarketsComponent = ({navigation}: Props) => {
           setShowWallets={setShowWallets}
           networkMode={network_mode}
           networks={networks}
+          isFromProfileComponent={true}
         />
       </SafeAreaView>
     </>

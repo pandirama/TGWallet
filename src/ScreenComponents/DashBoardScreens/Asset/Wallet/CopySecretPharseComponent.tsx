@@ -13,7 +13,7 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import PlainTxt from '../../../../assets/plain_txt.svg';
 import PlainTxtEye from '../../../../assets/plain_txt_eye.svg';
-import CustomTabs, {RecoveryTabs} from '../../../../components/CustomTabs';
+import CustomTabs, {getRecoveryTabs} from '../../../../components/CustomTabs';
 import appStyles from '../../../../utils/appStyles';
 import {Ionicons} from '../../../../utils/IconUtils';
 import {colors} from '../../../../utils/colors';
@@ -21,12 +21,13 @@ import DashBoardHeaderComponent from '../../../../components/DashBoardHeaderComp
 import Clipboard from '@react-native-clipboard/clipboard';
 import useCommon from '../../../../hooks/useCommon';
 import QRCode from 'react-native-qrcode-svg';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'COPY_SECRET_PHARSE'>;
 
 const CopySecretPharseComponent = ({route}: Props) => {
   const {t} = useTranslation();
+  const RecoveryTabs = getRecoveryTabs(t);
   const {walletInfo} = route?.params ?? {};
   const {showToast} = useCommon();
 
@@ -178,10 +179,7 @@ const CopySecretPharseComponent = ({route}: Props) => {
           <CustomTabs
             activeTab={activeTab}
             onSelectItem={(val: any) => setActiveTab(val)}
-            titles={[
-              RecoveryTabs.HandwrittenBackup,
-              RecoveryTabs.KeypalCardBackup,
-            ]}
+            titles={[RecoveryTabs.HandwrittenBackup]}
           />
         </View>
         <ScrollView>

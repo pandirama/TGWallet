@@ -24,10 +24,16 @@ import appStyles, {fontFamily} from '../../utils/appStyles';
 import LinearGradient from 'react-native-linear-gradient';
 import {useRegisterMutation} from '../../api/auth/authAPI';
 import useCommon from '../../hooks/useCommon';
-import {getErrorMessage} from '../../utils/common';
+import {
+  getErrorMessage,
+  getStorage,
+  localStorageKey,
+  setStorage,
+} from '../../utils/common';
 import {getBaseOs, getUniqueId} from 'react-native-device-info';
 import {moderateScale} from 'react-native-size-matters';
 import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
 
 type Props = NativeStackScreenProps<any, 'INTRO'>;
 
@@ -157,6 +163,8 @@ const IntroComponent = ({}: Props) => {
 
   const [register, {isLoading}] = useRegisterMutation();
 
+  const {selectedLangCode} = useSelector(({authReducer}: any) => authReducer);
+
   const slideContent: any = [
     {
       img: <Intro1 width={350} height={350} style={styles.imageContainer} />,
@@ -170,6 +178,21 @@ const IntroComponent = ({}: Props) => {
     },
   ];
 
+  const setLanguageLocal = async () => {
+    const lang = await getStorage(localStorageKey.language);
+    if (lang !== selectedLangCode) {
+      await setStorage(localStorageKey.language, 'en');
+      dispatch(authAction.setSelectedLangCode('en'));
+      dispatch(
+        authAction.setSelectedLang({
+          id: 1,
+          lang_name: 'English',
+          lang_symbol: 'en',
+        }),
+      );
+    }
+  };
+
   useEffect(() => {
     toggleBackdrop(isLoading);
   }, [isLoading]);
@@ -181,6 +204,7 @@ const IntroComponent = ({}: Props) => {
     getBaseOs().then(baseOs => {
       setDeviceName(baseOs);
     });
+    setLanguageLocal();
   }, []);
 
   const registerSubmit = async () => {
@@ -215,7 +239,9 @@ const IntroComponent = ({}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <ImageBackground
           source={require('../../assets/background.png')}
           style={styles.container}>

@@ -5,11 +5,11 @@ import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {colors} from '../../../utils/colors';
 import { moderateScale } from 'react-native-size-matters';
 
-const titles = ['All', 'Buy', 'Sell'];
 
 const MyTradesComponent = ({}: any) => {
   const {t} = useTranslation();
-  const [activeTab, setActiveTab] = useState('All');
+  const titles = [t('ALL_TAB'), t('BUY_TAB'), t('SELL_TAB')];
+  const [activeTab, setActiveTab] = useState(t('ALL_TAB'));
 
   return (
     <View>
@@ -36,7 +36,7 @@ const MyTradesComponent = ({}: any) => {
                     styles.title,
                     activeTab === title && styles.activeTitle,
                   ]}>
-                  {t(title.toUpperCase() + '_TAB')}
+                  {t(title.toUpperCase())}
                 </Text>
               </TouchableOpacity>
             );

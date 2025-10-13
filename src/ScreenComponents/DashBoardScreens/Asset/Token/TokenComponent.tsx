@@ -29,24 +29,9 @@ import {getErrorMessage} from '../../../../utils/common';
 import Send from '../../../../assets/send.svg';
 // import Transaction from '../../../../assets/profile/transaction.svg';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
 
 type Props = NativeStackScreenProps<any, 'TOKEN'>;
-
-const assets = [
-  {
-    id: 0,
-    assetName: 'All',
-  },
-  {
-    id: 1,
-    assetName: 'In',
-  },
-  {
-    id: 2,
-    assetName: 'Out',
-  },
-];
 
 const TokenComponent = ({navigation, route}: Props) => {
   const {t} = useTranslation();
@@ -55,6 +40,24 @@ const TokenComponent = ({navigation, route}: Props) => {
   const {walletInfo = {}, userInfo = {}} = useSelector(
     ({authReducer}: any) => authReducer,
   );
+
+  const assets = [
+    {
+      id: 0,
+      assetName: t('ALL'),
+      assetValue: 'All',
+    },
+    {
+      id: 1,
+      assetName: t('IN'),
+      assetValue: 'In',
+    },
+    {
+      id: 2,
+      assetName: t('OUT'),
+      assetValue: 'Out',
+    },
+  ];
 
   const [selectedAsset, setSelectedAsset] = useState('All');
   const [all, setAll] = useState([]);
@@ -104,13 +107,13 @@ const TokenComponent = ({navigation, route}: Props) => {
   );
 
   const renderItem = ({item}: any) => {
-    const findAsset = selectedAsset === item?.assetName;
+    const findAsset = selectedAsset === item?.assetValue;
     return (
       <View>
         <TouchableOpacity
           style={styles.assetItemTouch}
           onPress={() => {
-            setSelectedAsset(item?.assetName);
+            setSelectedAsset(item?.assetValue);
           }}>
           <Text
             style={

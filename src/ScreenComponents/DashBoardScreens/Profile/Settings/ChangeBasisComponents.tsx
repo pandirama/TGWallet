@@ -1,4 +1,4 @@
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
 import React, {useCallback, useEffect, useState} from 'react';
@@ -25,10 +25,12 @@ import {getErrorMessage} from '../../../../utils/common';
 import {useSelector} from 'react-redux';
 import {authAction} from '../../../../reducer/auth/authSlice';
 import {useAppDispatch} from '../../../../store';
+import {useTranslation} from 'react-i18next';
 
 type Props = NativeStackScreenProps<any, 'CHANGE_BASIS'>;
 
 const ChangeBasisComponents = ({navigation}: Props) => {
+  const {t} = useTranslation();
   const {showToast, toggleBackdrop} = useCommon();
   const dispatch = useAppDispatch();
 
@@ -125,7 +127,9 @@ const ChangeBasisComponents = ({navigation}: Props) => {
         backgroundColor={colors.white}
         animated
       />
-      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <View style={styles.headerView}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
@@ -133,23 +137,17 @@ const ChangeBasisComponents = ({navigation}: Props) => {
             <Ionicons name={'chevron-back'} size={25} color={'#333333'} />
           </TouchableOpacity>
 
-          <Text style={styles.headerTxt}>Change Basis</Text>
+          <Text style={styles.headerTxt}>{t('CHANGE_BASIS')}</Text>
           <TouchableOpacity
             onPress={() => {
               updateTimeZones();
             }}>
-            <Text style={styles.headerRightTxt}>Save</Text>
+            <Text style={styles.headerRightTxt}>{t('SAVE')}</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.headerTitleTxt}>Change Basis</Text>
-        <Text style={styles.headerSubTitleTxt}>
-          1. When you switch to a new UTC time zone, the price change(%) for
-          token will be calculated based on your new time zone.
-        </Text>
-        <Text style={styles.headerSubTitleTxt}>
-          2. Switching to a new UTC time zone will only effect the price change
-          (%). This change will not apply to candlesticks.
-        </Text>
+        <Text style={styles.headerTitleTxt}>{t('CHANGE_BASIS')}</Text>
+        <Text style={styles.headerSubTitleTxt}>{`1. ${t('DESC_1')}`}</Text>
+        <Text style={styles.headerSubTitleTxt}>{`2. ${t('DESC_2')}`}</Text>
         <FlatList
           data={basisLists}
           renderItem={renderItem}

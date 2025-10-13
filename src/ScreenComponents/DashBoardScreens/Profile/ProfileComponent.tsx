@@ -21,10 +21,12 @@ import {getErrorMessage} from '../../../utils/common';
 import useCommon from '../../../hooks/useCommon';
 import {useSelector} from 'react-redux';
 import { moderateScale } from 'react-native-size-matters';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<any, 'PROFILE'>;
 
 const ProfileComponent = ({navigation}: Props) => {
+  const {t} = useTranslation();
   const {showToast, toggleBackdrop} = useCommon();
 
   const {walletInfo = {}} = useSelector(({authReducer}: any) => authReducer);
@@ -67,7 +69,7 @@ const ProfileComponent = ({navigation}: Props) => {
       />
       <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
         <View style={styles.headerView}>
-          <Text style={styles.headerTxt}>Profile</Text>
+          <Text style={styles.headerTxt}>{t('PROFILE')}</Text>
         </View>
 
         <ScrollView
@@ -80,7 +82,7 @@ const ProfileComponent = ({navigation}: Props) => {
                 setShowWallets(true);
               }}>
               <WalletNew width={22} height={21} style={styles.walletIcon} />
-              <Text style={styles.walletTitleTxt}>Manage Wallets</Text>
+              <Text style={styles.walletTitleTxt}>{t('MANAGE_WALLETS')}</Text>
               <Ionicons
                 name={'chevron-forward'}
                 size={25}
@@ -100,7 +102,7 @@ const ProfileComponent = ({navigation}: Props) => {
                 color={'#333333'}
                 style={styles.leftIcon}
               />
-              <Text style={styles.walletTitleTxt}>Address Book</Text>
+              <Text style={styles.walletTitleTxt}>{t('ADDRESS_BOOK')}</Text>
               <Ionicons
                 name={'chevron-forward'}
                 size={25}
@@ -120,7 +122,7 @@ const ProfileComponent = ({navigation}: Props) => {
                 color={'#333333'}
                 style={styles.leftIcon}
               />
-              <Text style={styles.walletTitleTxt}>Settings</Text>
+              <Text style={styles.walletTitleTxt}>{t('SETTINGS')}</Text>
               <Ionicons
                 name={'chevron-forward'}
                 size={25}
@@ -136,6 +138,7 @@ const ProfileComponent = ({navigation}: Props) => {
           setShowWallets={setShowWallets}
           networkMode={network_mode}
           networks={networks}
+          isFromProfileComponent={true}
         />
       </SafeAreaView>
     </>

@@ -16,13 +16,15 @@ import {colors} from '../../../../utils/colors';
 import useCommon from '../../../../hooks/useCommon';
 import Clipboard from '@react-native-clipboard/clipboard';
 import appStyles from '../../../../utils/appStyles';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
+import {useTranslation} from 'react-i18next';
 
 const ChooseWalletComponent = ({
   setShowWallets,
   showWallets,
   chooseWallets,
 }: any) => {
+  const {t} = useTranslation();
   const {showToast} = useCommon();
   const actionSheetRef = useRef<ActionSheetRef>(null);
 
@@ -96,19 +98,19 @@ const ChooseWalletComponent = ({
               padding: 15,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.itemTitleTxt}>From : </Text>
+              <Text style={styles.itemTitleTxt}>{t('FROM')}</Text>
               <Text style={styles.itemSubTxt}>{item?.from}</Text>
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.itemTitleTxt}>To : </Text>
+              <Text style={styles.itemTitleTxt}>{t('TO')}</Text>
               <Text style={styles.itemSubTxt}>{item?.to}</Text>
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.itemTitleTxt}>Time : </Text>
+              <Text style={styles.itemTitleTxt}>{`${t('TIME')} :`}</Text>
               <Text style={styles.itemSubTxt}>{item?.time}</Text>
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.itemTitleTxt}>Value : </Text>
+              <Text style={styles.itemTitleTxt}>{t('VALUE_COLON')}</Text>
               <Text style={styles.itemSubTxt}>{item?.value}</Text>
             </View>
           </TouchableOpacity>
@@ -165,19 +167,19 @@ const ChooseWalletComponent = ({
             padding: 15,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.itemTitleTxt}>From : </Text>
+            <Text style={styles.itemTitleTxt}>{t('FROM')}</Text>
             <Text style={styles.itemSubTxt}>{item?.from}</Text>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.itemTitleTxt}>To : </Text>
+            <Text style={styles.itemTitleTxt}>{t('TO')}</Text>
             <Text style={styles.itemSubTxt}>{item?.to}</Text>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.itemTitleTxt}>Time : </Text>
+            <Text style={styles.itemTitleTxt}>{`${t('TIME')} :`}</Text>
             <Text style={styles.itemSubTxt}>{item?.time}</Text>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.itemTitleTxt}>Value : </Text>
+            <Text style={styles.itemTitleTxt}>{t('VALUE_COLON')}</Text>
             <Text style={styles.itemSubTxt}>{item?.value}</Text>
           </View>
         </TouchableOpacity>
@@ -208,7 +210,7 @@ const ChooseWalletComponent = ({
       }}>
       <View style={styles.actionViewContainer}>
         <View style={styles.actionTitleView}>
-          <Text style={styles.actionTitleTxt}>Choose a Wallet</Text>
+          <Text style={styles.actionTitleTxt}>{t('CHOOSE_A_WALLET')}</Text>
           <TouchableOpacity
             onPress={() => {
               actionSheetRef?.current?.hide();
@@ -233,7 +235,7 @@ const ChooseWalletComponent = ({
               styles.walletBalanceTxt,
               selectedWalletType === 'recent' && styles.selectWalletBalanceTxt,
             ]}>
-            Recent Transfer
+            {t('RECENT_TRANSFER')}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -249,7 +251,7 @@ const ChooseWalletComponent = ({
               styles.walletBalanceTxt,
               selectedWalletType === 'wallet' && styles.selectWalletBalanceTxt,
             ]}>
-            Wallet List
+            {t('WALLET_LIST')}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -265,7 +267,7 @@ const ChooseWalletComponent = ({
               styles.walletBalanceTxt,
               selectedWalletType === 'address' && styles.selectWalletBalanceTxt,
             ]}>
-            Address Book
+            {t('ADDRESS_BOOK')}
           </Text>
         </TouchableOpacity>
       </View>

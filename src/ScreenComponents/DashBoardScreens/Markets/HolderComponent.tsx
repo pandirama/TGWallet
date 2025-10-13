@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
@@ -11,21 +12,22 @@ import {
   View,
 } from 'react-native';
 import {colors} from '../../../utils/colors';
-import { moderateScale } from 'react-native-size-matters';
-
-const titles = ['Top10', 'Top20', 'Top50', 'Top100'];
+import {moderateScale} from 'react-native-size-matters';
 
 const HolderComponent = ({holders}: any) => {
   const {t} = useTranslation();
-  const [activeTab, setActiveTab] = useState('Top10');
+
+  const titles = [t('TOP_10'), t('TOP_20'), t('TOP_50'), t('TOP_100')];
+
+  const [activeTab, setActiveTab] = useState(t('TOP_10'));
   const [itemsToShow, setItemsToShow] = useState(10);
 
   useEffect(() => {
-    if (activeTab === 'Top10') {
+    if (activeTab === t('TOP_10')) {
       setItemsToShow(10);
-    } else if (activeTab === 'Top20') {
+    } else if (activeTab === t('TOP_20')) {
       setItemsToShow(20);
-    } else if (activeTab === 'Top50') {
+    } else if (activeTab === t('TOP_50')) {
       setItemsToShow(50);
     }
   }, [activeTab]);
@@ -67,7 +69,7 @@ const HolderComponent = ({holders}: any) => {
     <View>
       <FlatList
         data={
-          activeTab === 'Top100'
+          activeTab === t('TOP_100')
             ? holders?.holders
             : holders?.holders?.slice(0, itemsToShow)
         }

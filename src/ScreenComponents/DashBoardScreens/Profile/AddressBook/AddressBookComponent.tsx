@@ -1,4 +1,4 @@
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -23,17 +23,19 @@ import {getErrorMessage} from '../../../../utils/common';
 import {useSelector} from 'react-redux';
 import ActionSheet, {ActionSheetRef} from 'react-native-actions-sheet';
 import Clipboard from '@react-native-clipboard/clipboard';
+import {useTranslation} from 'react-i18next';
 
 type Props = NativeStackScreenProps<any, 'ADDRESS_LIST'>;
 
 const AddressBookComponent = ({navigation}: Props) => {
+  const {t} = useTranslation();
   const {showToast, toggleBackdrop} = useCommon();
 
   const actionSheetRef = useRef<ActionSheetRef>(null);
 
   const [networks, setNetworks] = useState<any>(null);
   const [wallets, setWallets] = useState<any>(null);
-  const [selectedWallet, setSelectedWallet] = useState<any>('All Network');
+  const [selectedWallet, setSelectedWallet] = useState<any>(t('ALL_NETWORK'));
 
   const [addressBook, {isLoading}] = useAddressBookMutation();
 
@@ -150,9 +152,11 @@ const AddressBookComponent = ({navigation}: Props) => {
         backgroundColor={colors.background}
         animated
       />
-      <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
+      <SafeAreaView
+        style={appStyles.container}
+        edges={['right', 'left', 'top']}>
         <DashBoardHeaderComponent
-          title={'Address Book'}
+          title={t('ADDRESS_BOOK')}
           rightIcon={
             <TouchableOpacity
               onPress={() => {
@@ -183,7 +187,7 @@ const AddressBookComponent = ({navigation}: Props) => {
             <SimpleLineIcons name={'notebook'} size={50} color={'#7C8FAC'} />
 
             <Text style={styles.informationTxt}>
-              You haven’t added address information yet
+              {t('ADDRESS_INFORMATIONS')}
             </Text>
             <TouchableOpacity
               style={[appStyles.boxShadow, styles.advancedTouch]}
@@ -192,7 +196,7 @@ const AddressBookComponent = ({navigation}: Props) => {
                   networks,
                 });
               }}>
-              <Text style={styles.advancedTxt}>Add Address</Text>
+              <Text style={styles.advancedTxt}>{t('ADD_ADDRESS')}</Text>
             </TouchableOpacity>
           </View>
         ) : (
@@ -216,7 +220,7 @@ const AddressBookComponent = ({navigation}: Props) => {
           }}>
           <View style={styles.actionViewContainer}>
             <View style={styles.actionTitleView}>
-              <Text style={styles.actionTitleTxt}>Choose a network</Text>
+              <Text style={styles.actionTitleTxt}>{t('CHOOSE_A_NETWORK')}</Text>
               <TouchableOpacity
                 onPress={() => {
                   actionSheetRef?.current?.hide();

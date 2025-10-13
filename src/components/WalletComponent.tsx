@@ -29,6 +29,7 @@ const WalletComponent = ({
   setShowWallets,
   networkMode = '',
   networks,
+  isFromProfileComponent = false,
 }: any) => {
   const {showToast} = useCommon();
   const dispatch = useAppDispatch();
@@ -91,16 +92,18 @@ const WalletComponent = ({
           dispatch(authAction.setSelectedNetwork(selectedNetworks));
           await setStorage(localStorageKey.walletInfo, JSON.stringify(wallet));
           setShowWallets(false);
-          navigation.navigate('WALLET_STACK', {
-            screen: 'WALLET_DETAILS',
-            params: {
-              walletDetails: wallet,
-              networkIcon: wallet?.Wallet_icon,
-            },
-          });
+          if (isFromProfileComponent) {
+            navigation.navigate('WALLET_STACK', {
+              screen: 'WALLET_DETAILS',
+              params: {
+                walletDetails: wallet,
+                networkIcon: wallet?.Wallet_icon,
+              },
+            });
+          }
         }}>
         <View style={styles.walletListLabelTopView}>
-          <Text style={styles.walletListNameTxt}>{item?.wallet_name}</Text>
+          <Text numberOfLines={1} style={styles.walletListNameTxt}>{item?.wallet_name}</Text>
           <View style={styles.walletListLabelView}>
             <Text style={styles.walletListLabelTxt}>{item?.wallet_label}</Text>
           </View>
@@ -457,7 +460,6 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     borderWidth: 1,
     borderRadius: 5,
-    flex: 0.3,
     alignItems: 'center',
     borderColor: colors.gray_bg,
     justifyContent: 'center',
@@ -469,6 +471,8 @@ const styles = StyleSheet.create({
     fontWeight: 400,
     color: '#333333',
     textAlign: 'center',
+    paddingHorizontal: 5,
+    paddingVertical: 2,
   },
   addressView: {
     flexDirection: 'row',

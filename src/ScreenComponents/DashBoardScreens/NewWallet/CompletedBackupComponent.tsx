@@ -17,7 +17,7 @@ import DashBoardHeaderComponent from '../../../components/DashBoardHeaderCompone
 import LinearGradient from 'react-native-linear-gradient';
 import PlainTxt from '../../../assets/plain_txt.svg';
 import PlainTxtEye from '../../../assets/plain_txt_eye.svg';
-import CustomTabs, {RecoveryTabs} from '../../../components/CustomTabs';
+import CustomTabs, { getRecoveryTabs } from '../../../components/CustomTabs';
 import {Ionicons} from '../../../utils/IconUtils';
 import QRCode from 'react-native-qrcode-svg';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -31,6 +31,7 @@ const CompletedBackupComponent = ({route, navigation}: Props) => {
   const {walletInfo} = route?.params ?? {};
 
   const {showToast} = useCommon();
+  const RecoveryTabs = getRecoveryTabs(t);
 
   const [activeTab, setActiveTab] = useState(RecoveryTabs.HandwrittenBackup);
   const [showCode, setShowCode] = useState(false);

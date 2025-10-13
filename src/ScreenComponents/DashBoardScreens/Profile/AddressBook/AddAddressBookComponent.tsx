@@ -26,10 +26,12 @@ import ActionSheet, {ActionSheetRef} from 'react-native-actions-sheet';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Scan from '../../../../assets/scan.svg';
 import { moderateScale } from 'react-native-size-matters';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<any, 'ADD_ADDRESS'>;
 
 const AddAddressBookComponent = ({navigation,route}: Props) => {
+  const {t} = useTranslation();
   const {networks} = route?.params ?? {};
   const {showToast, toggleBackdrop} = useCommon();
 
@@ -116,7 +118,7 @@ const AddAddressBookComponent = ({navigation,route}: Props) => {
         animated
       />
       <SafeAreaView style={appStyles.container} edges={['right', 'left', 'top']}>
-        <DashBoardHeaderComponent title={'Add Address'} />
+        <DashBoardHeaderComponent title={t('ADD_ADDRESS')} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={[
@@ -124,7 +126,7 @@ const AddAddressBookComponent = ({navigation,route}: Props) => {
             styles.scrollView,
           ]}>
           <View style={styles.topView}>
-            <Text style={styles.inputTitleTxt}>Wallet Name</Text>
+            <Text style={styles.inputTitleTxt}>{t('WALLET_NAME')}</Text>
             <View style={styles.searchContainer}>
               <TouchableOpacity
                 onPress={() => {
@@ -148,11 +150,11 @@ const AddAddressBookComponent = ({navigation,route}: Props) => {
               </TouchableOpacity>
             </View>
 
-            <Text style={styles.inputTitleTxt}>Wallet Address</Text>
+            <Text style={styles.inputTitleTxt}>{t('WALLET_ADDRESS')}</Text>
             <View style={styles.searchContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Please input the address"
+                placeholder={t('INPUT_ADDRESS')}
                 placeholderTextColor="#9C9DA0"
                 value={walletAddress}
                 onChangeText={text => {
@@ -166,11 +168,11 @@ const AddAddressBookComponent = ({navigation,route}: Props) => {
                 <Scan width={20} height={20} />
               </TouchableOpacity>
             </View>
-            <Text style={styles.inputTitleTxt}>Set Name</Text>
+            <Text style={styles.inputTitleTxt}>{t('SET_NAME')}</Text>
             <View style={styles.searchContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Please input a name"
+                placeholder={t('INPUT_NAME')}
                 placeholderTextColor="#9C9DA0"
                 value={inputName}
                 onChangeText={text => {
@@ -182,11 +184,11 @@ const AddAddressBookComponent = ({navigation,route}: Props) => {
               />
             </View>
 
-            <Text style={styles.inputTitleTxt}>Note</Text>
+            <Text style={styles.inputTitleTxt}>{t('NOTE')}</Text>
             <View style={styles.searchContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Please input a note"
+                placeholder={t('INPUT_NOTE')}
                 placeholderTextColor="#9C9DA0"
                 value={inputNote}
                 onChangeText={text => {
@@ -204,7 +206,7 @@ const AddAddressBookComponent = ({navigation,route}: Props) => {
               <LinearGradient
                 colors={['#6B121C', '#ED1C24']}
                 style={styles.startedBtn}>
-                <Text style={styles.startedBtnTxt}>Add</Text>
+                <Text style={styles.startedBtnTxt}>{t('ADD')}</Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
@@ -219,7 +221,7 @@ const AddAddressBookComponent = ({navigation,route}: Props) => {
           }}>
           <View style={styles.actionViewContainer}>
             <View style={styles.actionTitleView}>
-              <Text style={styles.actionTitleTxt}>Choose a network</Text>
+              <Text style={styles.actionTitleTxt}>{t('CHOOSE_A_NETWORK')}</Text>
               <TouchableOpacity
                 onPress={() => {
                   actionSheetRef?.current?.hide();

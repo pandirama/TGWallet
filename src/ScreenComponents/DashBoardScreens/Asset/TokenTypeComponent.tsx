@@ -102,7 +102,7 @@ const TokenTypeComponent = ({route}: Props) => {
         address: token?.tokenAddress,
       };
       let response: any;
-      if (token?.status === '1') {
+      if (token?.status?.toString() === '1') {
         response = await addToken(params).unwrap();
       } else {
         response = await removeToken(params).unwrap();
@@ -146,9 +146,9 @@ const TokenTypeComponent = ({route}: Props) => {
             addRemoveToken(item);
           }}>
           <EvilIcons
-            name={item?.status === '1' ? 'plus' : 'minus'}
+            name={item?.status?.toString() === '1' ? 'plus' : 'minus'}
             size={25}
-            color={item?.status === '1' ? '#ED1C24' : '#7C8FAC'}
+            color={item?.status?.toString() === '1' ? '#ED1C24' : '#7C8FAC'}
             style={styles.icon}
           />
         </TouchableOpacity>
